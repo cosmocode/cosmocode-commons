@@ -44,28 +44,13 @@ public final class Patterns {
      *   The different parts of the corresponding {@link Locale} are provided in
      *   the following groups:
      * </p>
-     * <table>
-     *   <tr>
-     *     <td><strong>Group 1</strong></td>
-     *     <td>Language</td>
-     *   </tr>
-     *   <tr>
-     *     <td><strong>Group 2</strong></td>
-     *     <td>Country (includes leading underscore)</td>
-     *   </tr>
-     *   <tr>
-     *     <td><strong>Group 3</strong></td>
-     *     <td>Country</td>
-     *   </tr>
-     *   <tr>
-     *     <td><strong>Group 4</strong></td>
-     *     <td>Variant (includes leading underscore)</td>
-     *   </tr>
-     *   <tr>
-     *     <td><strong>Group 5</strong></td>
-     *     <td>Variant</td>
-     *   </tr>
-     * </table>
+     * <ol>
+     *   <li>Language</li>
+     *   <li>Country (includes leading underscore)</li>
+     *   <li>Country</li>
+     *   <li>Variant (includes leading underscore)</li>
+     *   <li>Variant</li>
+     * </ol>
      * 
      * @see {@link Locale#toString()}
      */
