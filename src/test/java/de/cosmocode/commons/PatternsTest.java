@@ -91,4 +91,6 @@ public class PatternsTest {
         Asserts.assertMatches(Patterns.IATA_AIRPORT_CODE, "TXL");
     }
     
+    // TODO add tests for Patterns.LOCALE
+    
 }
