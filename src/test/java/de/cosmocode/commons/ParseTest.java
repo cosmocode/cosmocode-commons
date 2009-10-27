@@ -322,16 +322,6 @@ public class ParseTest {
         assertEquals(1.79769313486231570e+308d, Parse.asDouble(1.79769313486231570e+308d), 0d);
     }
 
-    @Test(expected=NumberFormatException.class)
-    public void asDoubleOutOfRange1() {
-        Parse.asDouble("4.94065645841246544e-3240");
-    }
-    
-    @Test(expected=NumberFormatException.class)
-    public void asDoubleOutOfRange2() {
-        Parse.asDouble("9991.79769313486231570e+3080");
-    }
-
     @Test
     public void asBigInteger() {
         assertEquals(new BigInteger("123"), Parse.asBigInteger(123));
