@@ -63,6 +63,23 @@ public final class StringUtility {
         return returnValue;
     }
     
+    /**
+     * 
+     * 
+     * <pre>
+     * StringUtility.isNumeric(null)   = false
+     * StringUtility.isNumeric("")     = false
+     * StringUtility.isNumeric("  ")   = false
+     * StringUtility.isNumeric("123")  = true
+     * StringUtility.isNumeric("12 3") = false
+     * StringUtility.isNumeric("ab2c") = false
+     * StringUtility.isNumeric("12-3") = false
+     * StringUtility.isNumeric("12.3") = false
+     * </pre>
+     * 
+     * @param s the String to check, may be null
+     * @return
+     */
     public static boolean isNumeric(String s) {
         return StringUtils.isNotBlank(s) && StringUtils.isNumeric(s);
     }

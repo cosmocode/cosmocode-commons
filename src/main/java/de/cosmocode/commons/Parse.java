@@ -16,7 +16,9 @@ public final class Parse {
     
     /**
      * Parses a value of a generic type
-     * into a boolean.
+     * into a boolean. If value is a {@link String}
+     * or an {@link Object} {@link Boolean#parseBoolean(String)}
+     * will be used.
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
@@ -29,14 +31,19 @@ public final class Parse {
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Boolean.parseBoolean(s);
-        } else {
+        } else if (value == null) {
             throw new ClassCastException(value + " can't be parsed as boolean");
+        } else {
+            final String s = value.toString();
+            return Boolean.parseBoolean(s);
         }
     }
     
     /**
      * Parses a value of a generic type
-     * into a boolean.
+     * into a boolean. If value is a {@link String}
+     * or an {@link Object} {@link Boolean#parseBoolean(String)}
+     * will be used.
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
@@ -49,28 +56,40 @@ public final class Parse {
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Boolean.parseBoolean(s);
-        } else {
+        } else if (value == null) {
             return defaultValue;
+        } else {
+            final String s = value.toString();
+            return Boolean.parseBoolean(s);
         }
     }
     
     /**
      * Parses a value of a generic type
-     * into a byte.
+     * into a byte. if value is a {@link String}
+     * {@link Byte#parseByte(String)} will be used.
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a byte
+     * @throws NumberFormatException if value can't be parsed into a byte
      * @return the parsed byte
      */
     public static <E> byte asByte(E value) {
         if (value instanceof Byte) {
             return Byte.class.cast(value).byteValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final long longValue = number.longValue();
+            if (longValue < Byte.MIN_VALUE || longValue > Byte.MAX_VALUE) {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+            } else {
+                return number.byteValue();
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Byte.parseByte(s);
         } else {
-            throw new ClassCastException(value + " can't be parsed as byte");
+            throw new NumberFormatException(value + " can't be parsed as byte");
         }
     }
     
@@ -86,6 +105,14 @@ public final class Parse {
     public static <E> byte asByte(E value, byte defaultValue) {
         if (value instanceof Byte) {
             return Byte.class.cast(value).byteValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final long longValue = number.longValue();
+            if (longValue < Byte.MIN_VALUE || longValue > Byte.MAX_VALUE) {
+                return defaultValue;
+            } else {
+                return number.byteValue();
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Byte.parseByte(s);
@@ -101,17 +128,25 @@ public final class Parse {
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a short
+     * @throws NumberFormatException if value can't be parsed into a short
      * @return the parsed short
      */
     public static <E> short asShort(E value) {
         if (value instanceof Short) {
             return Short.class.cast(value).shortValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final long longValue = number.longValue();
+            if (longValue < Short.MIN_VALUE || longValue > Short.MAX_VALUE) {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+            } else {
+                return number.shortValue();
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Short.parseShort(s);
         } else {
-            throw new ClassCastException(value + " can't be parsed as short");
+            throw new NumberFormatException(value + " can't be parsed as short");
         }
     }
 
@@ -128,6 +163,14 @@ public final class Parse {
     public static <E> short asShort(E value, short defaultValue) {
         if (value instanceof Short) {
             return Short.class.cast(value).shortValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final long longValue = number.longValue();
+            if (longValue < Short.MIN_VALUE || longValue > Short.MAX_VALUE) {
+                return defaultValue;
+            } else {
+                return number.shortValue();
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Short.parseShort(s);
@@ -143,22 +186,36 @@ public final class Parse {
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a short
+     * @throws NumberFormatException if value can't be parsed into a short
      * @return the parsed short
      */
     public static <E> char asChar(E value) {
         if (value instanceof Character) {
             return Character.class.cast(value).charValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final long longValue = number.longValue();
+            if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+            } else {
+                return (char) longValue;
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            if (s.length() == 1) return s.charAt(0);
-            throw new ClassCastException(value + " can't be parsed as char");
-        } else {
-            throw new ClassCastException(value + " can't be parsed as char");
+            if (StringUtility.isNumeric(s)) {
+                final long longValue = Long.parseLong(s);
+                if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
+                    throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+                } else {
+                    return (char) longValue;
+                }
+            } else if (s.length() == 1) {
+                return s.charAt(0);
+            }
         }
+        throw new NumberFormatException(value + " can't be parsed as char");
     }
 
-    
     /**
      * Parses a value of a generic type
      * into a char.
@@ -171,14 +228,29 @@ public final class Parse {
     public static <E> char asChar(E value, char defaultValue) {
         if (value instanceof Character) {
             return Character.class.cast(value).charValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final long longValue = number.longValue();
+            if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
+                return defaultValue;
+            } else {
+                return (char) longValue;
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            return s.length() == 1 ? s.charAt(0) : defaultValue;
-        } else {
-            return defaultValue;
+            if (StringUtility.isNumeric(s)) {
+                final long longValue = Long.parseLong(s);
+                if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
+                    return defaultValue;
+                } else {
+                    return (char) longValue;
+                }
+            } else if (s.length() == 1) {
+                return s.charAt(0);
+            }
         }
+        return defaultValue;
     }
-
     
     /**
      * Parses a value of a generic type
@@ -186,7 +258,7 @@ public final class Parse {
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into an int
+     * @throws NumberFormatException if value can't be parsed into an int
      * @return the parsed int
      */
     public static <E> int asInt(E value) {
@@ -196,10 +268,9 @@ public final class Parse {
             final String s = String.class.cast(value);
             return Integer.parseInt(s);
         } else {
-            throw new ClassCastException(value + " can't be parsed as int");
+            throw new NumberFormatException(value + " can't be parsed as int");
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -220,7 +291,6 @@ public final class Parse {
             return defaultValue;
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -228,20 +298,21 @@ public final class Parse {
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a long
+     * @throws NumberFormatException if value can't be parsed into a long
      * @return the parsed long
      */
     public static <E> long asLong(E value) {
         if (value instanceof Long) {
             return Long.class.cast(value).longValue();
+        } else if (value instanceof Number) {
+            return Number.class.cast(value).longValue();
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Long.parseLong(s);
         } else {
-            throw new ClassCastException(value + " can't be parsed as long");
+            throw new NumberFormatException(value + " can't be parsed as long");
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -262,7 +333,6 @@ public final class Parse {
             return defaultValue;
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -270,20 +340,32 @@ public final class Parse {
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a float
+     * @throws NumberFormatException if value can't be parsed into a float
      * @return the parsed float
      */
     public static <E> float asFloat(E value) {
         if (value instanceof Float) {
             return Float.class.cast(value).floatValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final double d = number.doubleValue();
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return number.floatValue();
+            } else {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            return Float.parseFloat(s);
+            final double d = Double.parseDouble(s);
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return Float.parseFloat(s);
+            } else {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+            }
         } else {
-            throw new ClassCastException(value + " can't be parsed as float");
+            throw new NumberFormatException(value + " can't be parsed as float");
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -297,14 +379,26 @@ public final class Parse {
     public static <E> float asFloat(E value, float defaultValue) {
         if (value instanceof Float) {
             return Float.class.cast(value).floatValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final double d = number.doubleValue();
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return number.floatValue();
+            } else {
+                return defaultValue;
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            return Float.parseFloat(s);
+            final double d = Double.parseDouble(s);
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return Float.parseFloat(s);
+            } else {
+                return defaultValue;
+            }
         } else {
             return defaultValue;
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -312,20 +406,32 @@ public final class Parse {
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a double
+     * @throws NumberFormatException if value can't be parsed into a double
      * @return the parsed double
      */
     public static <E> double asDouble(E value) {
         if (value instanceof Double) {
             return Double.class.cast(value).doubleValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final double d = number.doubleValue();
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return d;
+            } else {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            return Double.parseDouble(s);
+            final double d = Double.parseDouble(s);
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return d;
+            } else {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
+            }
         } else {
-            throw new ClassCastException(value + " can't be parsed as double");
+            throw new NumberFormatException(value + " can't be parsed as float");
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -339,22 +445,34 @@ public final class Parse {
     public static <E> double asDouble(E value, double defaultValue) {
         if (value instanceof Double) {
             return Double.class.cast(value).doubleValue();
+        } else if (value instanceof Number) {
+            final Number number = Number.class.cast(value);
+            final double d = number.doubleValue();
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return d;
+            } else {
+                return defaultValue;
+            }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            return Double.parseDouble(s);
+            final double d = Double.parseDouble(s);
+            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+                return d;
+            } else {
+                return defaultValue;
+            }
         } else {
             return defaultValue;
         }
     }
 
-    
     /**
      * Parses a value of a generic type
      * into a {@link BigInteger}.
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a {@link BigInteger}
+     * @throws NumberFormatException if value can't be parsed into a {@link BigInteger}
      * @return the parsed {@link BigInteger}
      */
     public static <E> BigInteger asBigInteger(E value) {
@@ -369,11 +487,10 @@ public final class Parse {
             final String s = String.class.cast(value);
             return new BigInteger(s);
         } else {
-            throw new ClassCastException(value + " can't be parsed as BigInteger");
+            throw new NumberFormatException(value + " can't be parsed as BigInteger");
         }
     }
 
-    
     /**
      * Parses a value of a generic type
      * into a {@link BigInteger}.
@@ -397,14 +514,13 @@ public final class Parse {
         }
     }
 
-    
     /**
      * Parses a value of a generic type
      * into a {@link BigDecimal}.
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
-     * @throws ClassCastException if value can't be parsed into a {@link BigDecimal}
+     * @throws NumberFormatException if value can't be parsed into a {@link BigDecimal}
      * @return the parsed {@link BigDecimal}
      */
     public static <E> BigDecimal asBigDecimal(E value) {
@@ -419,10 +535,9 @@ public final class Parse {
             final String s = String.class.cast(value);
             return new BigDecimal(s);
         } else {
-            throw new ClassCastException(value + " can't be parsed as BigDecimal");
+            throw new NumberFormatException(value + " can't be parsed as BigDecimal");
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -468,9 +583,14 @@ public final class Parse {
         } else if (value instanceof Long) {
             final long l = Long.class.cast(value).longValue();
             return new Date(l * 1000);
-        } else {
-            throw new ClassCastException(value + " can't be parsed as Date");
+        } else if (value instanceof String) {
+            final String s = String.class.cast(value);
+            if (StringUtility.isNumeric(s)) {
+                final long l = Long.parseLong(s);
+                return new Date(l * 1000);
+            }
         }
+        throw new ClassCastException(value + " can't be parsed as Date");
     }
     
     /**
@@ -483,26 +603,35 @@ public final class Parse {
      * @return the parsed {@link Date} or the defaultValue if value can't be parsed into a {@link Date}
      */
     public static <E> Date asDate(E value, Date defaultValue) {
-        if (value instanceof Date) {
+        if (value == null) {
+            return null;
+        } else if (value instanceof Date) {
             return Date.class.cast(value);
         } else if (value instanceof Calendar) {
             return Calendar.class.cast(value).getTime();
         } else if (value instanceof Long) {
             final long l = Long.class.cast(value).longValue();
             return new Date(l * 1000);
-        } else {
-            return defaultValue;
+        } else if (value instanceof String) {
+            final String s = String.class.cast(value);
+            if (StringUtility.isNumeric(s)) {
+                final long l = Long.parseLong(s);
+                return new Date(l * 1000);
+            }
         }
+        return defaultValue;
     }
 
     /**
      * Parses a value of a generic type
      * into an {@link Enum}.
-     * The value must either name a valid enum constant
-     * by it's name or ordinal.
+     * The value must be either a valid enum constant
+     * name or ordinal.
      * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
+     * @throws IllegalArgumentException if this value can parsed into a {@link String} or a {@link Number}
+     *         but does not represent a valid {@link Enum} constant of enumType
      * @throws ClassCastException if value can't be parsed into an {@link Enum}
      * @return the parsed {@link Enum}
      */
@@ -521,7 +650,6 @@ public final class Parse {
             throw new ClassCastException(value + " can't be parsed as " + enumType.getName());
         }
     }
-
     
     /**
      * Parses a value of a generic type
@@ -561,7 +689,6 @@ public final class Parse {
             return value.toString();
         }
     }
-
     
     /**
      * Parses a value of a generic type
