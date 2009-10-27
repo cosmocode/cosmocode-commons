@@ -5,6 +5,13 @@ import java.util.regex.Pattern;
 public final class Patterns {
     
     /**
+     * Prevent instantiation
+     */
+    private Patterns() {
+        
+    }
+    
+    /**
      * ISO 3166-1 alpha-2 codes are two-letter country codes defined in ISO 3166-1, part of the
      * ISO 3166 standard published by the International Organization for Standardization (ISO), 
      * to represent countries, dependent territories, and special areas of geographical interest.
@@ -29,12 +36,5 @@ public final class Patterns {
      * @see <a href="http://en.wikipedia.org/wiki/International_Air_Transport_Association_airport_code">Wikipedia</a>
      */
     public static final Pattern IATA_AIRPORT_CODE = Pattern.compile("^[A-Z]{3}$");
-
-    /**
-     * Prevent instantiation
-     */
-    private Patterns() {
-        
-    }
     
 }
