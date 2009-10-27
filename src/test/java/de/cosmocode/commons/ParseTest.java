@@ -1,49 +1,30 @@
 package de.cosmocode.commons;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class ParseTest {
 
-    private static enum Continent {
-        
-        EUROPE,
-        ASIA,
-        AUSTRALIA,
-        AFRICA,
-        NORTH_AMERICA,
-        SOUTH_AMERICA,
-        ANTARCTICA;
-        
-    }
-    
     @Test
     public void asBoolean() {
         assertTrue(Parse.asBoolean(true));
         assertTrue(Parse.asBoolean(Boolean.TRUE));
         assertTrue(Parse.asBoolean("true"));
         assertTrue(Parse.asBoolean("TrUe"));
-        assertTrue(Parse.asBoolean(new Object() {
-            
-            @Override
-            public String toString() {
-                return "true";
-            }
-            
-        }));
         
         assertFalse(Parse.asBoolean(false));
         assertFalse(Parse.asBoolean(Boolean.FALSE));
         assertFalse(Parse.asBoolean("false"));
         assertFalse(Parse.asBoolean("FalSe"));
-        assertFalse(Parse.asBoolean(new Object() {
-            
-            @Override
-            public String toString() {
-                return "false";
-            }
-            
-        }));
     }
     
     @Test(expected=ClassCastException.class)
@@ -66,19 +47,55 @@ public class ParseTest {
     }
     
     @Test(expected=NumberFormatException.class)
-    public void asByteOutOfRange() {
+    public void asByteOutOfRange1() {
         Parse.asByte("-129");
+    }
+        
+    @Test(expected=NumberFormatException.class)
+    public void asByteOutOfRange2() {
         Parse.asByte("-99999");
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asByteOutOfRange3() {
         Parse.asByte("128");
-        Parse.asByte("99999");
     }
     
     @Test(expected=NumberFormatException.class)
-    public void asByteOverflow() {
+    public void asByteOutOfRange4() {
+        Parse.asByte("99999");
+    }        
+
+    @Test(expected=NumberFormatException.class)
+    public void asByteOverflow1() {
         Parse.asByte(128);
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asByteOverflow2() {
         Parse.asByte(99999);
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asByteOverflow3() {
         Parse.asByte(-129);
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asByteOverflow4() {
         Parse.asByte(-99999);
+    }
+    
+    @Test
+    public void asByteDefault() {
+        assertEquals(66, Parse.asByte(128, (byte) 66));
+        assertEquals(-66, Parse.asByte(99999, (byte) -66));
+        assertEquals(-66, Parse.asByte(-129, (byte) -66));
+        assertEquals(66, Parse.asByte(-99999, (byte) 66));
+        assertEquals(66, Parse.asByte("128", (byte) 66));
+        assertEquals(-66, Parse.asByte("99999", (byte) -66));
+        assertEquals(-66, Parse.asByte("-129", (byte) -66));
+        assertEquals(66, Parse.asByte("-99999", (byte) 66));
     }
 
     @Test
@@ -96,18 +113,42 @@ public class ParseTest {
     }
     
     @Test(expected=NumberFormatException.class)
-    public void asShortOutOfRange() {
+    public void asShortOutOfRange1() {
         Parse.asShort("32768");
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asShortOutOfRange2() {
         Parse.asShort("99999");
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asShortOutOfRange3() {
         Parse.asShort("-32769");
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asShortOutOfRange4() {
         Parse.asShort("-99999");
     }
     
     @Test(expected=NumberFormatException.class)
-    public void asShortOverflow() {
+    public void asShortOverflow1() {
         Parse.asShort(32768);
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asShortOverflow2() {
         Parse.asShort(99999);
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asShortOverflow3() {
         Parse.asShort(-32769);
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asShortOverflow4() {
         Parse.asShort(-99999);
     }
 
@@ -126,18 +167,42 @@ public class ParseTest {
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asCharOutOfRange() {
+    public void asCharOutOfRange1() {
         Parse.asChar("65536");
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asCharOutOfRange2() {
         Parse.asChar("99999");
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asCharOutOfRange3() {
         Parse.asChar("-1");
+    }
+
+    @Test(expected=NumberFormatException.class)
+    public void asCharOutOfRange4() {
         Parse.asChar("-99999");
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asCharOverflow() {
+    public void asCharOverflow1() {
         Parse.asChar(65536);
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asCharOverflow2() {
         Parse.asChar(99999);
+    }
+        
+    @Test(expected=NumberFormatException.class)
+    public void asCharOverflow3() {
         Parse.asChar(-1);
+    }
+        
+    @Test(expected=NumberFormatException.class)
+    public void asCharOverflow4() {
         Parse.asChar(-99999);
     }
     
@@ -156,14 +221,22 @@ public class ParseTest {
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asIntOutOfRange() {
+    public void asIntOutOfRange1() {
         Parse.asInt("-2147483649");
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asIntOutOfRange2() {
         Parse.asInt("2147483648");
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asIntOverflow() {
+    public void asIntOverflo1w() {
         Parse.asInt(-2147483649l);
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asIntOverflow2() {
         Parse.asInt(2147483648l);
     }
 
@@ -182,10 +255,22 @@ public class ParseTest {
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asLongOutOfRange() {
+    public void asLongOutOfRange1() {
         Parse.asInt("-2147483650");
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asLongOutOfRange2() {
         Parse.asInt("-9999999999");
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asLongOutOfRange3() {
         Parse.asInt("2147483649");
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asLongOutOfRange4() {
         Parse.asInt("9999999999");
     }
 
@@ -204,14 +289,22 @@ public class ParseTest {
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asFloatOutOfRange() {
+    public void asFloatOutOfRange1() {
         Parse.asFloat("1.40129846432481707e-46");
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asFloatOutOfRange2() {
         Parse.asFloat("3.40282346638528860e+39");
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asFloatOverflow() {
+    public void asFloatOverflow1() {
         Parse.asFloat(1.40129846432481707e-46);
+    }
+    
+    @Test(expected=NumberFormatException.class)
+    public void asFloatOverflow2() {
         Parse.asFloat(3.40282346638528860e+39);
     }
 
@@ -223,48 +316,92 @@ public class ParseTest {
         assertEquals(0d, Parse.asDouble(0d), 0d);
         assertEquals(-123.45d, Parse.asDouble("-123.45"), 0d);
         assertEquals(-123.45d, Parse.asDouble(-123.45d), 0d);
-        assertEquals(1.40129846432481707e-45d, Parse.asDouble("1.40129846432481707e-45"), 0d);
-        assertEquals(1.40129846432481707e-45d, Parse.asDouble(1.40129846432481707e-45d), 0d);
-        assertEquals(3.40282346638528860e+38d, Parse.asDouble("3.40282346638528860e+38"), 0d);
-        assertEquals(3.40282346638528860e+38d, Parse.asDouble(3.40282346638528860e+38d), 0d);
+        assertEquals(4.94065645841246544e-324d, Parse.asDouble("4.94065645841246544e-324"), 0d);
+        assertEquals(4.94065645841246544e-324d, Parse.asDouble(4.94065645841246544e-324d), 0d);
+        assertEquals(1.79769313486231570e+308d, Parse.asDouble("1.79769313486231570e+308"), 0d);
+        assertEquals(1.79769313486231570e+308d, Parse.asDouble(1.79769313486231570e+308d), 0d);
     }
 
     @Test(expected=NumberFormatException.class)
-    public void asDoubleOutOfRange() {
-        Parse.asDouble("1.40129846432481707e-46");
-        Parse.asDouble("3.40282346638528860e+39");
+    public void asDoubleOutOfRange1() {
+        Parse.asDouble("4.94065645841246544e-3240");
     }
-
+    
     @Test(expected=NumberFormatException.class)
-    public void asDoubleOverflow() {
-        Parse.asDouble(1.40129846432481707e-46);
-        Parse.asDouble(3.40282346638528860e+39);
+    public void asDoubleOutOfRange2() {
+        Parse.asDouble("9991.79769313486231570e+3080");
     }
 
     @Test
     public void asBigInteger() {
-        fail("Not yet implemented");
+        assertEquals(new BigInteger("123"), Parse.asBigInteger(123));
+        assertEquals(new BigInteger("123"), Parse.asBigInteger("123"));
+        assertEquals(new BigInteger("0"), Parse.asBigInteger(0));
+        assertEquals(new BigInteger("0"), Parse.asBigInteger("0"));
+        assertEquals(new BigInteger("-123"), Parse.asBigInteger(-123));
+        assertEquals(new BigInteger("-123"), Parse.asBigInteger("-123"));
     }
 
     @Test
     public void asBigDecimal() {
-        fail("Not yet implemented");
+        assertEquals(new BigDecimal("123.45"), Parse.asBigDecimal(123.45));
+        assertEquals(new BigDecimal("123.45"), Parse.asBigDecimal("123.45"));
+        assertEquals(new BigDecimal("0.0"), Parse.asBigDecimal(0));
+        assertEquals(new BigDecimal("0"), Parse.asBigDecimal("0"));
+        assertEquals(new BigDecimal("-123.45"), Parse.asBigDecimal(-123.45));
+        assertEquals(new BigDecimal("-123.45"), Parse.asBigDecimal("-123.45"));
     }
 
     @Test
     public void asDate() {
-        fail("Not yet implemented");
+        assertSame(null, Parse.asDate(null));
+        
+        final Date date = new Date();
+        assertEquals(date, Parse.asDate(date));
+        assertEquals(date, Parse.asDate(date.getTime()));
+        assertEquals(date, Parse.asDate(Long.toString(date.getTime())));
+        
+        final Calendar calendar = Calendar.getInstance();
+        assertEquals(calendar.getTime(), Parse.asDate(calendar));
+        assertEquals(calendar.getTime(), Parse.asDate(calendar.getTime()));
+        assertEquals(calendar.getTime(), Parse.asDate(calendar.getTime().getTime()));
+        assertEquals(calendar.getTime(), Parse.asDate(Long.toString(calendar.getTime().getTime())));
+    }
+
+    private static enum Continent {
+        
+        EUROPE,
+        ASIA,
+        AUSTRALIA,
+        AFRICA,
+        NORTH_AMERICA,
+        SOUTH_AMERICA,
+        ANTARCTICA;
+        
     }
 
     @Test
     public void asEnum() {
-        assertSame(Continent.EUROPE, Parse.asEnum("EUROPE", Continent.class));
-        assertSame(Continent.AFRICA, Parse.asEnum(3, Continent.class));
+        final Continent[] continents = Continent.values();
+        for (int i=0; i<continents.length; i++) {
+            final Continent continent = continents[i];
+            assertSame(continent, Parse.asEnum(continent.name(), Continent.class));
+            assertSame(continent, Parse.asEnum(continent.name().toLowerCase(), Continent.class));
+            assertSame(continent, Parse.asEnum(i, Continent.class));
+        }
     }
 
     @Test
     public void asString() {
-        fail("Not yet implemented");
+        assertSame(null, Parse.asString(null));
+        
+        assertEquals("test", Parse.asString(new String("test")));
+        assertEquals("123", Parse.asString(new String("123")));
+        assertEquals("", Parse.asString(new String("")));
+        
+        assertEquals("true", Parse.asString(true));
+        assertEquals("123", Parse.asString(123));
+        assertEquals(Integer.toString(Integer.MAX_VALUE), Parse.asString(Integer.MAX_VALUE));
     }
 
 }

@@ -31,11 +31,8 @@ public final class Parse {
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Boolean.parseBoolean(s);
-        } else if (value == null) {
-            throw new ClassCastException(value + " can't be parsed as boolean");
         } else {
-            final String s = value.toString();
-            return Boolean.parseBoolean(s);
+            throw new ClassCastException(value + " can't be parsed as boolean");
         }
     }
     
@@ -56,11 +53,8 @@ public final class Parse {
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return Boolean.parseBoolean(s);
-        } else if (value == null) {
-            return defaultValue;
         } else {
-            final String s = value.toString();
-            return Boolean.parseBoolean(s);
+            return defaultValue;
         }
     }
     
@@ -80,10 +74,10 @@ public final class Parse {
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
             final long longValue = number.longValue();
-            if (longValue < Byte.MIN_VALUE || longValue > Byte.MAX_VALUE) {
-                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
-            } else {
+            if (NumberUtility.isByte(longValue)) {
                 return number.byteValue();
+            } else {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
@@ -108,14 +102,24 @@ public final class Parse {
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
             final long longValue = number.longValue();
-            if (longValue < Byte.MIN_VALUE || longValue > Byte.MAX_VALUE) {
-                return defaultValue;
-            } else {
+            if (NumberUtility.isByte(longValue)) {
                 return number.byteValue();
+            } else {
+                return defaultValue;
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            return Byte.parseByte(s);
+            try {
+                final Number number = new Long(s);
+                final long longValue = number.longValue();
+                if (NumberUtility.isByte(longValue)) {
+                    return number.byteValue();
+                } else {
+                    return defaultValue;
+                }
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
         } else {
             return defaultValue;
         }
@@ -137,10 +141,10 @@ public final class Parse {
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
             final long longValue = number.longValue();
-            if (longValue < Short.MIN_VALUE || longValue > Short.MAX_VALUE) {
-                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
-            } else {
+            if (NumberUtility.isShort(longValue)) {
                 return number.shortValue();
+            } else {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
@@ -166,10 +170,10 @@ public final class Parse {
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
             final long longValue = number.longValue();
-            if (longValue < Short.MIN_VALUE || longValue > Short.MAX_VALUE) {
-                return defaultValue;
-            } else {
+            if (NumberUtility.isShort(longValue)) {
                 return number.shortValue();
+            } else {
+                return defaultValue;
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
@@ -195,19 +199,19 @@ public final class Parse {
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
             final long longValue = number.longValue();
-            if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
-                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
-            } else {
+            if (NumberUtility.isChar(longValue)) {
                 return (char) longValue;
+            } else {
+                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             if (StringUtility.isNumeric(s)) {
                 final long longValue = Long.parseLong(s);
-                if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
-                    throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
-                } else {
+                if (NumberUtility.isChar(longValue)) {
                     return (char) longValue;
+                } else {
+                    throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
                 }
             } else if (s.length() == 1) {
                 return s.charAt(0);
@@ -231,19 +235,19 @@ public final class Parse {
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
             final long longValue = number.longValue();
-            if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
-                return defaultValue;
-            } else {
+            if (NumberUtility.isChar(longValue)) {
                 return (char) longValue;
+            } else {
+                return defaultValue;
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             if (StringUtility.isNumeric(s)) {
                 final long longValue = Long.parseLong(s);
-                if (longValue < Character.MIN_VALUE || longValue > Character.MAX_VALUE) {
-                    return defaultValue;
-                } else {
+                if (NumberUtility.isChar(longValue)) {
                     return (char) longValue;
+                } else {
+                    return defaultValue;
                 }
             } else if (s.length() == 1) {
                 return s.charAt(0);
@@ -348,16 +352,16 @@ public final class Parse {
             return Float.class.cast(value).floatValue();
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
-            final double d = number.doubleValue();
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+            final double doubleValue = number.doubleValue();
+            if (NumberUtility.isFloat(doubleValue)) {
                 return number.floatValue();
             } else {
                 throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            final double d = Double.parseDouble(s);
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+            final double doubleValue = Double.parseDouble(s);
+            if (NumberUtility.isFloat(doubleValue)) {
                 return Float.parseFloat(s);
             } else {
                 throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
@@ -381,16 +385,16 @@ public final class Parse {
             return Float.class.cast(value).floatValue();
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
-            final double d = number.doubleValue();
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+            final double doubleValue = number.doubleValue();
+            if (NumberUtility.isFloat(doubleValue)) {
                 return number.floatValue();
             } else {
                 return defaultValue;
             }
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            final double d = Double.parseDouble(s);
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
+            final double doubleValue = Double.parseDouble(s);
+            if (NumberUtility.isFloat(doubleValue)) {
                 return Float.parseFloat(s);
             } else {
                 return defaultValue;
@@ -414,20 +418,10 @@ public final class Parse {
             return Double.class.cast(value).doubleValue();
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
-            final double d = number.doubleValue();
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
-                return d;
-            } else {
-                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
-            }
+            return number.doubleValue();
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            final double d = Double.parseDouble(s);
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
-                return d;
-            } else {
-                throw new NumberFormatException("Value out of range. Value:\"" + value + "\"");
-            }
+            return Double.parseDouble(s);
         } else {
             throw new NumberFormatException(value + " can't be parsed as float");
         }
@@ -447,18 +441,12 @@ public final class Parse {
             return Double.class.cast(value).doubleValue();
         } else if (value instanceof Number) {
             final Number number = Number.class.cast(value);
-            final double d = number.doubleValue();
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
-                return d;
-            } else {
-                return defaultValue;
-            }
+            return number.doubleValue();
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            final double d = Double.parseDouble(s);
-            if (d == 0 || (d >= Float.MIN_VALUE && d <= Float.MAX_VALUE) || (d <= -Float.MIN_VALUE && d >= -Float.MAX_VALUE)) {
-                return d;
-            } else {
+            try {
+                return Double.parseDouble(s);
+            } catch (NumberFormatException e) {
                 return defaultValue;
             }
         } else {
@@ -480,8 +468,8 @@ public final class Parse {
             return null;
         } else if (value instanceof BigInteger) {
             return BigInteger.class.cast(value);
-        } else if (value instanceof Long) {
-            final long l = Long.class.cast(value).longValue();
+        } else if (value instanceof Number) {
+            final long l = Number.class.cast(value).longValue();
             return BigInteger.valueOf(l);
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
@@ -501,10 +489,12 @@ public final class Parse {
      * @return the parsed {@link BigInteger} or the defaultValue if value can't be parsed into a {@link BigInteger}
      */
     public static <E> BigInteger asBigInteger(E value, BigInteger defaultValue) {
-        if (value instanceof BigInteger) {
+        if (value == null) {
+            return null;
+        } else if (value instanceof BigInteger) {
             return BigInteger.class.cast(value);
-        } else if (value instanceof Long) {
-            final long l = Long.class.cast(value).longValue();
+        } else if (value instanceof Number) {
+            final long l = Number.class.cast(value).longValue();
             return BigInteger.valueOf(l);
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
@@ -528,9 +518,9 @@ public final class Parse {
             return null;
         } else if (value instanceof BigDecimal) {
             return BigDecimal.class.cast(value);
-        } else if (value instanceof Long) {
-            final long l = Long.class.cast(value).longValue();
-            return BigDecimal.valueOf(l);
+        } else if (value instanceof Number) {
+            final double d = Number.class.cast(value).doubleValue();
+            return BigDecimal.valueOf(d);
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return new BigDecimal(s);
@@ -551,15 +541,25 @@ public final class Parse {
     public static <E> BigDecimal asBigDecimal(E value, BigDecimal defaultValue) {
         if (value instanceof BigDecimal) {
             return BigDecimal.class.cast(value);
-        } else if (value instanceof Long) {
-            final long l = Long.class.cast(value).longValue();
-            return BigDecimal.valueOf(l);
+        } else if (value instanceof Number) {
+            final double d = Number.class.cast(value).doubleValue();
+            return BigDecimal.valueOf(d);
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             return new BigDecimal(s);
         } else {
             return defaultValue;
         }
+    }
+    
+    /**
+     * 
+     * @param <E>
+     * @param value
+     * @return
+     */
+    public static <E> Date asDate(E value) {
+        return asDate(value, DateMode.JAVA);
     }
     
     /**
@@ -573,24 +573,35 @@ public final class Parse {
      * @throws ClassCastException if value can't be parsed into a {@link Date}
      * @return the parsed {@link Date}
      */
-    public static <E> Date asDate(E value) {
+    public static <E> Date asDate(E value, DateMode mode) {
         if (value == null) {
             return null;
         } else if (value instanceof Date) {
             return Date.class.cast(value);
         } else if (value instanceof Calendar) {
             return Calendar.class.cast(value).getTime();
-        } else if (value instanceof Long) {
-            final long l = Long.class.cast(value).longValue();
-            return new Date(l * 1000);
+        } else if (value instanceof Number) {
+            final long l = Number.class.cast(value).longValue();
+            return mode.create(l);
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             if (StringUtility.isNumeric(s)) {
                 final long l = Long.parseLong(s);
-                return new Date(l * 1000);
+                return mode.create(l);
             }
         }
         throw new ClassCastException(value + " can't be parsed as Date");
+    }
+    
+    /**
+     * 
+     * @param <E>
+     * @param value
+     * @param defaultValue
+     * @return
+     */
+    public static <E> Date asDate(E value, Date defaultValue) {
+        return asDate(value, DateMode.JAVA, defaultValue);
     }
     
     /**
@@ -602,21 +613,21 @@ public final class Parse {
      * @param defaultValue the default value if value can't be parsed into a {@link Date}
      * @return the parsed {@link Date} or the defaultValue if value can't be parsed into a {@link Date}
      */
-    public static <E> Date asDate(E value, Date defaultValue) {
+    public static <E> Date asDate(E value, DateMode mode, Date defaultValue) {
         if (value == null) {
             return null;
         } else if (value instanceof Date) {
             return Date.class.cast(value);
         } else if (value instanceof Calendar) {
             return Calendar.class.cast(value).getTime();
-        } else if (value instanceof Long) {
-            final long l = Long.class.cast(value).longValue();
-            return new Date(l * 1000);
+        } else if (value instanceof Number) {
+            final long l = Number.class.cast(value).longValue();
+            return mode.create(l);
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
             if (StringUtility.isNumeric(s)) {
                 final long l = Long.parseLong(s);
-                return new Date(l * 1000);
+                return mode.create(l);
             }
         }
         return defaultValue;
@@ -642,7 +653,7 @@ public final class Parse {
             return enumType.cast(value);
         } else if (value instanceof String) {
             final String s = String.class.cast(value);
-            return Enum.valueOf(enumType, s);
+            return Enum.valueOf(enumType, s.toUpperCase());
         } else if (value instanceof Number) {
             final int i = Number.class.cast(value).intValue();
             return EnumUtility.valueOf(enumType, i);
