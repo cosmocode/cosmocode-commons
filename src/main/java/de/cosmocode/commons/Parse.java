@@ -556,8 +556,6 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link Date}.
      * 
-     * TODO add more parse cases
-     * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws ClassCastException if value can't be parsed into a {@link Date}

@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-class ConcurrentDateFormat extends DateFormat {
+final class ConcurrentDateFormat extends DateFormat {
 
     private static final long serialVersionUID = -2375861144495307593L;
     
