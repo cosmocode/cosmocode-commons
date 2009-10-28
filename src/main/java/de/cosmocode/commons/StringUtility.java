@@ -9,10 +9,17 @@ import org.slf4j.LoggerFactory;
 
 public final class StringUtility {
     
-    private static final Logger log = LoggerFactory.getLogger(StringUtility.class);
-    
     public static final String DEFAULT_DELIMITER = " ";
 
+    private static final Logger log = LoggerFactory.getLogger(StringUtility.class);
+    
+    /**
+     * Prevent instantiation
+     */
+    private StringUtility() {
+        
+    }
+    
     /**
      * Joines instances of a collection
      * into a single string instance,
@@ -90,13 +97,6 @@ public final class StringUtility {
     
     public static String defaultIfBlank(String s, String defaultValue) {
         return StringUtils.isBlank(s) ? defaultValue : s;
-    }
-    
-    /**
-     * Prevent instantiation
-     */
-    private StringUtility() {
-        
     }
     
 }

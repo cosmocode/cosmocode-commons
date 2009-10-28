@@ -1,12 +1,9 @@
 package de.cosmocode.commons;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,34 +26,34 @@ public class StringUtilityTest {
 
     @Test
     public void isNumericNull() {
-        assertFalse(StringUtility.isNumeric(null));
+        Assert.assertFalse(StringUtility.isNumeric(null));
     }
 
     @Test
     public void isNumericEmpty() {
-        assertFalse(StringUtility.isNumeric(""));
+        Assert.assertFalse(StringUtility.isNumeric(""));
     }
 
     @Test
     public void isNumericWhitespaces() {
-        assertFalse(StringUtility.isNumeric("   \t"));
+        Assert.assertFalse(StringUtility.isNumeric("   \t"));
     }
 
     @Test
     public void isNumericAlpha() {
-        assertFalse(StringUtility.isNumeric("abc"));
-        assertFalse(StringUtility.isNumeric("125543b232"));
+        Assert.assertFalse(StringUtility.isNumeric("abc"));
+        Assert.assertFalse(StringUtility.isNumeric("125543b232"));
     }
     
     @Test
     public void isNumeric() {
-        assertTrue(StringUtility.isNumeric("123"));
+        Assert.assertTrue(StringUtility.isNumeric("123"));
     }
     
     @Test
     public void joinEmpty() {
         final String joined = StringUtility.join(list, DEFAULT_WALKER);
-        assertEquals(joined, "");
+        Assert.assertEquals(joined, "");
     }
     
     @Test
@@ -65,7 +62,7 @@ public class StringUtilityTest {
         list.add(null);
         list.add(0.0);
         final String joined = StringUtility.join(list, " ", DEFAULT_WALKER);
-        assertEquals(joined, "hello null 0.0");
+        Assert.assertEquals(joined, "hello null 0.0");
     }
     
 }

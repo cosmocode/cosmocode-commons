@@ -646,7 +646,7 @@ public final class Parse {
      * @throws ClassCastException if value can't be parsed into an {@link Enum}
      * @return the parsed {@link Enum}
      */
-    public static <Element, E extends Enum<E>> E asEnum(Element value, Class<E> enumType) {
+    public static <T, E extends Enum<E>> E asEnum(T value, Class<E> enumType) {
         if (value == null) {
             return null;
         } else if (enumType.isInstance(value)) {
@@ -671,7 +671,7 @@ public final class Parse {
      * @param defaultValue the default value if value can't be parsed into an {@link Enum}
      * @return the parsed {@link Enum} or the defaultValue if value can't be parsed into an {@link Enum}
      */
-    public static <Element, E extends Enum<E>> E asEnum(Element value, Class<E> enumType, E defaultValue) {
+    public static <T, E extends Enum<E>> E asEnum(T value, Class<E> enumType, E defaultValue) {
         if (enumType.isInstance(value)) {
             return enumType.cast(value);
         } else if (value instanceof String) {

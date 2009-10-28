@@ -20,6 +20,6 @@ public interface JoinWalker<T> {
      * @param t the object this walker should transform into a string, may be null
      * @return string representation (of any kind) of parameter t
      */
-    public String walk(T t);
+    String walk(T t);
     
 }

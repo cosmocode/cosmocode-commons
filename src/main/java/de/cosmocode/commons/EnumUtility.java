@@ -4,10 +4,17 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class EnumUtility {
+public final class EnumUtility {
 
+    /**
+     * Prevent instantiation
+     */
+    private EnumUtility() {
+        
+    }
+    
     public static <E extends Enum<E>> long asBit(E e) {
-        return 1l << e.ordinal();
+        return 1L << e.ordinal();
     }
     
     public static <E extends Enum<E>> E valueOf(Class<E> type, int ordinal) {
@@ -20,7 +27,7 @@ public class EnumUtility {
     }
     
     public static <E extends Enum<E>> long add(long flag, E e) {
-        return flag |= asBit(e);
+        return flag | asBit(e);
     }
     
     public static <E extends Enum<E>> boolean has(long flag, E e) {
@@ -28,11 +35,11 @@ public class EnumUtility {
     }
     
     public static <E extends Enum<E>> long remove(long flag, E e) {
-        return flag &= ~asBit(e);
+        return flag & ~asBit(e);
     }
     
     public static long empty() {
-        return 0x0l;
+        return 0x0L;
     }
     
     public static <E extends Enum<E>> Set<E> decode(Class<E> type, long flag) {
