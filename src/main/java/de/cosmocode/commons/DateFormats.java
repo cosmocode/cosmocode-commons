@@ -15,7 +15,7 @@ public final class DateFormats {
     public static final DateFormat RSS_20 = DateUtility.concurrent(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z"));
     
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private DateFormats() {
         

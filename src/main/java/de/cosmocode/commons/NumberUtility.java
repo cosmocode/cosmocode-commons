@@ -3,7 +3,7 @@ package de.cosmocode.commons;
 public final class NumberUtility {
 
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private NumberUtility() {
         

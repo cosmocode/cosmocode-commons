@@ -14,7 +14,7 @@ public final class StringUtility {
     private static final Logger log = LoggerFactory.getLogger(StringUtility.class);
     
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private StringUtility() {
         
@@ -71,7 +71,10 @@ public final class StringUtility {
     }
     
     /**
-     * 
+     * Checks whether a given {@link String} is a valid
+     * number, containing only digits.
+     * This implementation is performing a blank-check
+     * before using {@link StringUtils#isNumeric(String)}.
      * 
      * <pre>
      * StringUtility.isNumeric(null)   = false

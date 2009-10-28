@@ -7,7 +7,7 @@ import java.util.Set;
 public final class EnumUtility {
 
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private EnumUtility() {
         

@@ -8,7 +8,7 @@ public final class Locales {
     public static final Locale AUSTRIA = new Locale("de", "AT");
     
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private Locales() {
         

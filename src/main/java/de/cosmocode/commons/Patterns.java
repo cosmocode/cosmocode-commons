@@ -31,7 +31,7 @@ public final class Patterns {
     public static final Pattern IATA_AIRPORT_CODE = Pattern.compile("^[A-Z]{3}$");
     
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private Patterns() {
         

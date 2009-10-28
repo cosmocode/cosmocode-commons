@@ -8,7 +8,7 @@ import java.util.Date;
 public final class Parse {
 
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private Parse() {
         
@@ -553,23 +553,27 @@ public final class Parse {
     }
     
     /**
+     * Parses a value of a generic type
+     * into a {@link Date}.
      * 
-     * @param <E>
-     * @param value
-     * @return
+     * TODO add more parse cases
+     * 
+     * @param <E> the generic parameter type
+     * @param value the value being parsed
+     * @throws ClassCastException if value can't be parsed into a {@link Date}
+     * @return the parsed {@link Date}
      */
     public static <E> Date asDate(E value) {
         return asDate(value, DateMode.JAVA);
     }
-    
+
     /**
      * Parses a value of a generic type
      * into a {@link Date}.
      * 
-     * TODO added more parse cases
-     * 
      * @param <E> the generic parameter type
      * @param value the value being parsed
+     * @param mode a {@link DateMode} instance handling the long to time conversion
      * @throws ClassCastException if value can't be parsed into a {@link Date}
      * @return the parsed {@link Date}
      */
@@ -592,13 +596,16 @@ public final class Parse {
         }
         throw new ClassCastException(value + " can't be parsed as Date");
     }
-    
+
+
     /**
+     * Parses a value of a generic type
+     * into a {@link Date}.
      * 
-     * @param <E>
-     * @param value
-     * @param defaultValue
-     * @return
+     * @param <E> the generic parameter type
+     * @param value the value being parsed
+     * @param defaultValue the default value if value can't be parsed into a {@link Date}
+     * @return the parsed {@link Date}
      */
     public static <E> Date asDate(E value, Date defaultValue) {
         return asDate(value, DateMode.JAVA, defaultValue);

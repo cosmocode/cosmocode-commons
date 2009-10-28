@@ -23,7 +23,7 @@ public class ParseTest {
         Assert.assertFalse(Parse.asBoolean("FalSe"));
     }
     
-    @Test(expected=ClassCastException.class)
+    @Test(expected = ClassCastException.class)
     public void asBooleanNull() {
         Parse.asBoolean(null);
     }
@@ -42,42 +42,42 @@ public class ParseTest {
         Assert.assertEquals(127, Parse.asByte(127));
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOutOfRange1() {
         Parse.asByte("-129");
     }
         
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOutOfRange2() {
         Parse.asByte("-99999");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOutOfRange3() {
         Parse.asByte("128");
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOutOfRange4() {
         Parse.asByte("99999");
     }        
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOverflow1() {
         Parse.asByte(128);
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOverflow2() {
         Parse.asByte(99999);
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOverflow3() {
         Parse.asByte(-129);
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asByteOverflow4() {
         Parse.asByte(-99999);
     }
@@ -108,42 +108,42 @@ public class ParseTest {
         Assert.assertEquals(32767, Parse.asShort(32767));
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOutOfRange1() {
         Parse.asShort("32768");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOutOfRange2() {
         Parse.asShort("99999");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOutOfRange3() {
         Parse.asShort("-32769");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOutOfRange4() {
         Parse.asShort("-99999");
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOverflow1() {
         Parse.asShort(32768);
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOverflow2() {
         Parse.asShort(99999);
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOverflow3() {
         Parse.asShort(-32769);
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asShortOverflow4() {
         Parse.asShort(-99999);
     }
@@ -162,42 +162,42 @@ public class ParseTest {
         Assert.assertEquals(65535, Parse.asChar(65535));
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOutOfRange1() {
         Parse.asChar("65536");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOutOfRange2() {
         Parse.asChar("99999");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOutOfRange3() {
         Parse.asChar("-1");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOutOfRange4() {
         Parse.asChar("-99999");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOverflow1() {
         Parse.asChar(65536);
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOverflow2() {
         Parse.asChar(99999);
     }
         
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOverflow3() {
         Parse.asChar(-1);
     }
         
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asCharOverflow4() {
         Parse.asChar(-99999);
     }
@@ -216,22 +216,22 @@ public class ParseTest {
         Assert.assertEquals(2147483647, Parse.asInt(2147483647));
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asIntOutOfRange1() {
         Parse.asInt("-2147483649");
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asIntOutOfRange2() {
         Parse.asInt("2147483648");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asIntOverflo1w() {
         Parse.asInt(-2147483649L);
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asIntOverflow2() {
         Parse.asInt(2147483648L);
     }
@@ -250,22 +250,22 @@ public class ParseTest {
         Assert.assertEquals(9223372036854775807L, Parse.asLong(9223372036854775807L));
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asLongOutOfRange1() {
         Parse.asInt("-2147483650");
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asLongOutOfRange2() {
         Parse.asInt("-9999999999");
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asLongOutOfRange3() {
         Parse.asInt("2147483649");
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asLongOutOfRange4() {
         Parse.asInt("9999999999");
     }
@@ -284,22 +284,22 @@ public class ParseTest {
         Assert.assertEquals(3.40282346638528860e+38f, Parse.asFloat(3.40282346638528860e+38f), 0f);
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asFloatOutOfRange1() {
         Parse.asFloat("1.40129846432481707e-46");
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asFloatOutOfRange2() {
         Parse.asFloat("3.40282346638528860e+39");
     }
 
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asFloatOverflow1() {
         Parse.asFloat(1.40129846432481707e-46);
     }
     
-    @Test(expected=NumberFormatException.class)
+    @Test(expected = NumberFormatException.class)
     public void asFloatOverflow2() {
         Parse.asFloat(3.40282346638528860e+39);
     }
@@ -369,7 +369,7 @@ public class ParseTest {
     @Test
     public void asEnum() {
         final Continent[] continents = Continent.values();
-        for (int i=0; i<continents.length; i++) {
+        for (int i = 0; i < continents.length; i++) {
             final Continent continent = continents[i];
             Assert.assertSame(continent, Parse.asEnum(continent.name(), Continent.class));
             Assert.assertSame(continent, Parse.asEnum(continent.name().toLowerCase(), Continent.class));

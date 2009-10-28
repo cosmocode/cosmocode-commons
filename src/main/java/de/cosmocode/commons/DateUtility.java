@@ -7,20 +7,20 @@ import java.util.Date;
 public final class DateUtility {
 
     /**
-     * Prevent instantiation
+     * Prevent instantiation.
      */
     private DateUtility() {
         
     }
     
-	public static Date add(int field, int amount) {
-		final Calendar calendar = Calendar.getInstance();
-		calendar.add(field, amount);
-		return calendar.getTime();
-	}
-	
-	public static DateFormat concurrent(DateFormat format) {
-	    return new ConcurrentDateFormat(format);
-	}
-	
+    public static Date add(int field, int amount) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.add(field, amount);
+        return calendar.getTime();
+    }
+    
+    public static DateFormat concurrent(DateFormat format) {
+        return new ConcurrentDateFormat(format);
+    }
+    
 }
