@@ -8,7 +8,7 @@ package de.cosmocode.commons;
  * sould be declared as an anonymous private static
  * instance. This approach provides best performance.
  * 
- * @author schoenborn
+ * @author schoenborn@cosmocode.de
  *
  * @param <T> the type this walker is able to transform into a string
  */
