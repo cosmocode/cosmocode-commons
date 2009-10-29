@@ -4,7 +4,21 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+
+/**
+ * Utility class providing method to convert
+ * genericly typed parameters into strongly
+ * typed primitives or well known
+ * and widely used objects.
+ * 
+ * @author schoenborn@cosmocode.de
+ */
 public final class Parse {
 
     /**
@@ -20,12 +34,11 @@ public final class Parse {
      * or an {@link Object} {@link Boolean#parseBoolean(String)}
      * will be used.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws ClassCastException if value can't be parsed into a boolean
      * @return the parsed boolean
      */
-    public static <E> boolean asBoolean(E value) {
+    public static boolean asBoolean(Object value) {
         if (value instanceof Boolean) {
             return Boolean.class.cast(value).booleanValue();
         } else if (value instanceof String) {
@@ -42,12 +55,11 @@ public final class Parse {
      * or an {@link Object} {@link Boolean#parseBoolean(String)}
      * will be used.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a boolean
      * @return the parsed boolean or the defaultValue if value can't be parsed into a boolean
      */
-    public static <E> boolean asBoolean(E value, boolean defaultValue) {
+    public static boolean asBoolean(Object value, boolean defaultValue) {
         if (value instanceof Boolean) {
             return Boolean.class.cast(value).booleanValue();
         } else if (value instanceof String) {
@@ -63,12 +75,11 @@ public final class Parse {
      * into a byte. if value is a {@link String}
      * {@link Byte#parseByte(String)} will be used.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a byte
      * @return the parsed byte
      */
-    public static <E> byte asByte(E value) {
+    public static byte asByte(Object value) {
         if (value instanceof Byte) {
             return Byte.class.cast(value).byteValue();
         } else if (value instanceof Number) {
@@ -91,12 +102,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a byte.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a byte
      * @return the parsed byte or the defaultValue if value can't be parsed into a byte
      */
-    public static <E> byte asByte(E value, byte defaultValue) {
+    public static byte asByte(Object value, byte defaultValue) {
         if (value instanceof Byte) {
             return Byte.class.cast(value).byteValue();
         } else if (value instanceof Number) {
@@ -130,12 +140,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a short.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a short
      * @return the parsed short
      */
-    public static <E> short asShort(E value) {
+    public static short asShort(Object value) {
         if (value instanceof Short) {
             return Short.class.cast(value).shortValue();
         } else if (value instanceof Number) {
@@ -159,12 +168,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a short.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a short
      * @return the parsed short or the defaultValue if value can't be parsed into a short
      */
-    public static <E> short asShort(E value, short defaultValue) {
+    public static short asShort(Object value, short defaultValue) {
         if (value instanceof Short) {
             return Short.class.cast(value).shortValue();
         } else if (value instanceof Number) {
@@ -188,12 +196,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a short.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a short
      * @return the parsed short
      */
-    public static <E> char asChar(E value) {
+    public static char asChar(Object value) {
         if (value instanceof Character) {
             return Character.class.cast(value).charValue();
         } else if (value instanceof Number) {
@@ -224,12 +231,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a char.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a char
      * @return the parsed char or the defaultValue if value can't be parsed into a char
      */
-    public static <E> char asChar(E value, char defaultValue) {
+    public static char asChar(Object value, char defaultValue) {
         if (value instanceof Character) {
             return Character.class.cast(value).charValue();
         } else if (value instanceof Number) {
@@ -260,12 +266,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into an int.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into an int
      * @return the parsed int
      */
-    public static <E> int asInt(E value) {
+    public static int asInt(Object value) {
         if (value instanceof Integer) {
             return Integer.class.cast(value).intValue();
         } else if (value instanceof String) {
@@ -280,12 +285,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into an int.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into an int
      * @return the parsed int or the defaultValue if value can't be parsed into an int
      */
-    public static <E> int asInt(E value, int defaultValue) {
+    public static int asInt(Object value, int defaultValue) {
         if (value instanceof Integer) {
             return Integer.class.cast(value).intValue();
         } else if (value instanceof String) {
@@ -300,12 +304,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a long.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a long
      * @return the parsed long
      */
-    public static <E> long asLong(E value) {
+    public static long asLong(Object value) {
         if (value instanceof Long) {
             return Long.class.cast(value).longValue();
         } else if (value instanceof Number) {
@@ -322,12 +325,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a long.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a long
      * @return the parsed long or the defaultValue if value can't be parsed into a long
      */
-    public static <E> long asLong(E value, long defaultValue) {
+    public static long asLong(Object value, long defaultValue) {
         if (value instanceof Long) {
             return Long.class.cast(value).longValue();
         } else if (value instanceof String) {
@@ -342,12 +344,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a float.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a float
      * @return the parsed float
      */
-    public static <E> float asFloat(E value) {
+    public static float asFloat(Object value) {
         if (value instanceof Float) {
             return Float.class.cast(value).floatValue();
         } else if (value instanceof Number) {
@@ -375,12 +376,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a float.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a float
      * @return the parsed float or the defaultValue if value can't be parsed into a float
      */
-    public static <E> float asFloat(E value, float defaultValue) {
+    public static float asFloat(Object value, float defaultValue) {
         if (value instanceof Float) {
             return Float.class.cast(value).floatValue();
         } else if (value instanceof Number) {
@@ -408,12 +408,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a double.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a double
      * @return the parsed double
      */
-    public static <E> double asDouble(E value) {
+    public static double asDouble(Object value) {
         if (value instanceof Double) {
             return Double.class.cast(value).doubleValue();
         } else if (value instanceof Number) {
@@ -431,12 +430,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a double.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a double
      * @return the parsed double or the defaultValue if value can't be parsed into a double
      */
-    public static <E> double asDouble(E value, double defaultValue) {
+    public static double asDouble(Object value, double defaultValue) {
         if (value instanceof Double) {
             return Double.class.cast(value).doubleValue();
         } else if (value instanceof Number) {
@@ -458,12 +456,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link BigInteger}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a {@link BigInteger}
      * @return the parsed {@link BigInteger}
      */
-    public static <E> BigInteger asBigInteger(E value) {
+    public static BigInteger asBigInteger(Object value) {
         if (value == null) {
             return null;
         } else if (value instanceof BigInteger) {
@@ -483,12 +480,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link BigInteger}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a {@link BigInteger}
      * @return the parsed {@link BigInteger} or the defaultValue if value can't be parsed into a {@link BigInteger}
      */
-    public static <E> BigInteger asBigInteger(E value, BigInteger defaultValue) {
+    public static BigInteger asBigInteger(Object value, BigInteger defaultValue) {
         if (value == null) {
             return null;
         } else if (value instanceof BigInteger) {
@@ -508,12 +504,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link BigDecimal}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws NumberFormatException if value can't be parsed into a {@link BigDecimal}
      * @return the parsed {@link BigDecimal}
      */
-    public static <E> BigDecimal asBigDecimal(E value) {
+    public static BigDecimal asBigDecimal(Object value) {
         if (value == null) {
             return null;
         } else if (value instanceof BigDecimal) {
@@ -533,12 +528,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link BigDecimal}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a {@link BigDecimal}
      * @return the parsed {@link BigDecimal} or the defaultValue if value can't be parsed into a {@link BigDecimal}
      */
-    public static <E> BigDecimal asBigDecimal(E value, BigDecimal defaultValue) {
+    public static BigDecimal asBigDecimal(Object value, BigDecimal defaultValue) {
         if (value instanceof BigDecimal) {
             return BigDecimal.class.cast(value);
         } else if (value instanceof Number) {
@@ -556,12 +550,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link Date}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws ClassCastException if value can't be parsed into a {@link Date}
      * @return the parsed {@link Date}
      */
-    public static <E> Date asDate(E value) {
+    public static Date asDate(Object value) {
         return asDate(value, DateMode.JAVA);
     }
 
@@ -569,13 +562,12 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link Date}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param mode a {@link DateMode} instance handling the long to time conversion
      * @throws ClassCastException if value can't be parsed into a {@link Date}
      * @return the parsed {@link Date}
      */
-    public static <E> Date asDate(E value, DateMode mode) {
+    public static Date asDate(Object value, DateMode mode) {
         if (value == null) {
             return null;
         } else if (value instanceof Date) {
@@ -600,12 +592,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link Date}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a {@link Date}
      * @return the parsed {@link Date}
      */
-    public static <E> Date asDate(E value, Date defaultValue) {
+    public static Date asDate(Object value, Date defaultValue) {
         return asDate(value, DateMode.JAVA, defaultValue);
     }
     
@@ -613,12 +604,12 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link Date}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
+     * @param mode the {@link DateMode} being used to convert long to {@link Date}
      * @param defaultValue the default value if value can't be parsed into a {@link Date}
      * @return the parsed {@link Date} or the defaultValue if value can't be parsed into a {@link Date}
      */
-    public static <E> Date asDate(E value, DateMode mode, Date defaultValue) {
+    public static Date asDate(Object value, DateMode mode, Date defaultValue) {
         if (value == null) {
             return null;
         } else if (value instanceof Date) {
@@ -644,14 +635,15 @@ public final class Parse {
      * The value must be either a valid enum constant
      * name or ordinal.
      * 
-     * @param <E> the generic parameter type
+     * @param <E> the generic enum type
      * @param value the value being parsed
+     * @param enumType the enum type's class
      * @throws IllegalArgumentException if this value can parsed into a {@link String} or a {@link Number}
      *         but does not represent a valid {@link Enum} constant of enumType
      * @throws ClassCastException if value can't be parsed into an {@link Enum}
      * @return the parsed {@link Enum}
      */
-    public static <T, E extends Enum<E>> E asEnum(T value, Class<E> enumType) {
+    public static <E extends Enum<E>> E asEnum(Object value, Class<E> enumType) {
         if (value == null) {
             return null;
         } else if (enumType.isInstance(value)) {
@@ -671,12 +663,13 @@ public final class Parse {
      * Parses a value of a generic type
      * into an {@link Enum}.
      * 
-     * @param <E> the generic parameter type
+     * @param <E> the generic enum type
      * @param value the value being parsed
+     * @param enumType the enum type's class
      * @param defaultValue the default value if value can't be parsed into an {@link Enum}
      * @return the parsed {@link Enum} or the defaultValue if value can't be parsed into an {@link Enum}
      */
-    public static <T, E extends Enum<E>> E asEnum(T value, Class<E> enumType, E defaultValue) {
+    public static <E extends Enum<E>> E asEnum(Object value, Class<E> enumType, E defaultValue) {
         if (enumType.isInstance(value)) {
             return enumType.cast(value);
         } else if (value instanceof String) {
@@ -691,12 +684,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link String}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @throws ClassCastException if value can't be parsed into a {@link String}
      * @return the parsed {@link String}
      */
-    public static <E> String asString(E value) {
+    public static String asString(Object value) {
         if (value == null) {
             return null;
         } else if (value instanceof String) {
@@ -710,12 +702,11 @@ public final class Parse {
      * Parses a value of a generic type
      * into a {@link String}.
      * 
-     * @param <E> the generic parameter type
      * @param value the value being parsed
      * @param defaultValue the default value if value can't be parsed into a {@link String}
      * @return the parsed {@link String} or the defaultValue if value can't be parsed into a {@link String}
      */
-    public static <E> String asString(E value, String defaultValue) {
+    public static String asString(Object value, String defaultValue) {
         if (value instanceof String) {
             return String.class.cast(value);
         } else if (value == null) {
@@ -723,6 +714,145 @@ public final class Parse {
         } else {
             return value.toString();
         }
+    }
+    
+    /**
+     * Parses a value of a generic type into a {@link List}.
+     * 
+     * This method transforms any kind of the following into a {@link List}.
+     * <ul>
+     *   <li>{@link List}</li>
+     *   <li>Array</li>
+     *   <li>{@link Iterable}</li>
+     *   <li>{@link Iterator}</li>
+     * </ul>
+     * 
+     * @param <E> the generic element type
+     * @param value the value being parsed
+     * @throws ClassCastException if value can't be parsed into a {@link List}
+     * @return the parsed {@link List}
+     */
+    public static <E> List<E> asList(Object value) {
+        if (value instanceof List<?>) {
+            @SuppressWarnings("unchecked")
+            final List<E> list = List.class.cast(value);
+            return list;
+        } else if (value.getClass().isArray()) {
+            @SuppressWarnings("unchecked")
+            final E[] array = (E[]) Object[].class.cast(value);
+            return Lists.newArrayList(array);
+        } else if (value instanceof Iterable<?>) {
+            @SuppressWarnings("unchecked")
+            final Iterable<E> iterable = Iterable.class.cast(value);
+            return Lists.newArrayList(iterable);
+        } else if (value instanceof Iterator<?>) {
+            @SuppressWarnings("unchecked")
+            final Iterator<E> iterator = Iterator.class.cast(value);
+            return Lists.newArrayList(iterator);
+        } else {
+            throw new ClassCastException(value + " can't be parsed as List");
+        }
+    }
+    
+    /**
+     * Parses a value of a generic type into a {@link List}.
+     * 
+     * This method transforms any kind of the following into a {@link List}.
+     * <ul>
+     *   <li>{@link List}</li>
+     *   <li>Array</li>
+     *   <li>{@link Iterable}</li>
+     *   <li>{@link Iterator}</li>
+     * </ul>
+     * 
+     * @param <E> the generic element type
+     * @param value the value being parsed
+     * @param defaultValue the default value if value can't be parsed into a {@link List}
+     * @return the parsed {@link List} or the defaultValue if value can't be parsed into a {@link List}
+     */
+    public static <E> List<E> asList(Object value, List<E> defaultValue) {
+        if (value instanceof List<?>) {
+            @SuppressWarnings("unchecked")
+            final List<E> list = List.class.cast(value);
+            return list;
+        } else if (value.getClass().isArray()) {
+            @SuppressWarnings("unchecked")
+            final E[] array = (E[]) Object[].class.cast(value);
+            return Lists.newArrayList(array);
+        } else if (value instanceof Iterable<?>) {
+            @SuppressWarnings("unchecked")
+            final Iterable<E> iterable = Iterable.class.cast(value);
+            return Lists.newArrayList(iterable);
+        } else if (value instanceof Iterator<?>) {
+            @SuppressWarnings("unchecked")
+            final Iterator<E> iterator = Iterator.class.cast(value);
+            return Lists.newArrayList(iterator);
+        } else {
+            return defaultValue;
+        }
+    }
+    
+    /**
+     * Parses a value of a generic type into a {@link Map}.
+     * 
+     * This method transforms any kind of the following into a {@link Map}.
+     * <ul>
+     *   <li>{@link Map}</li>
+     *   <li>{@link Multimap}</li>
+     * </ul>
+     * 
+     * @param <K> the type of keys maintained by this map
+     * @param <V> the type of mapped values
+     * @param value the value being parsed
+     * @return the parsed {@link Map}
+     */
+    public static <K, V> Map<K, V> asMap(Object value) {
+        if (value instanceof Map<?, ?>) {
+            @SuppressWarnings("unchecked")
+            final Map<K, V> map = Map.class.cast(value);
+            return map;
+        } else if (value instanceof Multimap<?, ?>) {
+            final Multimap<?, ?> multimap = Multimap.class.cast(value);
+            @SuppressWarnings("unchecked")
+            final Map<K, V> map = Map.class.cast(multimap.asMap());
+            return map;
+        } else {
+            throw fail(value, Map.class);
+        }
+    }
+    
+    /**
+     * Parses a value of a generic type into a {@link Map}.
+     * 
+     * This method transforms any kind of the following into a {@link Map}.
+     * <ul>
+     *   <li>{@link Map}</li>
+     *   <li>{@link Multimap}</li>
+     * </ul>
+     * 
+     * @param <K> the type of keys maintained by this map
+     * @param <V> the type of mapped values
+     * @param value the value being parsed
+     * @param defaultValue the default value if value can't be parsed into a {@link Map}
+     * @return the parsed {@link Map} or the defaultValue if value can't be parsed into a {@link Map}
+     */
+    public static <K, V> Map<K, V> asMap(Object value, Map<K, V> defaultValue) {
+        if (value instanceof Map<?, ?>) {
+            @SuppressWarnings("unchecked")
+            final Map<K, V> map = Map.class.cast(value);
+            return map;
+        } else if (value instanceof Multimap<?, ?>) {
+            final Multimap<?, ?> multimap = Multimap.class.cast(value);
+            @SuppressWarnings("unchecked")
+            final Map<K, V> map = Map.class.cast(multimap.asMap());
+            return map;
+        } else {
+            return defaultValue;
+        }
+    }
+    
+    private static RuntimeException fail(Object value, Class<?> type) {
+        return new ClassCastException(value + " can't be parsed as " + type.getClass().getName());
     }
     
 }
