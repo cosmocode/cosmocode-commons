@@ -10,13 +10,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * The {@link ConcurrentDateFormat} is {@link DateFormat}
+ * which delegates all calls to another {@link DateFormat}
+ * using synchronized method calls.
+ * 
+ * @author schoenborn@cosmocode.de
+ */
 final class ConcurrentDateFormat extends DateFormat {
 
     private static final long serialVersionUID = -2375861144495307593L;
     
     private final DateFormat format;
 
+    /**
+     * Wraps the given {@link DateFormat} into a {@link ConcurrentDateFormat}.
+     * 
+     * @param format the format this instance will rely on
+     * @throws NullPointerException if format is null
+     */
     public ConcurrentDateFormat(DateFormat format) {
+        if (format == null) throw new NullPointerException("DateFormat must not be null");
         this.format = format;
     }
 

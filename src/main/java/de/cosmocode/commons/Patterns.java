@@ -2,6 +2,12 @@ package de.cosmocode.commons;
 
 import java.util.regex.Pattern;
 
+/** 
+ * Utility class providing constant and
+ * frequently used {@link Pattern}s.
+ *
+ * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ */
 public final class Patterns {
     
     /**

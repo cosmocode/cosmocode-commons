@@ -7,6 +7,12 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Utility class inspired by {@link StringUtils},
+ * providing {@link String} related helper methods.
+ *
+ * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ */
 public final class StringUtility {
     
     public static final String DEFAULT_DELIMITER = " ";
@@ -29,7 +35,7 @@ public final class StringUtility {
      * Calling this method is equivalent to
      * {@code StringUtility.join(collection, " ", walker}
      * 
-     * @param <T>
+     * @param <T> the generic type
      * @param collection the element provider
      * @param walker the function object which transform instances of T into strings
      * @throws NullPointerException if collection is null or collection is empty and walker is null
@@ -46,7 +52,7 @@ public final class StringUtility {
      * a JoinWalker which transforms instances
      * of T into Strings.
      * 
-     * @param <T>
+     * @param <T> the generic type
      * @param collection the element provider
      * @param delimiter the string betweens joined elements of collection
      * @param walker the function object which transform instances of T into strings
@@ -88,16 +94,39 @@ public final class StringUtility {
      * </pre>
      * 
      * @param s the String to check, may be null
-     * @return
+     * @return true if s is not blank and contains only digits
      */
     public static boolean isNumeric(String s) {
         return StringUtils.isNotBlank(s) && StringUtils.isNumeric(s);
     }
     
+    /**
+     * Checks whether s is blank according
+     * to {@link StringUtils#isBlank(String)} and
+     * returns null in this case.
+     * 
+     * <p>
+     *   Using this method is equivalent to calling
+     *   {@link StringUtility#defaultIfBlank(String, String)}
+     *   with s and null.
+     * </p>
+     * 
+     * @param s the string to check
+     * @return null if s is blank, s otherwise
+     */
     public static String defaultIfBlank(String s) {
         return defaultIfBlank(s, null);
     }
     
+    /**
+     * Checks whether s is blank according
+     * to {@link StringUtils#isBlank(String)} and
+     * returns the default value in this case.
+     * 
+     * @param s the string to check
+     * @param defaultValue the default value to return in case s is blank
+     * @return defaultValue if s is blank, s otherwise
+     */
     public static String defaultIfBlank(String s, String defaultValue) {
         return StringUtils.isBlank(s) ? defaultValue : s;
     }

@@ -4,6 +4,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+/**
+ * Utility class providing useful {@link DateFormat}s.
+ * 
+ * @author schoenborn@cosmocode.de
+ */
 public final class DateFormats {
 
     public static final DateFormat ISO_8061 = DateUtility.concurrent(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz"));

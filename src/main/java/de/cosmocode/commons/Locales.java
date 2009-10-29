@@ -2,6 +2,12 @@ package de.cosmocode.commons;
 
 import java.util.Locale;
 
+/**
+ * Utility class providing constant and
+ * frequently used {@link Locale}s.
+ *
+ * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ */
 public final class Locales {
 
     public static final Locale SPANISH = new Locale("es");
