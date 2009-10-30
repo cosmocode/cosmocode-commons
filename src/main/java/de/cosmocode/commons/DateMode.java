@@ -22,6 +22,11 @@ public enum DateMode {
             return new Date(value);
         }
         
+        @Override
+        public long parse(Date date) {
+            return date == null ? -1L : date.getTime();
+        }
+        
     },
     
     /**
@@ -35,6 +40,12 @@ public enum DateMode {
             return new Date(value * 1000L);
         }
         
+        @Override
+        public long parse(Date date) {
+            return date == null ? -1L : date.getTime() / 1000L;
+        }
+        
+        
     };
     
     /**
@@ -44,5 +55,13 @@ public enum DateMode {
      * @return a new {@link Date} instance
      */
     public abstract Date create(long value);
+    
+    /**
+     * Transforms a {@link Date} instance into a timestamp.
+     * 
+     * @param date the date instance
+     * @return a timestamp created from the date, or -1 if date is null
+     */
+    public abstract long parse(Date date);
     
 }
