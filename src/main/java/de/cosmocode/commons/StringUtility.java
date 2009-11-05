@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * Utility class inspired by {@link StringUtils},
  * providing {@link String} related helper methods.
  *
- * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ * @author Willi Schoenborn
  */
 public final class StringUtility {
     

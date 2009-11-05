@@ -4,7 +4,7 @@ package de.cosmocode.commons;
  * Utility class providing many useful
  * methods regarding all kind of {@link Number}s.
  *
- * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ * @author Willi Schoenborn
  */
 public final class NumberUtility {
 

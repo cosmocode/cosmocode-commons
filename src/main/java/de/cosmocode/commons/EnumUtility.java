@@ -8,7 +8,7 @@ import java.util.Set;
  * Utility class providing all kind of useful
  * methods regarding enums.
  *
- * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ * @author Willi Schoenborn
  */
 public final class EnumUtility {
 

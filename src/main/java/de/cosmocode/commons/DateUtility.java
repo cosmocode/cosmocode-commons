@@ -8,7 +8,7 @@ import java.util.Date;
  * Utility class providing handy methods
  * regarding {@link Date} and {@link Calendar}.
  *
- * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ * @author Willi Schoenborn
  */
 public final class DateUtility {
 

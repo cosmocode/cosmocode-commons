@@ -6,7 +6,7 @@ import java.util.Locale;
  * Utility class providing constant and
  * frequently used {@link Locale}s.
  *
- * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ * @author Willi Schoenborn
  */
 public final class Locales {
 

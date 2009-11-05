@@ -6,7 +6,7 @@ import java.util.Date;
  * A {@link DateMode} determines the way how to
  * transform a timestamp of type long into a {@link Date} instance.
  *
- * @author Willi Schoenborn <schoenborn@cosmocode.de>
+ * @author Willi Schoenborn
  */
 public enum DateMode {
 
