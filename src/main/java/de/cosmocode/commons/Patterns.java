@@ -1,5 +1,6 @@
 package de.cosmocode.commons;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /** 
@@ -35,6 +36,40 @@ public final class Patterns {
      * @see <a href="http://en.wikipedia.org/wiki/International_Air_Transport_Association_airport_code">Wikipedia</a>
      */
     public static final Pattern IATA_AIRPORT_CODE = Pattern.compile("^[A-Z]{3}$");
+    
+    /**
+     * {@link Pattern} which matches valid {@link Locale} strings.
+     * 
+     * <p>
+     *   The different parts of the corresponding {@link Locale} are provided in
+     *   the following groups:
+     * </p>
+     * <table>
+     *   <tr>
+     *     <td><strong>Group 1</strong></td>
+     *     <td>Language</td>
+     *   </tr>
+     *   <tr>
+     *     <td><strong>Group 2</strong></td>
+     *     <td>Country (includes leading underscore)</td>
+     *   </tr>
+     *   <tr>
+     *     <td><strong>Group 3</strong></td>
+     *     <td>Country</td>
+     *   </tr>
+     *   <tr>
+     *     <td><strong>Group 4</strong></td>
+     *     <td>Variant (includes leading underscore)</td>
+     *   </tr>
+     *   <tr>
+     *     <td><strong>Group 5</strong></td>
+     *     <td>Variant</td>
+     *   </tr>
+     * </table>
+     * 
+     * @see {@link Locale#toString()}
+     */
+    public static final Pattern LOCALE = Pattern.compile("^([a-z]{2})?(_([A-Z]{2})(_(.+))?)?$");
     
     /**
      * Prevent instantiation.
