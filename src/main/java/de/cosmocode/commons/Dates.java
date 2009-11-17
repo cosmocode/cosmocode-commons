@@ -1,6 +1,5 @@
 package de.cosmocode.commons;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,12 +9,12 @@ import java.util.Date;
  *
  * @author Willi Schoenborn
  */
-public final class DateUtility {
+public final class Dates {
 
     /**
      * Prevent instantiation.
      */
-    private DateUtility() {
+    private Dates() {
         
     }
   
@@ -39,26 +38,6 @@ public final class DateUtility {
         final Calendar calendar = Calendar.getInstance();
         calendar.add(field, amount);
         return calendar.getTime();
-    }
-    
-    /**
-     * Decorates a {@link DateFormat} to make it threadsafe.
-     * 
-     * <p>
-     *   <strong>Note:</strong> 
-     *   This implementation uses synchronization to achieve
-     *   thread safety. Consider implementing an immutable version.
-     * <p>
-     * 
-     * @param format the {@link DateFormat} to decorate
-     * @return a threadsafe version of the {@link DateFormat}
-     */
-    public static DateFormat concurrent(DateFormat format) {
-        if (format instanceof ConcurrentDateFormat) {
-            return ConcurrentDateFormat.class.cast(format);
-        } else {
-            return new ConcurrentDateFormat(format);
-        }
     }
     
 }

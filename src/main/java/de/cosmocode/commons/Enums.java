@@ -10,12 +10,12 @@ import java.util.Set;
  *
  * @author Willi Schoenborn
  */
-public final class EnumUtility {
+public final class Enums {
 
     /**
      * Prevent instantiation.
      */
-    private EnumUtility() {
+    private Enums() {
         
     }
     
@@ -45,7 +45,7 @@ public final class EnumUtility {
      * Decodes a bitset (flag) into an {@link EnumSet}.
      * 
      * <p>
-     *   This is the reverse operation of {@link EnumUtility#encode(Set)}.
+     *   This is the reverse operation of {@link Enums#encode(Set)}.
      * </p>
      * 
      * @param <E> the enum type
@@ -58,7 +58,7 @@ public final class EnumUtility {
         if (flag == 0) return enums;
         
         for (E e : type.getEnumConstants()) {
-            if (EnumUtility.has(flag, e)) enums.add(e);
+            if (Enums.has(flag, e)) enums.add(e);
         }
         
         return enums;
@@ -68,7 +68,7 @@ public final class EnumUtility {
      * Encodes a {@link Set} of enums into a bitset.
      * 
      * <p>
-     *   This is the reverse operation of {@link EnumUtility#decode(Class, long)}.
+     *   This is the reverse operation of {@link Enums#decode(Class, long)}.
      * </p>
      * 
      * @param <E> the enum type
@@ -76,10 +76,10 @@ public final class EnumUtility {
      * @return a bitset having all enums in the set with one bit
      */
     public static <E extends Enum<E>> long encode(Set<E> enums) {
-        long flag = EnumUtility.empty();
+        long flag = Enums.empty();
         
         for (E e : enums) {
-            flag = EnumUtility.add(flag, e);
+            flag = Enums.add(flag, e);
         }
         return flag;
     }
@@ -118,7 +118,7 @@ public final class EnumUtility {
      * Performs a bitwise OR using flag and the calculated
      * bit of e.
      * 
-     * See also {@link EnumUtility#asBit(Enum)}
+     * See also {@link Enums#asBit(Enum)}
      * 
      * @param <E> the enum type
      * @param flag the bit flag

@@ -6,12 +6,12 @@ package de.cosmocode.commons;
  *
  * @author Willi Schoenborn
  */
-public final class NumberUtility {
+public final class Numbers {
 
     /**
      * Prevent instantiation.
      */
-    private NumberUtility() {
+    private Numbers() {
         
     }
     

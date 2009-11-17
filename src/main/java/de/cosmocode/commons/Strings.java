@@ -13,16 +13,16 @@ import org.slf4j.LoggerFactory;
  *
  * @author Willi Schoenborn
  */
-public final class StringUtility {
+public final class Strings {
     
     public static final String DEFAULT_DELIMITER = " ";
 
-    private static final Logger log = LoggerFactory.getLogger(StringUtility.class);
+    private static final Logger log = LoggerFactory.getLogger(Strings.class);
     
     /**
      * Prevent instantiation.
      */
-    private StringUtility() {
+    private Strings() {
         
     }
     
@@ -42,7 +42,7 @@ public final class StringUtility {
      * @return the joined collection as a string
      */
     public static <T> String join(Collection<? extends T> collection, JoinWalker<? super T> walker) {
-        return join(collection, DEFAULT_DELIMITER, walker);
+        return Strings.join(collection, DEFAULT_DELIMITER, walker);
     }
 
     /**
@@ -107,7 +107,7 @@ public final class StringUtility {
      * 
      * <p>
      *   Using this method is equivalent to calling
-     *   {@link StringUtility#defaultIfBlank(String, String)}
+     *   {@link Strings#defaultIfBlank(String, String)}
      *   with s and null.
      * </p>
      * 
@@ -115,7 +115,7 @@ public final class StringUtility {
      * @return null if s is blank, s otherwise
      */
     public static String defaultIfBlank(String s) {
-        return defaultIfBlank(s, null);
+        return Strings.defaultIfBlank(s, null);
     }
     
     /**

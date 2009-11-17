@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StringUtilityTest {
+public class StringsTest {
     
     private static final JoinWalker<Object> DEFAULT_WALKER = new JoinWalker<Object>() {
         
@@ -26,33 +26,33 @@ public class StringUtilityTest {
 
     @Test
     public void isNumericNull() {
-        Assert.assertFalse(StringUtility.isNumeric(null));
+        Assert.assertFalse(Strings.isNumeric(null));
     }
 
     @Test
     public void isNumericEmpty() {
-        Assert.assertFalse(StringUtility.isNumeric(""));
+        Assert.assertFalse(Strings.isNumeric(""));
     }
 
     @Test
     public void isNumericWhitespaces() {
-        Assert.assertFalse(StringUtility.isNumeric("   \t"));
+        Assert.assertFalse(Strings.isNumeric("   \t"));
     }
 
     @Test
     public void isNumericAlpha() {
-        Assert.assertFalse(StringUtility.isNumeric("abc"));
-        Assert.assertFalse(StringUtility.isNumeric("125543b232"));
+        Assert.assertFalse(Strings.isNumeric("abc"));
+        Assert.assertFalse(Strings.isNumeric("125543b232"));
     }
     
     @Test
     public void isNumeric() {
-        Assert.assertTrue(StringUtility.isNumeric("123"));
+        Assert.assertTrue(Strings.isNumeric("123"));
     }
     
     @Test
     public void joinEmpty() {
-        final String joined = StringUtility.join(list, DEFAULT_WALKER);
+        final String joined = Strings.join(list, DEFAULT_WALKER);
         Assert.assertEquals(joined, "");
     }
     
@@ -61,7 +61,7 @@ public class StringUtilityTest {
         list.add("hello");
         list.add(null);
         list.add(0.0);
-        final String joined = StringUtility.join(list, " ", DEFAULT_WALKER);
+        final String joined = Strings.join(list, " ", DEFAULT_WALKER);
         Assert.assertEquals(joined, "hello null 0.0");
     }
     

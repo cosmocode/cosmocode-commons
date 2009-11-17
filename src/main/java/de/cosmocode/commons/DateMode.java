@@ -18,12 +18,12 @@ public enum DateMode {
     JAVA {
         
         @Override
-        public Date create(long value) {
+        public Date parse(long value) {
             return new Date(value);
         }
         
         @Override
-        public long parse(Date date) {
+        public long format(Date date) {
             return date == null ? -1L : date.getTime();
         }
         
@@ -36,12 +36,12 @@ public enum DateMode {
     UNIXTIME {
         
         @Override
-        public Date create(long value) {
+        public Date parse(long value) {
             return new Date(value * 1000L);
         }
         
         @Override
-        public long parse(Date date) {
+        public long format(Date date) {
             return date == null ? -1L : date.getTime() / 1000L;
         }
         
@@ -54,7 +54,7 @@ public enum DateMode {
      * @param value the timestamp
      * @return a new {@link Date} instance
      */
-    public abstract Date create(long value);
+    public abstract Date parse(long value);
     
     /**
      * Transforms a {@link Date} instance into a timestamp.
@@ -62,6 +62,6 @@ public enum DateMode {
      * @param date the date instance
      * @return a timestamp created from the date, or -1 if date is null
      */
-    public abstract long parse(Date date);
+    public abstract long format(Date date);
     
 }
