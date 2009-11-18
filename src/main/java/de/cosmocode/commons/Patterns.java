@@ -40,21 +40,24 @@ public final class Patterns {
     /**
      * {@link Pattern} which matches valid {@link Locale} strings.
      * 
-     * <p>
+     * <div>
      *   The different parts of the corresponding {@link Locale} are provided in
      *   the following groups:
+     *   <ol>
+     *     <li>Language</li>
+     *     <li>Country</li>
+     *     <li>Variant</li>
+     *   </ol>
+     * </div>
+     * 
+     * <p>
+     *   If a part is missing (which is valid in some cases), the group is
+     *   a blank string (either "" or null).
      * </p>
-     * <ol>
-     *   <li>Language</li>
-     *   <li>Country (includes leading underscore)</li>
-     *   <li>Country</li>
-     *   <li>Variant (includes leading underscore)</li>
-     *   <li>Variant</li>
-     * </ol>
      * 
      * @see {@link Locale#toString()}
      */
-    public static final Pattern LOCALE = Pattern.compile("^([a-z]{2})?(_([A-Z]{2})(_(.+))?)?$");
+    public static final Pattern LOCALE = Pattern.compile("^([a-z]{2}|(?=.+))(?:_([A-Z]{2}|(?=.+))(?:(?<!^_)_(.+))?)?$");
     
     /**
      * Prevent instantiation.
