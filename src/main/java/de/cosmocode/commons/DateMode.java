@@ -1,5 +1,6 @@
 package de.cosmocode.commons;
 
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  *
  * @author Willi Schoenborn
  */
-public enum DateMode {
+public enum DateMode implements Comparator<Date> {
 
     /**
      * Assumes the timestamp is in milliseconds,
@@ -25,6 +26,11 @@ public enum DateMode {
         @Override
         public long format(Date date) {
             return date == null ? -1L : date.getTime();
+        }
+        
+        @Override
+        public int compare(Date d1, Date d2) {
+            return d1.compareTo(d2);
         }
         
     },
@@ -45,6 +51,11 @@ public enum DateMode {
             return date == null ? -1L : date.getTime() / 1000L;
         }
         
+        @Override
+        public int compare(Date d1, Date d2) {
+            final long diff = d1.getTime() - d2.getTime();
+            return Math.abs(diff) < 1000L ? 0 : (diff < 0L ? -1 : 1); 
+        }
         
     };
     
@@ -63,5 +74,17 @@ public enum DateMode {
      * @return a timestamp created from the date, or -1 if date is null
      */
     public abstract long format(Date date);
+
+    /**
+     * <p>
+     *   This implementations returns 0 if the two given
+     *   {@link Date}s are equals as defined by the semantics of
+     *   this {@link DateMode}. 
+     * </p>
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract int compare(Date d1, Date d2);
     
 }
