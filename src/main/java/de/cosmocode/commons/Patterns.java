@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
  * frequently used {@link Pattern}s.
  *
  * @author Willi Schoenborn
+ * @author Adrian Lang
  */
 public final class Patterns {
     
