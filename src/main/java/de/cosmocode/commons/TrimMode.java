@@ -2,13 +2,16 @@ package de.cosmocode.commons;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+
 /**
  * The {@link TrimMode} determines
  * how a {@link String} is being trimmed.
  * 
  * @author Willi Schoenborn
  */
-public enum TrimMode {
+public enum TrimMode implements Predicate<String>, Function<CharSequence, CharSequence> {
 
     /**
      * Removes control characters (char &lt;= 32) from both
@@ -75,5 +78,31 @@ public enum TrimMode {
     public CharSequence trim(CharSequence sequence) {
         return trim(sequence == null ? null : sequence.toString());
     }
+    
+    /**
+     * This is a kind of an adapter allowing
+     * it to use a {@link TrimMode} as a {@link Function}.
+     * 
+     * <p>
+     *   This method is delegating its work to {@link TrimMode#trim(CharSequence)}.
+     * </p>
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public CharSequence apply(CharSequence from) {
+        return trim(from);
+    }
+    
+    /**
+     * This implementation returns true if the given input is
+     * trimmed using the semantics of this {@link TrimMode}.
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean apply(String input) {
+        return trim(input) == input;
+    };
     
 }
