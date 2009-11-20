@@ -20,6 +20,24 @@ public final class Enums {
     }
     
     /**
+     * Produces a String out of an enum value
+     * by using it's simple class name and it's name.
+     * 
+     * <p>
+     *   e.g. NORMAL from {@link TrimMode} would return:
+     *   {@code TrimMode.NORMAL}
+     * </p>
+     * 
+     * @param <E> the generic enum value
+     * @param e the enum value
+     * @return full name of the enum constant
+     * @throws NullPointerException if e is null
+     */
+    public static <E extends Enum<E>> String toString(E e) {
+        return e.getClass().getSimpleName() + "." + e.name();
+    }
+    
+    /**
      * Returns the {@link Enum} instance for a given ordinal.
      * This method is the index based alternative
      * to {@link Enum#valueOf(Class, String)}, which

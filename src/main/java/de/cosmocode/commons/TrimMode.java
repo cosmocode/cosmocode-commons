@@ -3,7 +3,6 @@ package de.cosmocode.commons;
 import org.apache.commons.lang.StringUtils;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 
 /**
  * The {@link TrimMode} determines
@@ -11,7 +10,7 @@ import com.google.common.base.Predicate;
  * 
  * @author Willi Schoenborn
  */
-public enum TrimMode implements Predicate<String>, Function<CharSequence, CharSequence> {
+public enum TrimMode implements Function<String, String> {
 
     /**
      * Removes control characters (char &lt;= 32) from both
@@ -90,19 +89,8 @@ public enum TrimMode implements Predicate<String>, Function<CharSequence, CharSe
      * {@inheritDoc}
      */
     @Override
-    public CharSequence apply(CharSequence from) {
+    public String apply(String from) {
         return trim(from);
     }
-    
-    /**
-     * This implementation returns true if the given input is
-     * trimmed using the semantics of this {@link TrimMode}.
-     * 
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean apply(String input) {
-        return trim(input) == input;
-    };
     
 }
