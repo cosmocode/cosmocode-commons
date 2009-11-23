@@ -3,7 +3,7 @@
   <groupId>de.cosmocode</groupId>
   <artifactId>cosmocode-commons</artifactId>
   <packaging>jar</packaging>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.2.1</version>
   <name>cosmocode-commons</name>
   <url>http://maven.apache.org</url>
   <parent>
@@ -12,7 +12,7 @@
     <version>1.3</version>
   </parent>
   <scm>
-    <developerConnection>scm:svn:http://commons.svn.cosmocode.de/cosmocode-commons/trunk</developerConnection>
+    <developerConnection>scm:svn:http://commons.svn.cosmocode.de/cosmocode-commons/tags/1.2.1</developerConnection>
   </scm>
   <dependencies>
     <dependency>
