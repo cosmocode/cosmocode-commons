@@ -2,6 +2,7 @@ package de.cosmocode.commons;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Utility class providng factory and
@@ -23,9 +24,9 @@ public final class Calendars {
      * @return a new {@link Calendar} which is set to date
      * @throws NullPointerException if date is null
      */
-    public static Calendar of(Date date) {
+    public static GregorianCalendar of(Date date) {
         if (date == null) throw new NullPointerException("Date must not be null");
-        final Calendar calendar = Calendar.getInstance();
+        final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         return calendar;
     }
@@ -56,5 +57,5 @@ public final class Calendars {
         calendar.add(Calendar.DATE, 1);
         calendar.add(Calendar.SECOND, -1);
     }
-
+    
 }
