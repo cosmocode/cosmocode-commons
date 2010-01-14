@@ -1,5 +1,6 @@
 package de.cosmocode.commons;
 
+import java.net.Inet4Address;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -59,6 +60,22 @@ public final class Patterns {
      * @see {@link Locale#toString()}
      */
     public static final Pattern LOCALE = Pattern.compile("^([a-z]{2}|(?=.+))(?:_([A-Z]{2}|(?=.+))(?:(?<!^_)_(.+))?)?$");
+
+    /**
+     * {@link Pattern} which matches valid internet addresses (IPv4).
+     * 
+     * <div>
+     *   The different parts of the corresponding address are provided
+     *   in groups (from 1 to 4).
+     * </div>
+     * 
+     * @see {@link Inet4Address}
+     */
+    public static final Pattern INTERNET_ADDRESS = Pattern.compile("\\b" +
+        "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\." +
+        "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\." +
+        "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\." +
+        "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
     
     /**
      * Prevent instantiation.

@@ -248,4 +248,28 @@ public class PatternsTest {
         Assert.assertEquals("POSIX", matcher.group(3));
     }
     
+    /**
+     * Tests invalid values for {@link Patterns#INTERNET_ADDRESS}.
+     */
+    @Test
+    public void internetAddressInvalid() {
+        Asserts.assertDoesNotMatch(Patterns.INTERNET_ADDRESS, "");
+        Asserts.assertDoesNotMatch(Patterns.INTERNET_ADDRESS, "1.1.1");
+        Asserts.assertDoesNotMatch(Patterns.INTERNET_ADDRESS, "1.1.1.");
+        Asserts.assertDoesNotMatch(Patterns.INTERNET_ADDRESS, ".1.1.1");
+        Asserts.assertDoesNotMatch(Patterns.INTERNET_ADDRESS, "192.168.0.256");
+        Asserts.assertDoesNotMatch(Patterns.INTERNET_ADDRESS, "192.168.0.-1");
+        
+    }
+
+    /**
+     * Tests valid values for {@link Patterns#INTERNET_ADDRESS}.
+     */
+    public void internetAddressValid() {
+        Asserts.assertMatches(Patterns.INTERNET_ADDRESS, "192.168.100.1");
+        Asserts.assertMatches(Patterns.INTERNET_ADDRESS, "192.168.200.0");
+        Asserts.assertMatches(Patterns.INTERNET_ADDRESS, "0.0.0.0");
+        Asserts.assertMatches(Patterns.INTERNET_ADDRESS, "255.255.255.255");
+    }
+    
 }
