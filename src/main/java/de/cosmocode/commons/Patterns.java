@@ -31,6 +31,15 @@ public final class Patterns {
     public static final Pattern ISO_639_1 = Pattern.compile("^[a-z]{2}$");
     
     /**
+     * ISO 639-2:1998, Codes for the representation of names of languages — Part 2: Alpha-3 code,
+     * is the second part of the ISO 639 standard, which lists codes for the representation
+     * of the names of languages.
+     * 
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_639-2">Wikipedia</a>
+     */
+    public static final Pattern ISO_639_2 = Pattern.compile("^[a-z]{3]$");
+    
+    /**
      * An IATA airport code, also known an IATA location identifier, IATA station code or 
      * simply a location identifier, is a three-letter code designating many airports around 
      * the world, defined by the International Air Transport Association (IATA).
