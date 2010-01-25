@@ -37,7 +37,7 @@ public final class Patterns {
      * 
      * @see <a href="http://en.wikipedia.org/wiki/ISO_639-2">Wikipedia</a>
      */
-    public static final Pattern ISO_639_2 = Pattern.compile("^[a-z]{3]$");
+    public static final Pattern ISO_639_2 = Pattern.compile("^[a-z]{3}$");
     
     /**
      * An IATA airport code, also known an IATA location identifier, IATA station code or 
