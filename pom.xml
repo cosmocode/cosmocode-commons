@@ -4,7 +4,7 @@
   <artifactId>cosmocode-commons</artifactId>
   <packaging>jar</packaging>
   <version>1.3-SNAPSHOT</version>
-  <name>cosmocode-commons</name>
+  <name>CosmoCode Commons</name>
   <url>http://maven.apache.org</url>
   <parent>
     <groupId>de.cosmocode</groupId>
