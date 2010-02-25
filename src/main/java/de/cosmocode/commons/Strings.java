@@ -17,7 +17,7 @@ public final class Strings {
     
     public static final String DEFAULT_DELIMITER = " ";
 
-    private static final Logger log = LoggerFactory.getLogger(Strings.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Strings.class);
     
     /**
      * Prevent instantiation.
@@ -60,19 +60,19 @@ public final class Strings {
      * @return the joined collection as a string
      */
     public static <T> String join(Collection<? extends T> collection, String delimiter, JoinWalker<? super T> walker) {
-        log.debug("Joining collection {} with delimiter '{}'", collection, delimiter);
+        LOG.trace("Joining collection {} with delimiter '{}'", collection, delimiter);
         final StringBuilder builder = new StringBuilder();
 
         final Iterator<? extends T> iterator = collection.iterator();
         while (iterator.hasNext()) {
             final String value = walker.walk(iterator.next());
-            log.debug("Walker returned {}", value);
+            LOG.trace("Walker returned {}", value);
             builder.append(value);
             if (iterator.hasNext()) builder.append(delimiter);
         }
         
         final String returnValue = builder.toString();
-        log.debug("Joined collection: {}", returnValue);
+        LOG.trace("Joined collection: {}", returnValue);
         return returnValue;
     }
     
