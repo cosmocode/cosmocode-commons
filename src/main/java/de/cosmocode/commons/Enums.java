@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
+import com.google.common.base.Function;
+
 /**
  * Utility class providing all kind of useful
  * methods regarding enums.
@@ -12,11 +14,38 @@ import java.util.Set;
  */
 public final class Enums {
 
+    private static final Function<Enum<?>, String> NAME_FUNCTION = new Function<Enum<?>, String>() {
+        
+        @Override
+        public String apply(Enum<?> from) {
+            return from.name();
+        }
+        
+    };
+    
     /**
      * Prevent instantiation.
      */
     private Enums() {
         
+    }
+    
+    /**
+     * Provides a {@link Function} which transforms enum values into
+     * Strings by calling {@link Enum#name()}.
+     * 
+     * <p>
+     *   Note: {@link Enum#toString()} <strong>may</strong> return the same
+     *   result, but while toString can be overridden, name is final and therefore
+     *   safer.
+     * </p>
+     * 
+     * @param <E> the generic enum type
+     * @return a function which transforms an enum value to a string using its name 
+     */
+    @SuppressWarnings("unchecked")
+    public static <E extends Enum<?>> Function<E, String> nameFunction() {
+        return (Function<E, String>) NAME_FUNCTION;
     }
     
     /**
