@@ -33,7 +33,7 @@ public final class StringPredicates {
 
         @Override
         public String toString() {
-            return String.format("%s.contains(%s)", StringPredicates.class.getName(), s);
+            return "contains(" + s + ")";
         }
     }
 

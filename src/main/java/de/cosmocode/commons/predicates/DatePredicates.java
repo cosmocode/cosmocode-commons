@@ -36,7 +36,7 @@ public final class DatePredicates {
         
         @Override
         public String toString() {
-            return String.format("%s.before(%s)", DatePredicates.class.getName(), when);
+            return "before(" + when + ")";
         }
         
     }
@@ -60,7 +60,7 @@ public final class DatePredicates {
         
         @Override
         public String toString() {
-            return String.format("%s.after(%s)", DatePredicates.class.getName(), when);
+            return "after(" + when + ")";
         }
         
     }
