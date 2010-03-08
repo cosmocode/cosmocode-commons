@@ -40,7 +40,7 @@ public final class Calendars {
      */
     public static void toBeginningOfTheDay(Calendar calendar) {
         if (calendar == null) throw new NullPointerException("Calendar must not be null");
-        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
     }
