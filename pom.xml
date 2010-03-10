@@ -9,7 +9,7 @@
   <parent>
     <groupId>de.cosmocode</groupId>
     <artifactId>cosmocode-parent</artifactId>
-    <version>1.4.2</version>
+    <version>1.5.0</version>
   </parent>
   <scm>
     <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-commons/trunk</developerConnection>
@@ -23,11 +23,13 @@
     <dependency>
       <groupId>de.cosmocode</groupId>
       <artifactId>cosmocode-junit</artifactId>
+      <version>1.1.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>de.cosmocode</groupId>
       <artifactId>log4j-config</artifactId>
+      <version>1.0.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -50,6 +52,7 @@
     <dependency>
     	<groupId>de.cosmocode</groupId>
     	<artifactId>cosmocode-patterns</artifactId>
+        <version>1.4.0</version>
     </dependency>
   </dependencies>
 </project>
