@@ -1,0 +1,75 @@
+package de.cosmocode.commons.io;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+
+import com.google.common.base.Preconditions;
+
+/**
+ * Static utility class for {@link ByteBuffer}s.
+ *
+ * @author Willi Schoenborn
+ */
+public final class ByteBuffers {
+
+    private ByteBuffers() {
+        
+    }
+    
+    /**
+     * Adapts a {@link ByteBuffer} to an {@link InputStream}.
+     * 
+     * @param buffer the underlying byte buffer
+     * @return an inputstream which reads from the given byte buffer
+     * @throws NullPointerException if buffer is null
+     */
+    public static InputStream asInputStream(final ByteBuffer buffer) {
+        Preconditions.checkNotNull(buffer, "Buffer");
+        return new InputStream() {
+            
+            @Override
+            public int read() throws IOException {
+                if (buffer.hasRemaining()) {
+                    return buffer.get();
+                } else {
+                    return -1;
+                }
+            }
+            
+            @Override
+            public int read(byte[] b, int off, int len) throws IOException {
+                final int length = Math.min(len, buffer.remaining());
+                buffer.get(b, off, length);
+                return length;
+            }
+            
+        };
+    }
+
+    /**
+     * Adapts a {@link ByteBuffer} to an {@link OutputStream}.
+     * 
+     * @param buffer the underlying byte buffer
+     * @return an outputstream which writes to the given byte buffer
+     * @throws NullPointerException if buffer is null
+     */
+    public static OutputStream asOutputStream(final ByteBuffer buffer) {
+        Preconditions.checkNotNull(buffer, "Buffer");
+        return new OutputStream() {
+            
+            @Override
+            public void write(int b) throws IOException {
+                buffer.put((byte) b);
+            }
+            
+            @Override
+            public void write(byte[] b, int off, int len) throws IOException {
+                buffer.put(b, off, len);
+            }
+            
+        };
+    }
+    
+}
