@@ -30,7 +30,7 @@ public final class ByteBuffers {
         return new InputStream() {
             
             @Override
-            public int read() throws IOException {
+            public synchronized int read() throws IOException {
                 if (buffer.hasRemaining()) {
                     return buffer.get();
                 } else {
@@ -39,10 +39,14 @@ public final class ByteBuffers {
             }
             
             @Override
-            public int read(byte[] b, int off, int len) throws IOException {
-                final int length = Math.min(len, buffer.remaining());
-                buffer.get(b, off, length);
-                return length;
+            public synchronized int read(byte[] b, int off, int len) throws IOException {
+                if (buffer.hasRemaining()) {
+                    final int length = Math.min(len, buffer.remaining());
+                    buffer.get(b, off, length);
+                    return length;
+                } else {
+                    return -1;
+                }
             }
             
         };
@@ -60,12 +64,12 @@ public final class ByteBuffers {
         return new OutputStream() {
             
             @Override
-            public void write(int b) throws IOException {
+            public synchronized void write(int b) throws IOException {
                 buffer.put((byte) b);
             }
             
             @Override
-            public void write(byte[] b, int off, int len) throws IOException {
+            public synchronized void write(byte[] b, int off, int len) throws IOException {
                 buffer.put(b, off, len);
             }
             
