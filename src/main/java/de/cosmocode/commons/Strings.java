@@ -1,11 +1,12 @@
 package de.cosmocode.commons;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 
 /**
  * Utility class inspired by {@link StringUtils},
@@ -17,13 +18,22 @@ public final class Strings {
     
     public static final String DEFAULT_DELIMITER = " ";
 
-    private static final Logger LOG = LoggerFactory.getLogger(Strings.class);
-    
     /**
      * Prevent instantiation.
      */
     private Strings() {
         
+    }
+    
+    private static <T> Function<T, String> asFunction(final JoinWalker<? super T> walker) {
+        return new Function<T, String>() {
+            
+            @Override
+            public String apply(T from) {
+                return walker.walk(from);
+            };
+            
+        };
     }
     
     /**
@@ -35,12 +45,15 @@ public final class Strings {
      * Calling this method is equivalent to
      * {@code StringUtility.join(collection, " ", walker}
      * 
+     * @deprecated use {@link Joiner}, {@link Function} and {@link Iterables#transform(Iterable, Function)} instead
+     * 
      * @param <T> the generic type
      * @param collection the element provider
      * @param walker the function object which transform instances of T into strings
      * @throws NullPointerException if collection is null or collection is empty and walker is null
      * @return the joined collection as a string
      */
+    @Deprecated
     public static <T> String join(Collection<? extends T> collection, JoinWalker<? super T> walker) {
         return Strings.join(collection, DEFAULT_DELIMITER, walker);
     }
@@ -52,6 +65,8 @@ public final class Strings {
      * a JoinWalker which transforms instances
      * of T into Strings.
      * 
+     * @deprecated use {@link Joiner}, {@link Function} and {@link Iterables#transform(Iterable, Function)} instead
+     * 
      * @param <T> the generic type
      * @param collection the element provider
      * @param delimiter the string betweens joined elements of collection
@@ -59,21 +74,9 @@ public final class Strings {
      * @throws NullPointerException if collection is null or collection is empty and walker is null
      * @return the joined collection as a string
      */
+    @Deprecated
     public static <T> String join(Collection<? extends T> collection, String delimiter, JoinWalker<? super T> walker) {
-        LOG.trace("Joining collection {} with delimiter '{}'", collection, delimiter);
-        final StringBuilder builder = new StringBuilder();
-
-        final Iterator<? extends T> iterator = collection.iterator();
-        while (iterator.hasNext()) {
-            final String value = walker.walk(iterator.next());
-            LOG.trace("Walker returned {}", value);
-            builder.append(value);
-            if (iterator.hasNext()) builder.append(delimiter);
-        }
-        
-        final String returnValue = builder.toString();
-        LOG.trace("Joined collection: {}", returnValue);
-        return returnValue;
+        return Joiner.on(delimiter).useForNull("null").join(Iterables.transform(collection, asFunction(walker)));
     }
     
     /**

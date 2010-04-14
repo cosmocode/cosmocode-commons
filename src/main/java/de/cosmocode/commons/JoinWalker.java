@@ -1,5 +1,9 @@
 package de.cosmocode.commons;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+
 /**
  * A JoinWalker is a function object,
  * which allows a String-join-Algorithm to
@@ -8,10 +12,12 @@ package de.cosmocode.commons;
  * sould be declared as an anonymous private static
  * instance. This approach provides best performance.
  * 
+ * @deprecated use {@link Joiner}, {@link Function} and {@link Iterables#transform(Iterable, Function)} instead
+ *  
  * @author schoenborn@cosmocode.de
- *
  * @param <T> the type this walker is able to transform into a string
  */
+@Deprecated
 public interface JoinWalker<T> {
 
     /**
