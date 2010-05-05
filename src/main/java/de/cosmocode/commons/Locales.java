@@ -31,6 +31,8 @@ public final class Locales {
 
     public static final Locale SPANISH = new Locale("es");
     public static final Locale AUSTRIA = new Locale("de", "AT");
+    public static final Locale AUSTRALIA = new Locale("en", "AU");
+    public static final Locale NEW_ZEALAND = new Locale("en", "NZ");
     
     /**
      * Prevent instantiation.
