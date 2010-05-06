@@ -19,6 +19,12 @@ package de.cosmocode.commons;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
+import de.cosmocode.commons.predicates.AbstractPredicate;
+
 /**
  * Utility class providing handy methods
  * regarding {@link Date} and {@link Calendar}.
@@ -42,7 +48,29 @@ public final class Dates {
      * <p>
      *   This allows one liner like this:
      *   <pre>
-     *     final Date in2Days = DateUtility.add(Calendar.DATE, 2);
+     *     final Date in2Days = Dates.add(Calendar.DATE, 2);
+     *   </pre>
+     * </p>
+     * 
+     * @deprecated use {@link Dates#nowPlus(int, int)} instead
+     * @param field the field (e.g. {@link Calendar#DATE})) which should be changed
+     * @param amount the amount passed to {@link Calendar#add(int, int)}
+     * @return the newly created {@link Date} instance
+     */
+    @Deprecated
+    public static Date add(int field, int amount) {
+        return nowPlus(field, amount);
+    }
+    
+    /**
+     * Creates a {@link Date} using a new {@link Calendar}
+     * and automatically adds the given amount to the
+     * given field.
+     * 
+     * <p>
+     *   This allows one liner like this:
+     *   <pre>
+     *     final Date in2Days = Dates.nowPlus(Calendar.DATE, 2);
      *   </pre>
      * </p>
      * 
@@ -50,10 +78,111 @@ public final class Dates {
      * @param amount the amount passed to {@link Calendar#add(int, int)}
      * @return the newly created {@link Date} instance
      */
-    public static Date add(int field, int amount) {
+    public static Date nowPlus(int field, int amount) {
         final Calendar calendar = Calendar.getInstance();
         calendar.add(field, amount);
         return calendar.getTime();
+    }
+
+    /**
+     * Creates a {@link Predicate} which evaluates to true
+     * when passed in a date which is before the specified date.
+     * 
+     * @since 1.6
+     * @see Date#before(Date)
+     * @param when the maximum date
+     * @return a predicate which returns true for all date before the specified date
+     * @throws NullPointerException if when is null
+     */
+    public static Predicate<Date> before(Date when) {
+        Preconditions.checkNotNull(when, "When");
+        return new BeforePredicate(when);
+    }
+    
+    /**
+     * Before date predicate implementation.
+     *
+     * @since 1.6
+     * @see Dates#before(Date)
+     * @author Willi Schoenborn
+     */
+    private static final class BeforePredicate extends AbstractPredicate<Date> {
+        
+        private final Date when;
+        
+        public BeforePredicate(Date when) {
+            this.when = when;
+        }
+        
+        @Override
+        public boolean apply(Date input) {
+            return input.before(when);
+        };
+        
+        @Override
+        public String toString() {
+            return String.format("Dates.before(%s)", when);
+        }
+        
+    }
+
+    /**
+     * Creates a {@link Predicate} which evaluates to true
+     * when passed in a date which is after the specified date.
+     * 
+     * @since 1.6
+     * @see Date#after(Date)
+     * @param when the minimum date
+     * @return a predicate which returns true for all date after the specified date
+     * @throws NullPointerException if when is null
+     */
+    public static Predicate<Date> after(Date when) {
+        Preconditions.checkNotNull(when, "When");
+        return new AfterPredicate(when);
+    }
+
+    /**
+     * After date predicate implementation.
+     *
+     * @since 1.6
+     * @see Dates#after(Date)
+     * @author Willi Schoenborn
+     */
+    private static final class AfterPredicate extends AbstractPredicate<Date> {
+        
+        private final Date when;
+        
+        public AfterPredicate(Date when) {
+            this.when = when;
+        }
+        
+        @Override
+        public boolean apply(Date input) {
+            return input.after(when);
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("Dates.after(%s)", when);
+        }
+        
+    }
+
+    /**
+     * Creates a {@link Predicate} which evaluates to true
+     * when passed in a date which is after the specified start date
+     * and before the specified end date.
+     * 
+     * @since 1.6
+     * @see Date#after(Date)
+     * @see Date#after(Date)
+     * @param start the minimum date
+     * @param end the maximum date
+     * @return a predicate which returns true for all date after the specified start and before the end
+     * @throws NullPointerException if when is null
+     */
+    public static Predicate<Date> between(Date start, Date end) {
+        return Predicates.and(after(start), before(end));
     }
     
 }

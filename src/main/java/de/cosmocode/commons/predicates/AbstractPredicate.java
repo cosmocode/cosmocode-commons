@@ -19,7 +19,7 @@ package de.cosmocode.commons.predicates;
 import com.google.common.base.Predicate;
 
 /**
- * 
+ * Abstract predicate which requires a "meaningful" {@link #toString()} method.
  *
  * @author Willi Schoenborn
  * @param <T>

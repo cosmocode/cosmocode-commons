@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.Closeables;
 
 /**
  * Static utility class for {@link InputStream}s.
@@ -32,47 +33,126 @@ public final class InputStreams {
     private InputStreams() {
         
     }
-    
-    // TODO check for end of stream and exceptions
+
+    /**
+     * Decorates the given stream to provide auto-close behaviour. The
+     * returned stream will close itself when either the end of
+     * the stream is reached (any of the read methods returned -1) or
+     * an exception occured. In an exception case the original exception
+     * will be thrown, any exception which occured during close will
+     * be logged and suppressed. This does not apply when exception
+     * occur when attempting to close the stream after the end has
+     * been reached.
+     * 
+     * @since 1.6
+     * @param stream the backing stream
+     * @return a stream which auto closes itself
+     * @throws NullPointerException if stream is null
+     */
     public static InputStream asAutoClosing(InputStream stream) {
         Preconditions.checkNotNull(stream);
         return new AutoClosingInputStream(stream);
     }
     
+    /**
+     * Autoclosing inputstream implementation.
+     *
+     * @since 1.6
+     * @see InputStreams#asAutoClosing(InputStream)
+     * @author Willi Schoenborn
+     */
     private static final class AutoClosingInputStream extends FilterInputStream {
 
-        private AutoClosingInputStream(InputStream in) {
-            super(in);
+        private AutoClosingInputStream(InputStream stream) {
+            super(stream);
         }
 
         @Override
         public int read() throws IOException {
-            final int read = super.read();
-            if (read == -1) close();
-            return read;
-        }
-
-        @Override
-        public int read(byte[] b, int off, int len) throws IOException {
-            final int read = super.read(b, off, len);
-            if (read == -1) close();
-            return read;
+            try {
+                final int read = super.read();
+                if (read == -1) endOfStream();
+                return read;
+            } catch (IOException e) {
+                closeFinally();
+                throw e;
+            }
         }
 
         @Override
         public int read(byte[] b) throws IOException {
-            final int read = super.read(b);
-            if (read == -1) close();
-            return read;
+            try {
+                final int read = super.read(b);
+                if (read == -1) endOfStream();
+                return read;
+            } catch (IOException e) {
+                closeFinally();
+                throw e;
+            }
+        }
+        
+        @Override
+        public long skip(long n) throws IOException {
+            try {
+                return super.skip(n);
+            } catch (IOException e) {
+                closeFinally();
+                throw e;
+            }
+        }
+        
+        @Override
+        public int available() throws IOException {
+            try {
+                return super.available();
+            } catch (IOException e) {
+                closeFinally();
+                throw e;
+            }
+        }
+        
+        @Override
+        public synchronized void reset() throws IOException {
+            try {
+                super.reset();
+            } catch (IOException e) {
+                closeFinally();
+                throw e;
+            }
+        }
+        
+        private void endOfStream() throws IOException {
+            close();
+        }
+        
+        private void closeFinally() {
+            Closeables.closeQuietly(this);
         }
         
     }
     
+    /**
+     * Decorates the given stream to provide "uncloseable" behaviour.
+     * The returned stream will return immediately when the {@link InputStream#close() close}
+     * method gets called.
+     * 
+     * @since 1.6
+     * @param stream the backing stream
+     * @return a stream which is not closeable
+     * @throws NullPointerException if stream is null
+     */
     public static InputStream asUncloseable(InputStream stream) {
         Preconditions.checkNotNull(stream);
         return new UncloseableInputStream(stream);
     }
     
+    /**
+     * Uncloseable inputstream implementation.
+     *
+     * @since 1.6
+     * @see InputStreams#asUncloseable(InputStream)
+     * @author Willi Schoenborn
+     */
     private static final class UncloseableInputStream extends FilterInputStream {
 
         private UncloseableInputStream(InputStream in) {

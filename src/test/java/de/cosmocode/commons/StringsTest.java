@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
  */
 public class StringsTest {
     
+    @SuppressWarnings("deprecation")
     private static final JoinWalker<Object> DEFAULT_WALKER = new JoinWalker<Object>() {
         
         @Override
@@ -83,6 +84,7 @@ public class StringsTest {
      * Tests {@link Strings#join(java.util.Collection, JoinWalker)} with
      * an empty list.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void joinEmpty() {
         final List<Object> list = Lists.newArrayList();
@@ -94,6 +96,7 @@ public class StringsTest {
      * Tests {@link Strings#join(java.util.Collection, JoinWalker)} with
      * an non-empty list.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void join() {
         final List<Object> list = Lists.newArrayList();

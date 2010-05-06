@@ -22,7 +22,11 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+
+import de.cosmocode.commons.predicates.AbstractPredicate;
 
 /**
  * Utility class inspired by {@link StringUtils},
@@ -41,6 +45,8 @@ public final class Strings {
         
     }
     
+    // method is private, suppress is ok
+    @SuppressWarnings("deprecation")
     private static <T> Function<T, String> asFunction(final JoinWalker<? super T> walker) {
         return new Function<T, String>() {
             
@@ -142,12 +148,93 @@ public final class Strings {
      * to {@link StringUtils#isBlank(String)} and
      * returns the default value in this case.
      * 
+     * @since 1.6
      * @param s the string to check
      * @param defaultValue the default value to return in case s is blank
      * @return defaultValue if s is blank, s otherwise
      */
     public static String defaultIfBlank(String s, String defaultValue) {
         return StringUtils.isBlank(s) ? defaultValue : s;
+    }
+    
+    /**
+     * Creates a {@link Predicate} which evaluates to true
+     * when passed in a string which contains the specified char sequence.
+     * 
+     * @since 1.6
+     * @param s the char sequence which should be contained in the input
+     * @return a predicate which returns true when the given input contains s
+     * @throws NullPointerException if s is null
+     */
+    public static Predicate<String> contains(CharSequence s) {
+        Preconditions.checkNotNull(s, "String");
+        return new ContainsPredicate(s);
+    }
+    
+    /**
+     * Contains string predicate.
+     *
+     * @since 1.6
+     * @see Strings#contains(CharSequence)
+     * @author Willi Schoenborn
+     */
+    private static final class ContainsPredicate extends AbstractPredicate<String> {
+        
+        private final CharSequence s;
+        
+        public ContainsPredicate(CharSequence s) {
+            this.s = s;
+        }
+      
+        @Override
+        public boolean apply(String input) {
+            return input.contains(s);
+        };
+
+        @Override
+        public String toString() {
+            return String.format("Strings.contains(%s)", s);
+        }
+    }
+    
+    /**
+     * Creates a {@link Predicate} which evaluates to true
+     * when passed in a char sequence which is contained in the specified string.
+     * 
+     * @since 1.6
+     * @param s the string which should contain the input
+     * @return a predicate which returns true when s contains the given char sequence
+     * @throws NullPointerException if s is null
+     */
+    public static Predicate<CharSequence> containedIn(String s) {
+        return new ContainedInPredicate(s);
+    }
+    
+    /**
+     * Contained in string predicate.
+     *
+     * @since 1.6
+     * @see Strings#containedIn(String)
+     * @author Willi Schoenborn
+     */
+    private static final class ContainedInPredicate extends AbstractPredicate<CharSequence> {
+        
+        private final String s;
+        
+        public ContainedInPredicate(String s) {
+            this.s = s;
+        }
+        
+        @Override
+        public boolean apply(CharSequence input) {
+            return s.contains(input);
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("Strings.containedIn(%s)", s);
+        }
+        
     }
     
 }
