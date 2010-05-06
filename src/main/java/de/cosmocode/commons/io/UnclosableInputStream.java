@@ -24,8 +24,10 @@ import com.google.common.base.Preconditions;
 /**
  * An {@link InputStream} which is not closable.
  *
+ * @deprecated use {@link InputStreams#asUncloseable(InputStream)}
  * @author Willi Schoenborn
  */
+@Deprecated
 public final class UnclosableInputStream extends FilterInputStream {
 
     public UnclosableInputStream(InputStream input) {

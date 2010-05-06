@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 
 /**
  * Utility class providing all kind of useful
@@ -36,6 +37,11 @@ public final class Enums {
         public String apply(Enum<?> from) {
             return from.name();
         }
+        
+        @Override
+        public String toString() {
+            return "Enums.name()";
+        };
         
     };
     
@@ -60,7 +66,7 @@ public final class Enums {
      * @return a function which transforms an enum value to a string using its name 
      */
     @SuppressWarnings("unchecked")
-    public static <E extends Enum<?>> Function<E, String> nameFunction() {
+    public static <E extends Enum<?>> Function<E, String> name() {
         return (Function<E, String>) NAME_FUNCTION;
     }
     
@@ -114,9 +120,11 @@ public final class Enums {
      * @param <E> the enum type
      * @param type the enum class object
      * @param flag the bit flag
-     * @return a {@link Set} containing all enum instances with one bits in flag
+     * @return a {@link Set} containing all enum instances with one-bits in flag
+     * @throws NullPointerException if type is null
      */
     public static <E extends Enum<E>> Set<E> decode(Class<E> type, long flag) {
+        Preconditions.checkNotNull(type, "Type");
         final Set<E> enums = EnumSet.noneOf(type);
         if (flag == 0) return enums;
         
@@ -137,8 +145,10 @@ public final class Enums {
      * @param <E> the enum type
      * @param enums {@link Set} of enums to represent as a bitset
      * @return a bitset having all enums in the set with one bit
+     * @throws NullPointerException if enums is null
      */
     public static <E extends Enum<E>> long encode(Set<E> enums) {
+        Preconditions.checkNotNull(enums, "Enums");
         long flag = Enums.empty();
         
         for (E e : enums) {
@@ -163,18 +173,18 @@ public final class Enums {
     
     /**
      * Calculates the bit of an {@link Enum} 
-     * which is basicly the following.
+     * which is basically the following.
      * <pre>
      *   2 ^ e.ordinal()
      * </pre>
      * 
      * @param <E> the enum type
      * @param e the enum instance
-     * @throws NullPointerException if e is null
      * @return the bit of the enum instance
+     * @throws NullPointerException if e is null
      */
     private static <E extends Enum<E>> long asBit(E e) {
-        return 1L << e.ordinal();
+        return 1L << Preconditions.checkNotNull(e, "Enum").ordinal();
     }
     
     /**
@@ -186,7 +196,8 @@ public final class Enums {
      * @param <E> the enum type
      * @param flag the bit flag
      * @param e the enum instance
-     * @return flag | asBit(e)
+     * @return flag OR asBit(e)
+     * @throws NullPointerException if e is null
      */
     private static <E extends Enum<E>> long add(long flag, E e) {
         return flag | asBit(e);
@@ -200,6 +211,7 @@ public final class Enums {
      * @param flag the bit flag
      * @param e the enum instance
      * @return (flag & asBit(e)) > 0
+     * @throws NullPointerException if e is null
      */
     private static <E extends Enum<E>> boolean has(long flag, E e) {
         return (flag & asBit(e)) > 0;

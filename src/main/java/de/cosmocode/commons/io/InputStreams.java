@@ -20,8 +20,10 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
-import com.google.common.io.Closeables;
 
 /**
  * Static utility class for {@link InputStream}s.
@@ -29,6 +31,8 @@ import com.google.common.io.Closeables;
  * @author Willi Schoenborn
  */
 public final class InputStreams {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(InputStreams.class);
 
     private InputStreams() {
         
@@ -63,8 +67,11 @@ public final class InputStreams {
      */
     private static final class AutoClosingInputStream extends FilterInputStream {
 
+        private final InputStream stream;
+        
         private AutoClosingInputStream(InputStream stream) {
             super(stream);
+            this.stream = stream;
         }
 
         @Override
@@ -126,7 +133,16 @@ public final class InputStreams {
         }
         
         private void closeFinally() {
-            Closeables.closeQuietly(this);
+            try {
+                close();
+            } catch (IOException e) {
+                LOG.warn("Unable to close " + this, e);
+            }
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("InputStreams.asAutoClosing(%s)", stream);
         }
         
     }
@@ -155,13 +171,21 @@ public final class InputStreams {
      */
     private static final class UncloseableInputStream extends FilterInputStream {
 
-        private UncloseableInputStream(InputStream in) {
-            super(in);
+        private final InputStream stream;
+
+        private UncloseableInputStream(InputStream stream) {
+            super(stream);
+            this.stream = stream;
         }
 
         @Override
         public void close() throws IOException {
             
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("InputStreams.asUncloseable(%s)", stream);
         }
         
     }

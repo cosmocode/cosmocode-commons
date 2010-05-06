@@ -65,6 +65,11 @@ public final class ByteBuffers {
                 }
             }
             
+            @Override
+            public String toString() {
+                return String.format("ByteBuffers.asInputStream(%s)", buffer);
+            }
+            
         };
     }
 
@@ -87,6 +92,11 @@ public final class ByteBuffers {
             @Override
             public synchronized void write(byte[] b, int off, int len) throws IOException {
                 buffer.put(b, off, len);
+            }
+            
+            @Override
+            public String toString() {
+                return String.format("ByteBuffers.asOutputStream(%s)", buffer);
             }
             
         };
