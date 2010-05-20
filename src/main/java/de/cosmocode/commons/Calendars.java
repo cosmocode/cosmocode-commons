@@ -20,6 +20,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.google.common.base.Function;
+
 /**
  * Utility class providng factory and
  * manipulation methods for {@link Calendar}s.
@@ -28,8 +30,27 @@ import java.util.GregorianCalendar;
  */
 public final class Calendars {
 
+    private static final Function<Calendar, Date> GET_TIME = new Function<Calendar, Date>() {
+        
+        @Override
+        public Date apply(Calendar from) {
+            return from.getTime();
+        }
+        
+    };
+    
     private Calendars() {
         
+    }
+    
+    /**
+     * Provides a function used to convert {@link Calendar}s into {@link Date}s.
+     * 
+     * @since 1.6
+     * @return a function converting calendars into dates using {@link Calendar#getTime()}
+     */
+    public static Function<Calendar, Date> getTime() {
+        return GET_TIME;
     }
     
     /**
