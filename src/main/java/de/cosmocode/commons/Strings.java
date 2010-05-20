@@ -37,6 +37,8 @@ import de.cosmocode.commons.predicates.AbstractPredicate;
 public final class Strings {
     
     public static final String DEFAULT_DELIMITER = " ";
+    
+    private static final Object[] EMPTY_ARRAY = {};
 
     /**
      * Prevent instantiation.
@@ -235,6 +237,78 @@ public final class Strings {
             return String.format("Strings.containedIn(%s)", s);
         }
         
+    }
+    
+    /**
+     * Ensures that a string passed as a parameter to the calling method is not empty.
+     * 
+     * @since 1.6
+     * @param s the string being checked
+     * @return s
+     */
+    public static String checkNotEmpty(String s) {
+        return checkNotEmpty(s, "");
+    }
+
+    /**
+     * Ensures that a string passed as a parameter to the calling method is not empty.
+     * 
+     * @since 1.6
+     * @param s the string being checked
+     * @param message the error message
+     * @return s
+     */
+    public static String checkNotEmpty(String s, String message) {
+        return checkNotEmpty(s, message, EMPTY_ARRAY);
+    }
+
+    /**
+     * Ensures that a string passed as a parameter to the calling method is not empty.
+     * 
+     * @since 1.6
+     * @param s the string being checked
+     * @param message the error message
+     * @param args the error message arguments
+     * @return s
+     */
+    public static String checkNotEmpty(String s, String message, Object... args) {
+        return Preconditions.checkNotNull(TrimMode.NORMAL.apply(s), message, args);
+    }
+
+    /**
+     * Ensures that a string passed as a parameter to the calling method is not blank.
+     * 
+     * @since 1.6
+     * @param s the string being checked
+     * @return trimmed version of s
+     */
+    public static String checkNotBlank(String s) {
+        return checkNotEmpty(s, "");
+    }
+
+    /**
+     * Ensures that a string passed as a parameter to the calling method is not blank.
+     * 
+     * @since 1.6
+     * @param s the string being checked
+     * @param message the error message
+     * @return trimmed version of s
+     */
+    public static String checkNotBlank(String s, String message) {
+        return checkNotEmpty(s, message, EMPTY_ARRAY);
+    }
+
+    /**
+     * Ensures that a string passed as a parameter to the calling method is not blank.
+     * 
+     * @since 1.6
+     * @param s the string being checked
+     * @param args the error message arguments
+     * @param message the error message
+     * @return trimmed version of s
+     */
+    public static String checkNotBlank(String s, String message, Object... args) {
+        return Preconditions.checkNotNull(TrimMode.NULL.apply(s), message, args);
     }
     
 }
