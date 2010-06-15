@@ -65,22 +65,18 @@ final class DefaultPackages implements Packages {
         while (true) {
             final JarEntry entry = jar.getNextJarEntry();
             if (entry == null) return;
-            final String className = entry.getName();
-            if (containedIn(className, packages)) {
-                loadClass(builder, className, packages);
-            }
+            loadClass(builder, entry.getName(), packages);
         }
     }
     
     private void loadClass(Builder<Class<?>> builder, String name, Iterable<String> packages) {
-        if (name.endsWith(".class")) {
-            final String className = name.substring(0, name.length() - ".class".length()).replace('/', '.');
-            if (containedIn(className, packages)) {
-                try {
-                    builder.add(Classes.forName(className));
-                } catch (ClassNotFoundException e) {
-                    throw new IllegalStateException(e);
-                }
+        if (!name.endsWith(".class")) return;
+        final String className = name.substring(0, name.length() - ".class".length()).replace('/', '.');
+        if (containedIn(className, packages)) {
+            try {
+                builder.add(Classes.forName(className));
+            } catch (ClassNotFoundException e) {
+                throw new IllegalStateException(e);
             }
         }
     }
