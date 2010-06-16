@@ -18,11 +18,12 @@ public final class Bijections {
         private final Bijection<F, T> left;
         private final Bijection<T, S> right;
         
-        private Bijection<S, F> inverse;
+        private final Bijection<S, F> inverse;
         
         public ComposedBijection(Bijection<F, T> left, Bijection<T, S> right) {
             this.left = Preconditions.checkNotNull(left, "Left");
             this.right = Preconditions.checkNotNull(right, "Right");
+            this.inverse = new InverseComposedBijection<F, T, S>(this, right.inverse(), left.inverse());
         }
 
         @Override
@@ -32,9 +33,6 @@ public final class Bijections {
         
         @Override
         public Bijection<S, F> inverse() {
-            if (inverse == null) {
-                inverse = new InverseComposedBijection<F, T, S>(this, right.inverse(), left.inverse());
-            }
             return inverse;
         }
         
