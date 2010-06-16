@@ -85,12 +85,21 @@ final class DefaultPackages implements Packages {
     private void loadJar(Builder<Class<?>> builder, File file, Iterable<String> packages) throws IOException {
         LOG.trace("Loading from jar", file);
         final InputStream stream = Files.newInputStreamSupplier(file).getInput();
-        final JarInputStream jar = new JarInputStream(stream);
         
-        while (true) {
-            final JarEntry entry = jar.getNextJarEntry();
-            if (entry == null) return;
-            loadClass(builder, entry.getName(), packages);
+        try {
+            final JarInputStream jar = new JarInputStream(stream);
+            
+            try {
+                while (true) {
+                    final JarEntry entry = jar.getNextJarEntry();
+                    if (entry == null) return;
+                    loadClass(builder, entry.getName(), packages);
+                }
+            } finally {
+                jar.close();
+            }
+        } finally {
+            stream.close();
         }
     }
     

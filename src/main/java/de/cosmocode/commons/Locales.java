@@ -61,7 +61,7 @@ public final class Locales {
             final String variant = Strings.defaultIfBlank(matcher.group(3), "");
             return new Locale(language, country, variant);
         } else {
-            final String message = String.format("%s does not match %", value, Patterns.LOCALE.pattern());
+            final String message = String.format("%s does not match %s", value, Patterns.LOCALE.pattern());
             throw new IllegalArgumentException(message);
         }
     }

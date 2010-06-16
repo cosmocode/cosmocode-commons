@@ -22,12 +22,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Set;
 
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSet.Builder;
+import com.google.common.collect.Iterables;
 
 /**
  * Default {@link Classpath} implementation.
@@ -39,22 +39,23 @@ final class DefaultClasspath implements Classpath {
     
     private static final Splitter SPLITTER = Splitter.on(File.pathSeparator).trimResults().omitEmptyStrings();
 
-    private final Set<URL> entries;
+    private final Iterable<URL> entries;
 
     public DefaultClasspath(String classpath) {
         Preconditions.checkNotNull(classpath, "Classpath");
         
-        final Builder<URL> builder = ImmutableSet.builder();
-        
-        for (String entry : SPLITTER.split(classpath)) {
-            try {
-                builder.add(new File(entry).toURI().toURL());
-            } catch (MalformedURLException e) {
-                throw new ExceptionInInitializerError(e);
+        this.entries = ImmutableSet.copyOf(Iterables.transform(SPLITTER.split(classpath), new Function<String, URL>() {
+            
+            @Override
+            public URL apply(String from) {
+                try {
+                    return new File(from).toURI().toURL();
+                } catch (MalformedURLException e) {
+                    throw new ExceptionInInitializerError(e);
+                }
             }
-        }
-        
-        entries = builder.build();
+            
+        }));
     }
     
     @Override
