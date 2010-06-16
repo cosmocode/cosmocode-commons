@@ -67,16 +67,23 @@ final class DefaultPackages implements Packages {
     }
 
     private void loadDirectory(Builder<Class<?>> builder, File directory, Iterable<String> packages) {
+        loadDirectoryRecursively(builder, directory, directory, packages);
+    }
+    
+    private void loadDirectoryRecursively(Builder<Class<?>> builder, File root, File directory, 
+        Iterable<String> packages) {
+        LOG.trace("Loading from directory {}", directory);
         for (File file : directory.listFiles()) {
             if (file.isDirectory()) {
-                loadDirectory(builder, file, packages);
+                loadDirectoryRecursively(builder, root, file, packages);
             } else {
-                loadClass(builder, file.getAbsolutePath().replace(directory.getAbsolutePath(), ""), packages);
+                loadClass(builder, file.getAbsolutePath().replace(root.getAbsolutePath(), ""), packages);
             }
         }
     }
 
     private void loadJar(Builder<Class<?>> builder, File file, Iterable<String> packages) throws IOException {
+        LOG.trace("Loading from jar", file);
         final InputStream stream = Files.newInputStreamSupplier(file).getInput();
         final JarInputStream jar = new JarInputStream(stream);
         
@@ -89,14 +96,21 @@ final class DefaultPackages implements Packages {
     
     private void loadClass(Builder<Class<?>> builder, String name, Iterable<String> packages) {
         if (!name.endsWith(".class")) return;
-        final String className = name.substring(0, name.length() - ".class".length()).replace('/', '.');
+        final String className = pathToName(name);
+        LOG.trace("Considering class {}", className);
         if (containedIn(className, packages)) {
+            LOG.trace("Loading class {}", className);
             try {
                 builder.add(Classes.forName(className));
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException(e);
             }
         }
+    }
+    
+    private String pathToName(String path) {
+        final String name = path.replace("/", ".").replace(".class", "");
+        return name.startsWith(".") ? name.substring(1) : name;
     }
     
     private boolean containedIn(String className, Iterable<String> packages) {

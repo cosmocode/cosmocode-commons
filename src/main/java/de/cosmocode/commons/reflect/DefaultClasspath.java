@@ -37,7 +37,7 @@ import com.google.common.collect.ImmutableSet.Builder;
  */
 final class DefaultClasspath implements Classpath {
     
-    private static final Splitter SPLITTER = Splitter.on(";").trimResults().omitEmptyStrings();
+    private static final Splitter SPLITTER = Splitter.on(File.pathSeparator).trimResults().omitEmptyStrings();
 
     private final Set<URL> entries;
 
