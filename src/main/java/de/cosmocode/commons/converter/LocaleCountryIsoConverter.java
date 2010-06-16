@@ -61,7 +61,7 @@ public final class LocaleCountryIsoConverter implements CountryIsoConverter {
             final String alpha3 = new Locale("", alpha2).getISO3Country();
             if (iso3166Alpha3.equals(alpha3)) {
                 LOG.trace("Found alpha-2: {} for alpha-3: {}", alpha2, alpha3);
-                
+                cache.put(iso3166Alpha3, alpha2);
                 return alpha2;
             }
         }
