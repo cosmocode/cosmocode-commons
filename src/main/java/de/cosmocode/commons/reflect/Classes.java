@@ -16,10 +16,8 @@
 
 package de.cosmocode.commons.reflect;
 
-import java.lang.reflect.Modifier;
 import java.util.concurrent.ConcurrentMap;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.MapMaker;
 
 /**
@@ -54,111 +52,6 @@ public final class Classes {
         final Class<?> type = Class.forName(name);
         CACHE.put(name, type);
         return type;
-    }
-    
-    public static Predicate<Class<?>> isEnum() {
-        return IsEnum.INSTANCE;
-    }
-    
-    /**
-     * Singleton enum predicate for {@link Classes#isEnum()}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     */
-    private static enum IsEnum implements Predicate<Class<?>> {
-        
-        INSTANCE;
-        
-        @Override
-        public boolean apply(Class<?> input) {
-            return input.isEnum();
-        }
-        
-    }
-    
-    public static Predicate<Class<?>> isAnnotation() {
-        return IsAnnotation.INSTANCE;
-    }
-
-    /**
-     * Singleton enum predicate for {@link Classes#isAnnotation()}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     */
-    private static enum IsAnnotation implements Predicate<Class<?>> {
-        
-        INSTANCE;
-        
-        @Override
-        public boolean apply(Class<?> input) {
-            return input.isAnnotation();
-        }
-        
-    }
-    
-    public static Predicate<Class<?>> isArray() {
-        return IsArray.INSTANCE;
-    }
-
-    /**
-     * Singleton enum predicate for {@link Classes#isArray()}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     */
-    private static enum IsArray implements Predicate<Class<?>> {
-        
-        INSTANCE;
-        
-        @Override
-        public boolean apply(Class<?> input) {
-            return input.isArray();
-        }
-        
-    }
-    
-    public static Predicate<Class<?>> isAbstract() {
-        return IsAbstract.INSTANCE;
-    }
-
-    /**
-     * Singleton enum predicate for {@link Classes#isAbstract()}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     */
-    private static enum IsAbstract implements Predicate<Class<?>> {
-        
-        INSTANCE;
-        
-        @Override
-        public boolean apply(Class<?> input) {
-            return Modifier.isAbstract(input.getModifiers());
-        }
-        
-    }
-    
-    public static Predicate<Class<?>> isInterface() {
-        return IsInterface.INSTANCE;
-    }
-
-    /**
-     * Singleton enum predicate for {@link Classes#isInterface()}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     */
-    private static enum IsInterface implements Predicate<Class<?>> {
-        
-        INSTANCE;
-        
-        @Override
-        public boolean apply(Class<?> input) {
-            return input.isInterface();
-        }
-        
     }
     
 }

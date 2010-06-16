@@ -12,7 +12,7 @@ import java.util.jar.JarInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -32,6 +32,8 @@ final class DefaultPackages implements Packages {
     private final ImmutableSet<Class<?>> classes;
     
     public DefaultPackages(Classpath classpath, Iterable<String> packages) throws IOException {
+        Preconditions.checkNotNull(classpath, "Classpath");
+        Preconditions.checkNotNull(packages, "Packages");
         final Builder<Class<?>> builder = ImmutableSet.builder();
         
         for (URL url : classpath) {
@@ -89,43 +91,28 @@ final class DefaultPackages implements Packages {
     }
 
     @Override
-    public <T> Iterable<Class<? extends T>> subclassesOf(final Class<T> type) {
-        return Iterables.transform(Iterables.filter(this, new Predicate<Class<?>>() {
-            
-            @Override
-            public boolean apply(Class<?> input) {
-                return type.isAssignableFrom(input);
-            }
-            
-        }), new Function<Class<?>, Class<? extends T>>() {
-            
-            @Override
-            public Class<? extends T> apply(Class<?> from) {
-                return from.asSubclass(type);
-            }
-            
-        });
+    public <T> Iterable<Class<? extends T>> subclassesOf(Class<T> type) {
+        Preconditions.checkNotNull(type, "Type");
+        final Iterable<Class<?>> filtered = Iterables.filter(this, Reflection.isSubtypeOf(type));
+        return Iterables.transform(filtered, Reflection.asSubclass(type));
     }
 
     @Override
-    public Iterable<Class<?>> annotatedWith(final Class<? extends Annotation> annotation) {
-        return Iterables.filter(this, new Predicate<Class<?>>() {
-            
-            @Override
-            public boolean apply(Class<?> input) {
-                return input.isAnnotationPresent(annotation);
-            }
-            
-        });
+    public Iterable<Class<?>> annotatedWith(Class<? extends Annotation> annotation) {
+        Preconditions.checkNotNull(annotation, "Annotation");
+        return Iterables.filter(this, Reflection.isAnnotationPresent(annotation));
     }
     
     @Override
     public Iterable<Class<?>> filter(Predicate<? super Class<?>> predicate) {
+        Preconditions.checkNotNull(predicate, "Predicate");
         return Iterables.filter(this, predicate);
     }
     
     @Override
     public <T> Iterable<Class<? extends T>> filter(Class<T> type, Predicate<? super Class<? extends T>> predicate) {
+        Preconditions.checkNotNull(type, "Type");
+        Preconditions.checkNotNull(predicate, "Predicate");
         return Iterables.filter(subclassesOf(type), predicate);
     }
     

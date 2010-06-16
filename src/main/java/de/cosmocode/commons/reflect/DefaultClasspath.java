@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableSet.Builder;
  */
 final class DefaultClasspath implements Classpath {
     
-    private static final Splitter SPLITTER = Splitter.on(";");
+    private static final Splitter SPLITTER = Splitter.on(";").trimResults().omitEmptyStrings();
 
     private final Set<URL> entries;
 
@@ -54,6 +54,7 @@ final class DefaultClasspath implements Classpath {
     
     @Override
     public Packages restrictTo(Iterable<String> packages) {
+        Preconditions.checkNotNull(packages, "Packages");
         try {
             return new DefaultPackages(this, packages);
         } catch (IOException e) {
