@@ -25,7 +25,7 @@ import java.util.Date;
  *
  * @author Willi Schoenborn
  */
-public enum DateMode implements Comparator<Date> {
+public enum DateMode implements Comparator<Date>, Bijection<Long, Date> {
 
     /**
      * Assumes the timestamp is in milliseconds,
@@ -102,5 +102,27 @@ public enum DateMode implements Comparator<Date> {
      */
     @Override
     public abstract int compare(Date d1, Date d2);
+    
+    @Override
+    public Date apply(Long from) {
+        return from == null ? null : parse(from.longValue());
+    }
+    
+    @Override
+    public Bijection<Date, Long> inverse() {
+        return new Bijection<Date, Long>() {
+            
+            @Override
+            public Long apply(Date from) {
+                return format(from);
+            }
+            
+            @Override
+            public Bijection<Long, Date> inverse() {
+                return DateMode.this;
+            }
+            
+        };
+    }
     
 }
