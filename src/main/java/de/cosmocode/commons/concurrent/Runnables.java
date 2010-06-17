@@ -18,6 +18,7 @@ package de.cosmocode.commons.concurrent;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 
 /**
  * Utility class for {@link Runnable}s.
@@ -45,20 +46,19 @@ public final class Runnables {
         Preconditions.checkNotNull(first, "First");
         Preconditions.checkNotNull(second, "Second");
         Preconditions.checkNotNull(rest, "Rest");
+        final Iterable<Runnable> runnables = Lists.asList(first, second, rest);
         return new Runnable() {
             
             @Override
             public void run() {
-                first.run();
-                second.run();
-                for (Runnable runnable : rest) {
+                for (Runnable runnable : runnables) {
                     runnable.run();
                 }
             }
             
             @Override
             public String toString() {
-                return String.format("Runnables.chain(%s, %s, %s)", first, second, JOINER.join(rest));
+                return "Runnables.chain(" + JOINER.join(runnables) + ")";
             }
             
         };
