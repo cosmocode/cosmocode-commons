@@ -20,15 +20,17 @@ package de.cosmocode.commons.converter;
  * Converts ISO 639-2 coded language Strings (3-letter) into ISO 639-1 coded language Strings (2-letter)
  * and vice-versa.
  *
+ * @since 1.8
  * @author Oliver Lorenz
  */
 public interface LanguageIsoConverter {
 
     /**
      * <p> Converts an ISO 639-1 coded language code to ISO 639-2.
+     * Example: toThreeLetter("de") would result in "deu".
      * </p>
-     * <p> Example: toThreeLetter("de") would result in "deu".
-     * </p>
+     * 
+     * @since 1.8
      * @param iso6391 the ISO 639-1 language code
      * @return the ISO 639-2 conversion of the parameter
      * @throws IsoConversionException if no ISO 639-2 code is known for the given ISO 639-1 code
@@ -37,9 +39,10 @@ public interface LanguageIsoConverter {
 
     /**
      * <p> Converts an ISO 639-2 coded language code to ISO 639-1.
+     * Example: toTwoLetter("deu") would result in "de".
      * </p>
-     * <p> Example: toTwoLetter("deu") would result in "de".
-     * </p>
+     * 
+     * @since 1.8
      * @param iso6392 the ISO 639-2 language code
      * @return the ISO 639-1 conversion of the parameter
      * @throws IsoConversionException if no ISO 639-1 code is known for the given ISO 639-2 code

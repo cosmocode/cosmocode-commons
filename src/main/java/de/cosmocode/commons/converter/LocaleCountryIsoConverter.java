@@ -19,6 +19,8 @@ package de.cosmocode.commons.converter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
+import de.cosmocode.commons.Codec;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,9 +31,10 @@ import java.util.MissingResourceException;
 /**
  * A {@link CountryIsoConverter} that is backed by {@link Locale}.
  *
+ * @since 1.8
  * @author Oliver Lorenz
  */
-public final class LocaleCountryIsoConverter implements CountryIsoConverter {
+public final class LocaleCountryIsoConverter extends Codec<Locale, String> implements CountryIsoConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(LocaleCountryIsoConverter.class);
     
@@ -68,5 +71,20 @@ public final class LocaleCountryIsoConverter implements CountryIsoConverter {
 
         // if we arrive here then the Locale class could not find the iso3 code
         throw new IsoConversionException("No known alpha-2 code for " + iso3166Alpha3);
+    }
+
+    @Override
+    public String encode(Locale input) {
+        Preconditions.checkNotNull(input);
+        try {
+            return input.getISO3Country();
+        } catch (MissingResourceException e) {
+            throw new IsoConversionException("No known alpha-3 code for " + input, e);
+        }
+    }
+
+    @Override
+    public Locale decode(String input) {
+        return new Locale("", toAlpha2(input));
     }
 }

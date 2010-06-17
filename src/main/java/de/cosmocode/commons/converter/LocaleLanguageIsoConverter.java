@@ -26,12 +26,15 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
+import de.cosmocode.commons.Codec;
+
 /**
  * A {@link LanguageIsoConverter} that is backed by {@link Locale}.
  *
+ * @since 1.8
  * @author Oliver Lorenz
  */
-public class LocaleLanguageIsoConverter implements LanguageIsoConverter {
+public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements LanguageIsoConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(LocaleLanguageIsoConverter.class);
     
@@ -42,7 +45,7 @@ public class LocaleLanguageIsoConverter implements LanguageIsoConverter {
         try {
             return new Locale(iso6391).getISO3Language();
         } catch (MissingResourceException e) {
-            throw new IsoConversionException("No known three-letter code for " + iso6391, e);
+            throw new IsoConversionException("No known three-letter language code for " + iso6391, e);
         }
     }
     
@@ -68,6 +71,21 @@ public class LocaleLanguageIsoConverter implements LanguageIsoConverter {
 
         // if we arrive here then the Locale class could not find the iso3 code
         throw new IsoConversionException("No known ISO 639-1 language code for " + iso6392);
+    }
+
+    @Override
+    public String encode(Locale input) {
+        Preconditions.checkNotNull(input);
+        try {
+            return input.getISO3Language();
+        } catch (MissingResourceException e) {
+            throw new IsoConversionException("No known three-letter language code for " + input, e);
+        }
+    }
+
+    @Override
+    public Locale decode(String input) {
+        return new Locale("", toTwoLetter(input));
     }
 
 }
