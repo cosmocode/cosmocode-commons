@@ -83,7 +83,7 @@ final class DefaultPackages implements Packages {
     }
 
     private void loadJar(Builder<Class<?>> builder, File file, Iterable<String> packages) throws IOException {
-        LOG.trace("Loading from jar", file);
+        LOG.trace("Loading from jar {}", file);
         final InputStream stream = Files.newInputStreamSupplier(file).getInput();
         
         try {
