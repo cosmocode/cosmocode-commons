@@ -83,7 +83,7 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
         
         @Override
         public int hashCode() {
-            return codec.hashCode();
+            return -codec.hashCode();
         }
 
         @Override
