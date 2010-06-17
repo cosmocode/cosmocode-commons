@@ -110,19 +110,32 @@ public enum DateMode implements Comparator<Date>, Bijection<Long, Date> {
     
     @Override
     public Bijection<Date, Long> inverse() {
-        return new Bijection<Date, Long>() {
-            
-            @Override
-            public Long apply(Date from) {
-                return format(from);
-            }
-            
-            @Override
-            public Bijection<Long, Date> inverse() {
-                return DateMode.this;
-            }
-            
-        };
+        return new InverseDateMode();
+    }
+    
+    /**
+     * Implementation of {@link DateMode#inverse()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private final class InverseDateMode implements Bijection<Date, Long> {
+        
+        @Override
+        public Long apply(Date from) {
+            return format(from);
+        }
+        
+        @Override
+        public Bijection<Long, Date> inverse() {
+            return DateMode.this;
+        }
+        
+        @Override
+        public String toString() {
+            return DateMode.this + ".inverse()";
+        }
+        
     }
     
 }
