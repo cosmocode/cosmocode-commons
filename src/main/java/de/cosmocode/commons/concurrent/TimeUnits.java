@@ -36,8 +36,7 @@ public final class TimeUnits {
     static {
         final Ordering<TimeUnit> ordering = Ordering.natural().reverse();
         final List<TimeUnit> list = Arrays.asList(TimeUnit.values());
-        final List<TimeUnit> sorted = ordering.sortedCopy(list);
-        REVERSED = ImmutableList.copyOf(sorted);
+        REVERSED = ImmutableList.copyOf(ordering.sortedCopy(list));
     }
     
     private TimeUnits() {
