@@ -30,15 +30,6 @@ import com.google.common.base.Function;
  */
 public final class Calendars {
 
-    private static final Function<Calendar, Date> GET_TIME = new Function<Calendar, Date>() {
-        
-        @Override
-        public Date apply(Calendar from) {
-            return from.getTime();
-        }
-        
-    };
-    
     private Calendars() {
         
     }
@@ -50,7 +41,29 @@ public final class Calendars {
      * @return a function converting calendars into dates using {@link Calendar#getTime()}
      */
     public static Function<Calendar, Date> getTime() {
-        return GET_TIME;
+        return GetTime.INSTANCE;
+    }
+    
+    /**
+     * Implementation of {@link Calendars#getTime()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private static enum GetTime implements Function<Calendar, Date> {
+        
+        INSTANCE;
+        
+        @Override
+        public Date apply(Calendar from) {
+            return from.getTime();
+        }
+        
+        @Override
+        public String toString() {
+            return "Calendars.getTime()";
+        }
+        
     }
     
     /**
