@@ -116,28 +116,29 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
 
         @Override
         public String toString() {
-            return codec + ".flip()";
+            return codec + ".inverse()";
         }
         
     }
     
     /**
-     * Composes this codec and the given one into one.
+     * Composes this codec and the given bijection into a codec using
+     * the bijection as an adapter from {@code T->S} and vice versa.
      * 
      * @since 1.8
      * @param <S> the new target type
-     * @param codec the second codec
-     * @return a codec which combines this codec and the given one
-     * @throws NullPointerException if codec is null
+     * @param bijection the bijection
+     * @return a codec which combines this codec and the given bijection
+     * @throws NullPointerException if bijection is null
      */
-    public <S> Codec<F, S> compose(Codec<T, S> codec) {
-        return new ComposedCodec<F, T, S>(this, codec);
+    public <S> Codec<F, S> compose(Bijection<T, S>  bijection) {
+        return new ComposedCodec<F, T, S>(this, bijection);
     }
     
     /**
-     * Implementation of {@link Codec#compose(Codec)}.
+     * Implementation of {@link Codec#compose(Bijection)}.
      *
-     * @since 1.8
+     * @since 1.9
      * @author Willi Schoenborn
      * @param <F> source type
      * @param <T> intermediate type
@@ -145,27 +146,29 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
      */
     private static final class ComposedCodec<F, T, S> extends Codec<F, S> {
         
-        private final Codec<F, T> left;
-        private final Codec<T, S> right;
+        private final Codec<F, T> codec;
+        private final Bijection<T, S> bijection;
+        private final Bijection<S, T> inverse;
         
-        public ComposedCodec(Codec<F, T> left, Codec<T, S> right) {
-            this.left = Preconditions.checkNotNull(left, "Left");
-            this.right = Preconditions.checkNotNull(right, "Right");
+        public ComposedCodec(Codec<F, T> codec, Bijection<T, S> bijection) {
+            this.codec = Preconditions.checkNotNull(codec, "Codec");
+            this.bijection = Preconditions.checkNotNull(bijection, "Bijection");
+            this.inverse = Preconditions.checkNotNull(bijection.inverse(), "%s.inverse()", bijection);
         }
-        
+
         @Override
         public S encode(F input) {
-            return right.encode(left.encode(input));
-        };
+            return bijection.apply(codec.encode(input));
+        }
 
         @Override
         public F decode(S input) {
-            return left.decode(right.decode(input));
-        };
-        
+            return codec.decode(inverse.apply(input));
+        }
+
         @Override
         public int hashCode() {
-            return left.hashCode() ^ right.hashCode();
+            return codec.hashCode() ^ bijection.hashCode();
         }
 
         @Override
@@ -174,7 +177,7 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
                 return true;
             } else if (that instanceof ComposedCodec<?, ?, ?>) {
                 final ComposedCodec<?, ?, ?> other = ComposedCodec.class.cast(that);
-                return left.equals(other.left) && right.equals(other.right);
+                return codec.equals(other.codec) && bijection.equals(other.bijection);
             } else {
                 return false;
             }
@@ -182,7 +185,7 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
 
         @Override
         public String toString() {
-            return left + ".compose(" + right + ")";
+            return codec + ".compose(" + bijection + ")";
         }
         
     }
@@ -356,7 +359,7 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
         public F decode(T input) {
             return inverse.apply(input);
         }
-
+        
         @Override
         public int hashCode() {
             return bijection.hashCode();
