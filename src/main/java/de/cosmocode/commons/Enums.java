@@ -31,20 +31,6 @@ import com.google.common.base.Preconditions;
  */
 public final class Enums {
 
-    private static final Function<Enum<?>, String> NAME_FUNCTION = new Function<Enum<?>, String>() {
-        
-        @Override
-        public String apply(Enum<?> from) {
-            return from.name();
-        }
-        
-        @Override
-        public String toString() {
-            return "Enums.name()";
-        };
-        
-    };
-    
     /**
      * Prevent instantiation.
      */
@@ -67,7 +53,92 @@ public final class Enums {
      */
     @SuppressWarnings("unchecked")
     public static <E extends Enum<?>> Function<E, String> name() {
-        return (Function<E, String>) NAME_FUNCTION;
+        return (Function<E, String>) NameFunction.INSTANCE;
+    }
+    
+    /**
+     * Implementation of {@link Enums#name()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private static enum NameFunction implements Function<Enum<?>, String> {
+        
+        INSTANCE;
+        
+        @Override
+        public String apply(Enum<?> from) {
+            return from.name();
+        }
+        
+        @Override
+        public String toString() {
+            return "Enums.name()";
+        }
+        
+    }
+    
+    /**
+     * Provides a codec which encodes Enums into Strings by using {@link Enum#name()} and
+     * vice versa using {@link Enum#valueOf(Class, String)}.
+     * 
+     * @since 1.9
+     * @param <E> generic enum type
+     * @param type the enum types class literal
+     * @return a codec for enum to string conversion
+     * @throws NullPointerException if type is null
+     */
+    public static <E extends Enum<E>> Codec<E, String> name(Class<E> type) {
+        return new EnumNameCodec<E>(type);
+    }
+    
+    /**
+     * Implementation of {@link Enums#name(Class)}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     * @param <E> generic enum type
+     */
+    private static final class EnumNameCodec<E extends Enum<E>> extends Codec<E, String> {
+        
+        private final Class<E> type;
+        
+        public EnumNameCodec(Class<E> type) {
+            this.type = Preconditions.checkNotNull(type, "Type");
+        }
+
+        @Override
+        public String encode(E input) {
+            return input.name();
+        }
+
+        @Override
+        public E decode(String input) {
+            return Enum.valueOf(type, input);
+        }
+
+        @Override
+        public int hashCode() {
+            return type.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object that) {
+            if (this == that) {
+                return true;
+            } else if (that instanceof EnumNameCodec<?>) {
+                final EnumNameCodec<?> other = EnumNameCodec.class.cast(that);
+                return type.equals(other.type);
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Enums.name(" + type.getName() + ")";
+        }
+        
     }
     
     /**
