@@ -26,21 +26,34 @@ import com.google.common.base.Function;
  */
 public final class Throwables {
 
-    private static final Function<Throwable, String> GET_MESSAGE = new Function<Throwable, String>() {
+    private Throwables() {
+        
+    }
+    
+    public static Function<Throwable, String> getMessage() {
+        return GetMessage.INSTANCE;
+    }
+    
+    /**
+     * Implementation of {@link Throwables#getMessage()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private static enum GetMessage implements Function<Throwable, String> {
+        
+        INSTANCE;
         
         @Override
         public String apply(Throwable from) {
             return from.getMessage();
         }
         
-    };
-
-    private Throwables() {
+        @Override
+        public String toString() {
+            return "Throwables.getMessage()";
+        }
         
-    }
-    
-    public static Function<Throwable, String> getMessage() {
-        return GET_MESSAGE;
     }
     
 }
