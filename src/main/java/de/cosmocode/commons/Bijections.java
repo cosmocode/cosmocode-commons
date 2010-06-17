@@ -170,7 +170,8 @@ public final class Bijections {
      * @return a bijection backed by left and right
      * @throws NullPointerException if left or right is null
      */
-    public static <F, T> Bijection<F, T> compose(Function<F, T> left, Function<T, F> right) {
+    public static <F, T> Bijection<F, T> compose(Function<? super F, ? extends T> left, 
+        Function<? super T, ? extends F> right) {
         return new FunctionBijection<F, T>(left, right);
     }
     
@@ -184,10 +185,10 @@ public final class Bijections {
      */
     private static final class FunctionBijection<F, T> implements Bijection<F, T> {
         
-        private final Function<F, T> left;
-        private final Function<T, F> right;
+        private final Function<? super F, ? extends T> left;
+        private final Function<? super T, ? extends F> right;
         
-        public FunctionBijection(Function<F, T> left, Function<T, F> right) {
+        public FunctionBijection(Function<? super F, ? extends T> left, Function<? super T, ? extends F> right) {
             this.left = Preconditions.checkNotNull(left, "Left");
             this.right = Preconditions.checkNotNull(right, "Right");
         }
@@ -237,9 +238,9 @@ public final class Bijections {
     private static final class InverseFunctionBijection<T, F> implements Bijection<T, F> {
         
         private final Bijection<F, T> original;
-        private final Function<T, F> function;
+        private final Function<? super T, ? extends F> function;
         
-        public InverseFunctionBijection(Bijection<F, T> original, Function<T, F> function) {
+        public InverseFunctionBijection(Bijection<F, T> original, Function<? super T, ? extends F> function) {
             this.original = Preconditions.checkNotNull(original, "Original");
             this.function = Preconditions.checkNotNull(function, "Function");
         }

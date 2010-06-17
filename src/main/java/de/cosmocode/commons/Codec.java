@@ -296,7 +296,7 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
      * @throws NullPointerException if iterable is null
      */
     public Iterable<F> decode(Iterable<? extends T> iterable) {
-        return Iterables.transform(iterable, this.inverse());
+        return inverse().encode(iterable);
     }
 
     /**
@@ -311,7 +311,7 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
      * @throws NullPointerException if iterator is null
      */
     public Iterator<F> decode(Iterator<? extends T> iterator) {
-        return Iterators.transform(iterator, this.inverse());
+        return inverse().encode(iterator);
     }
 
     /**
