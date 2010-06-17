@@ -65,12 +65,9 @@ public final class Bijections {
         private final Bijection<F, T> left;
         private final Bijection<T, S> right;
         
-        private final Bijection<S, F> inverse;
-        
         public ComposedBijection(Bijection<F, T> left, Bijection<T, S> right) {
             this.left = Preconditions.checkNotNull(left, "Left");
             this.right = Preconditions.checkNotNull(right, "Right");
-            this.inverse = new InverseComposedBijection<F, T, S>(this, right.inverse(), left.inverse());
         }
 
         @Override
@@ -80,7 +77,7 @@ public final class Bijections {
         
         @Override
         public Bijection<S, F> inverse() {
-            return inverse;
+            return new InverseComposedBijection<F, T, S>(this, right.inverse(), left.inverse());
         }
 
         @Override
@@ -190,12 +187,9 @@ public final class Bijections {
         private final Function<F, T> left;
         private final Function<T, F> right;
         
-        private final Bijection<T, F> inverse;
-        
         public FunctionBijection(Function<F, T> left, Function<T, F> right) {
             this.left = Preconditions.checkNotNull(left, "Left");
             this.right = Preconditions.checkNotNull(right, "Right");
-            this.inverse = new InverseFunctionBijection<T, F>(this, right);
         }
 
         @Override
@@ -205,7 +199,7 @@ public final class Bijections {
 
         @Override
         public Bijection<T, F> inverse() {
-            return inverse;
+            return new InverseFunctionBijection<T, F>(this, right);
         }
 
         @Override
@@ -351,11 +345,8 @@ public final class Bijections {
         
         private final BiMap<F, T> map;
         
-        private final Bijection<T, F> inverse;
-        
         public BiMapBijection(BiMap<F, T> map) {
             this.map = Preconditions.checkNotNull(map, "Map");
-            this.inverse = new InverseBiMapBijection<T, F>(this, map.inverse());
         }
 
         @Override
@@ -367,7 +358,7 @@ public final class Bijections {
 
         @Override
         public Bijection<T, F> inverse() {
-            return inverse;
+            return new InverseBiMapBijection<T, F>(this, map.inverse());
         }
         
         @Override
@@ -479,13 +470,10 @@ public final class Bijections {
         private final F defaultKey;
         private final T defaultValue;
         
-        private final Bijection<T, F> inverse;
-        
         public BiMapDefaultBijection(BiMap<F, T> map, F defaultKey, T defaultValue) {
             this.map = Preconditions.checkNotNull(map, "Map");
             this.defaultKey = defaultKey;
             this.defaultValue = defaultValue;
-            this.inverse = new InverseBiMapDefaultBijection<T, F>(this, map.inverse(), defaultKey);
         }
 
         @Override
@@ -500,7 +488,7 @@ public final class Bijections {
 
         @Override
         public Bijection<T, F> inverse() {
-            return inverse;
+            return new InverseBiMapDefaultBijection<T, F>(this, map.inverse(), defaultKey);
         }
         
         @Override
