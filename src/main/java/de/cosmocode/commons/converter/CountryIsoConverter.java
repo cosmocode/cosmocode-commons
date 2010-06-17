@@ -32,6 +32,8 @@ public interface CountryIsoConverter {
      * @since 1.8
      * @param iso3166Alpha2 the ISO 3166 alpha-2 country code
      * @return the ISO 3166 alpha-3 conversion of the parameter
+     * @throws NullPointerException if parameter iso3166Alpha2 is null
+     * @throws IllegalArgumentException if parameter iso3166Alpha2 is not in ISO 3166 alpha-2
      * @throws IsoConversionException if no alpha-3 code is known for the given alpha-2 code
      */
     String toAlpha3(final String iso3166Alpha2);
@@ -44,6 +46,7 @@ public interface CountryIsoConverter {
      * @since 1.8
      * @param iso3166Alpha3 the ISO 3166 alpha-3 country code
      * @return the ISO 3166 alpha-2 conversion of the parameter
+     * @throws NullPointerException if parameter iso3166Alpha3 is null
      * @throws IsoConversionException if no alpha-2 code is known for the given alpha-3 code
      */
     String toAlpha2(final String iso3166Alpha3);

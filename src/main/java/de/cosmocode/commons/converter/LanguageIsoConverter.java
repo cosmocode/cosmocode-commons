@@ -33,6 +33,8 @@ public interface LanguageIsoConverter {
      * @since 1.8
      * @param iso6391 the ISO 639-1 language code
      * @return the ISO 639-2 conversion of the parameter
+     * @throws NullPointerException if parameter iso6391 is null
+     * @throws IllegalArgumentException if parameter iso6391 is neither in iso 639-1 nor iso 639-2
      * @throws IsoConversionException if no ISO 639-2 code is known for the given ISO 639-1 code
      */
     String toThreeLetter(final String iso6391);
@@ -41,10 +43,14 @@ public interface LanguageIsoConverter {
      * <p> Converts an ISO 639-2 coded language code to ISO 639-1.
      * Example: toTwoLetter("deu") would result in "de".
      * </p>
+     * <p> If the given parameter is already in ISO 639-2, then it is returned without modifications.
+     * </p>
      * 
      * @since 1.8
      * @param iso6392 the ISO 639-2 language code
      * @return the ISO 639-1 conversion of the parameter
+     * @throws NullPointerException if parameter iso6392 is null
+     * @throws IllegalArgumentException if parameter iso6392 is neither in ISO 639-1 nor ISO 639-2
      * @throws IsoConversionException if no ISO 639-1 code is known for the given ISO 639-2 code
      */
     String toTwoLetter(final String iso6392);

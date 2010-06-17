@@ -27,6 +27,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
 import de.cosmocode.commons.Codec;
+import de.cosmocode.commons.Patterns;
 
 /**
  * A {@link LanguageIsoConverter} that is backed by {@link Locale}.
@@ -42,16 +43,27 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
     
     @Override
     public String toThreeLetter(String iso6391) {
-        try {
-            return new Locale(iso6391).getISO3Language();
-        } catch (MissingResourceException e) {
-            throw new IsoConversionException("No known three-letter language code for " + iso6391, e);
+        if (Patterns.ISO_639_1.matcher(iso6391).matches()) {
+            // ISO 639-1 to ISO 639-2 (two-letter to three-letter)
+            return encode(new Locale(iso6391));
+        } else if (Patterns.ISO_639_2.matcher(iso6391).matches()) {
+            // already ISO 639-2 (three letter)
+            return iso6391;
+        } else {
+            throw new IllegalArgumentException("given language code must be either iso 639-1 or iso 639-2");
         }
     }
     
     @Override
     public String toTwoLetter(String iso6392) {
+        // sanity check on arguments
         Preconditions.checkNotNull(iso6392, "iso6392 must not be null");
+        if (Patterns.ISO_639_1.matcher(iso6392).matches()) {
+            // already ISO 639-1 (two letter)
+            return iso6392;
+        }
+        Preconditions.checkArgument(Patterns.ISO_639_2.matcher(iso6392).matches(), 
+            "Language Code %s not in ISO 639-2", iso6392);
 
         // try to get two letter code from cache
         final String fromCache = cache.get(iso6392);
@@ -64,7 +76,9 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
             final String threeLetter = new Locale(iso6391).getISO3Language();
             if (iso6392.equals(threeLetter)) {
                 LOG.trace("Found ISO 639-1 language code: {} for ISO 639-2 language code: {}", iso6391, iso6392);
-                cache.put(iso6392, iso6391);
+                synchronized (cache) {
+                    cache.put(iso6392, iso6391);
+                }
                 return iso6391;
             }
         }
@@ -85,7 +99,7 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
 
     @Override
     public Locale decode(String input) {
-        return new Locale("", toTwoLetter(input));
+        return new Locale(toTwoLetter(input));
     }
 
 }

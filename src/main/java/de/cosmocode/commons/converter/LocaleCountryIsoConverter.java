@@ -20,6 +20,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
 import de.cosmocode.commons.Codec;
+import de.cosmocode.commons.Patterns;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,16 +43,20 @@ public final class LocaleCountryIsoConverter extends Codec<Locale, String> imple
 
     @Override
     public String toAlpha3(String iso3166Alpha2) {
-        try {
-            return new Locale("", iso3166Alpha2).getISO3Country();
-        } catch (MissingResourceException e) {
-            throw new IsoConversionException("No known alpha-3 code for " + iso3166Alpha2, e);
+        if (Patterns.ISO_3166_1_ALPHA_2.matcher(iso3166Alpha2).matches()) {
+            return encode(new Locale("", iso3166Alpha2));
+        } else {
+            throw new IllegalArgumentException("given country code " + iso3166Alpha2  + " not in ISO 3166 alpha-2");
         }
     }
 
     @Override
     public String toAlpha2(String iso3166Alpha3) {
         Preconditions.checkNotNull(iso3166Alpha3, "iso3166Alpha3 must not be null");
+        if (Patterns.ISO_3166_1_ALPHA_2.matcher(iso3166Alpha3).matches()) {
+            // already ISO 3166-1 alpha-2 (two letter)
+            return iso3166Alpha3;
+        }
 
         // try to get two letter code from cache
         final String fromCache = cache.get(iso3166Alpha3);
@@ -64,7 +69,9 @@ public final class LocaleCountryIsoConverter extends Codec<Locale, String> imple
             final String alpha3 = new Locale("", alpha2).getISO3Country();
             if (iso3166Alpha3.equals(alpha3)) {
                 LOG.trace("Found alpha-2: {} for alpha-3: {}", alpha2, alpha3);
-                cache.put(iso3166Alpha3, alpha2);
+                synchronized (cache) {
+                    cache.put(iso3166Alpha3, alpha2);
+                }
                 return alpha2;
             }
         }
