@@ -16,18 +16,18 @@
 
 package de.cosmocode.commons.converter;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
-
-import de.cosmocode.commons.Codec;
-import de.cosmocode.commons.Patterns;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
+import com.google.common.base.Preconditions;
+
+import de.cosmocode.commons.Codec;
+import de.cosmocode.commons.Patterns;
 
 /**
  * A {@link CountryIsoConverter} that is backed by {@link Locale}.
@@ -39,7 +39,7 @@ public final class LocaleCountryIsoConverter extends Codec<Locale, String> imple
 
     private static final Logger LOG = LoggerFactory.getLogger(LocaleCountryIsoConverter.class);
     
-    private final Map<String, String> cache = Maps.newHashMap();
+    private final ConcurrentMap<String, String> cache = new ConcurrentHashMap<String, String>();
 
     @Override
     public String toAlpha3(String iso3166Alpha2) {
@@ -69,9 +69,7 @@ public final class LocaleCountryIsoConverter extends Codec<Locale, String> imple
             final String alpha3 = new Locale("", alpha2).getISO3Country();
             if (iso3166Alpha3.equals(alpha3)) {
                 LOG.trace("Found alpha-2: {} for alpha-3: {}", alpha2, alpha3);
-                synchronized (cache) {
-                    cache.put(iso3166Alpha3, alpha2);
-                }
+                cache.put(iso3166Alpha3, alpha2);
                 return alpha2;
             }
         }

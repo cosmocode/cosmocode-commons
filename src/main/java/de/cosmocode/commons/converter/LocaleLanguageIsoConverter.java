@@ -17,14 +17,14 @@
 package de.cosmocode.commons.converter;
 
 import java.util.Locale;
-import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 
 import de.cosmocode.commons.Codec;
 import de.cosmocode.commons.Patterns;
@@ -38,8 +38,8 @@ import de.cosmocode.commons.Patterns;
 public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements LanguageIsoConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(LocaleLanguageIsoConverter.class);
-    
-    private final Map<String, String> cache = Maps.newHashMap();
+
+    private final ConcurrentMap<String, String> cache = new ConcurrentHashMap<String, String>();
     
     @Override
     public String toThreeLetter(String iso6391) {
@@ -76,9 +76,7 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
             final String threeLetter = new Locale(iso6391).getISO3Language();
             if (iso6392.equals(threeLetter)) {
                 LOG.trace("Found ISO 639-1 language code: {} for ISO 639-2 language code: {}", iso6391, iso6392);
-                synchronized (cache) {
-                    cache.put(iso6392, iso6391);
-                }
+                cache.put(iso6392, iso6391);
                 return iso6391;
             }
         }
