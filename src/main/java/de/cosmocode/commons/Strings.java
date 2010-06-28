@@ -273,7 +273,8 @@ public final class Strings {
      * @return s
      */
     public static String checkNotEmpty(String s, String message, Object... args) {
-        return Preconditions.checkNotNull(TrimMode.NORMAL.apply(s), message, args);
+        Preconditions.checkArgument(StringUtils.isNotEmpty(s), message, args);
+        return s;
     }
 
     /**
@@ -284,7 +285,7 @@ public final class Strings {
      * @return trimmed version of s
      */
     public static String checkNotBlank(String s) {
-        return checkNotEmpty(s, "");
+        return checkNotBlank(s, "");
     }
 
     /**
@@ -296,7 +297,7 @@ public final class Strings {
      * @return trimmed version of s
      */
     public static String checkNotBlank(String s, String message) {
-        return checkNotEmpty(s, message, EMPTY_ARRAY);
+        return checkNotBlank(s, message, EMPTY_ARRAY);
     }
 
     /**
@@ -309,7 +310,9 @@ public final class Strings {
      * @return trimmed version of s
      */
     public static String checkNotBlank(String s, String message, Object... args) {
-        return Preconditions.checkNotNull(TrimMode.NULL.apply(s), message, args);
+        final String trimmed = TrimMode.NULL.apply(s);
+        Preconditions.checkArgument(trimmed != null, message, args);
+        return trimmed;
     }
     
 }

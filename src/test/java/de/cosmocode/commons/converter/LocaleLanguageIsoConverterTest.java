@@ -74,4 +74,24 @@ public class LocaleLanguageIsoConverterTest implements UnitProvider<LocaleLangua
         }
     }
 
+    /**
+     * Tests {@link LocaleLanguageIsoConverter#toTwoLetter(String)} with a two-letter code.
+     */
+    @Test
+    public void toTwoLetterOfTwoLetter() {
+        final String expected = Locale.GERMAN.getLanguage();
+        final String actual = unit().toTwoLetter(expected);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link LocaleLanguageIsoConverter#toThreeLetter(String)} with a three-letter code.
+     */
+    @Test
+    public void toThreeLetterOfThreeLetter() {
+        final String expected = "deu";
+        final String actual = unit().toThreeLetter(expected);
+        Assert.assertEquals(expected, actual);
+    }
+
 }

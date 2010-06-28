@@ -43,9 +43,14 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
     
     @Override
     public String toThreeLetter(String iso6391) {
+        Preconditions.checkNotNull(iso6391, "iso6391 must not be null");
         if (Patterns.ISO_639_1.matcher(iso6391).matches()) {
             // ISO 639-1 to ISO 639-2 (two-letter to three-letter)
-            return encode(new Locale(iso6391));
+            try {
+                return new Locale(iso6391).getISO3Language();
+            } catch (MissingResourceException e) {
+                throw new IsoConversionException("No known three-letter language code for " + iso6391, e);
+            }
         } else if (Patterns.ISO_639_2.matcher(iso6391).matches()) {
             // already ISO 639-2 (three letter)
             return iso6391;
@@ -87,12 +92,7 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
 
     @Override
     public String encode(Locale input) {
-        Preconditions.checkNotNull(input);
-        try {
-            return input.getISO3Language();
-        } catch (MissingResourceException e) {
-            throw new IsoConversionException("No known three-letter language code for " + input, e);
-        }
+        return toThreeLetter(input.getLanguage());
     }
 
     @Override
