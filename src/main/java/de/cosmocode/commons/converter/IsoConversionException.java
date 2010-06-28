@@ -17,7 +17,9 @@
 package de.cosmocode.commons.converter;
 
 /**
- * Indicates that the country iso conversion by {@link se.turistcentersyd.externals.CountryIsoConverter} failed.
+ * Indicates that the country iso conversion by either
+ * {@link de.cosmocode.commons.converter.CountryIsoConverter} or
+ * {@link de.cosmocode.commons.converter.LanguageIsoConverter} failed.
  *
  * @author Oliver Lorenz
  */
