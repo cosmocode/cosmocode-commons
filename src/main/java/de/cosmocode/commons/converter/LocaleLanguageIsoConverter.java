@@ -21,6 +21,8 @@ import java.util.MissingResourceException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import de.cosmocode.commons.TrimMode;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +56,9 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
         } else if (Patterns.ISO_639_2.matcher(iso6391).matches()) {
             // already ISO 639-2 (three letter)
             return iso6391;
+        } else if (StringUtils.isBlank(iso6391)) {
+            // this is here for convenience, to allow empty languages
+            return TrimMode.EMPTY.apply(iso6391);
         } else {
             throw new IllegalArgumentException("given language code must be either iso 639-1 or iso 639-2");
         }
@@ -66,6 +71,9 @@ public class LocaleLanguageIsoConverter extends Codec<Locale, String> implements
         if (Patterns.ISO_639_1.matcher(iso6392).matches()) {
             // already ISO 639-1 (two letter)
             return iso6392;
+        } else if (StringUtils.isBlank(iso6392)) {
+            // this is here for convenience, to allow empty languages
+            return TrimMode.EMPTY.apply(iso6392);
         }
         Preconditions.checkArgument(Patterns.ISO_639_2.matcher(iso6392).matches(), 
             "Language Code %s not in ISO 639-2", iso6392);

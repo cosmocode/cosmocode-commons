@@ -61,6 +61,26 @@ public class LocaleLanguageIsoConverterTest implements UnitProvider<LocaleLangua
             Assert.assertEquals(expected, actual);
         }
     }
+
+    /**
+     * Tests {@link LocaleLanguageIsoConverter#toThreeLetter(String)} with a three-letter code.
+     */
+    @Test
+    public void toThreeLetterOfThreeLetter() {
+        final String expected = "deu";
+        final String actual = unit().toThreeLetter(expected);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link LocaleLanguageIsoConverter#toThreeLetter(String)} with a blank String.
+     */
+    @Test
+    public void toThreeLetterOfBlank() {
+        final String expected = "";
+        final String actual = unit().toThreeLetter("   ");
+        Assert.assertEquals(expected, actual);
+    }
     
     /**
      * Tests {@link LocaleLanguageIsoConverter#toTwoLetter(String)}.
@@ -85,13 +105,15 @@ public class LocaleLanguageIsoConverterTest implements UnitProvider<LocaleLangua
     }
 
     /**
-     * Tests {@link LocaleLanguageIsoConverter#toThreeLetter(String)} with a three-letter code.
+     * Tests {@link LocaleLanguageIsoConverter#toTwoLetter(String)} with a blank String.
      */
     @Test
-    public void toThreeLetterOfThreeLetter() {
-        final String expected = "deu";
-        final String actual = unit().toThreeLetter(expected);
+    public void toTwoLetterOfBlank() {
+        final String expected = "";
+        final String actual = unit().toTwoLetter("  ");
         Assert.assertEquals(expected, actual);
     }
+
+
 
 }
