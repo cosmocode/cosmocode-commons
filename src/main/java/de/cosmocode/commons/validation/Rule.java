@@ -36,22 +36,24 @@ public interface Rule<T> extends Constraint<T>, Predicate<T> {
      * of this rule and the given rule.
      * 
      * @since 1.9
+     * @param <S> generic type parameter to prevent verbose generics
      * @param that the other rule
      * @return a conjuction rule
      * @throws NullPointerException if that is null
      */
-    Rule<T> and(Rule<? super T> that);
+    <S extends T> Rule<S> and(Rule<? super T> that);
 
     /**
      * Returns a {@link Rule} that is a disjunction
      * of this rule and the given rule.
      * 
      * @since 1.9
+     * @param <S> generic type parameter to prevent verbose generics
      * @param that the other rule
      * @return a disjunction rule
      * @throws NullPointerException if that is null
      */
-    Rule<T> or(Rule<? super T> that);
+    <S extends T> Rule<S> or(Rule<? super T> that);
     
     /**
      * Returns a {@link Rule} that is a negation of this rule.
@@ -66,11 +68,12 @@ public interface Rule<T> extends Constraint<T>, Predicate<T> {
      * one.
      * 
      * @since 1.9 
+     * @param <S> generic type parameter to prevent verbose generics
      * @param that the other rule
      * @return a xor rule
      * @throws NullPointerException if that is null
      */
-    Rule<T> xor(Rule<? super T> that);
+    <S extends T> Rule<S> xor(Rule<? super T> that);
     
     /**
      * Composes this rule into another rule using the specified

@@ -49,68 +49,73 @@ public final class Rules {
      * 
      * @since 1.9
      * @param <C> the generic parameter type
-     * @param comparable the comparable
-     * @return a lt rule comparing input and comparable
-     * @throws NullPointerException if comparable is null
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a lt rule comparing input and value
+     * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<C>> Rule<C> lt(C comparable) {
-        return new LtRule<C>(comparable);
+    public static <C extends Comparable<E>, E> Rule<C> lt(E value) {
+        return new LtRule<C, E>(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is less than or equals to the given comparable.
+     * is less than or equals to the given value.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
-     * @param comparable the comparable
-     * @return a le rule comparing input and comparable
-     * @throws NullPointerException if comparable is null
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a le rule comparing input and value
+     * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<C>> Rule<C> le(C comparable) {
-        return new LeRule<C>(comparable);
+    public static <C extends Comparable<E>, E> Rule<C> le(E value) {
+        return new LeRule<C, E>(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is equals to the given comparable.
+     * is equals to the given value.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
-     * @param comparable the comparable
-     * @return a eq rule comparing input and comparable
-     * @throws NullPointerException if comparable is null
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a eq rule comparing input and value
+     * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<C>> Rule<C> eq(C comparable) {
-        return new EqRule<C>(comparable);
+    public static <C extends Comparable<E>, E> Rule<C> eq(E value) {
+        return new EqRule<C, E>(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is greater than or equals to the given comparable.
+     * is greater than or equals to the given value.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
-     * @param comparable the comparable
-     * @return a ge rule comparing input and comparable
-     * @throws NullPointerException if comparable is null
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a ge rule comparing input and value
+     * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<C>> Rule<C> ge(C comparable) {
-        return new GeRule<C>(comparable);
+    public static <C extends Comparable<E>, E> Rule<C> ge(E value) {
+        return new GeRule<C, E>(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is greater than the given comparable.
+     * is greater than the given value.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
-     * @param comparable the comparable
-     * @return a gt rule comparing input and comparable
-     * @throws NullPointerException if comparable is null
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a gt rule comparing input and value
+     * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<C>> Rule<C> gt(C comparable) {
-        return new GtRule<C>(comparable);
+    public static <C extends Comparable<E>, E> Rule<C> gt(E value) {
+        return new GtRule<C, E>(value);
     }
 
     /**
@@ -119,12 +124,13 @@ public final class Rules {
      * 
      * @since 1.9
      * @param <C> the generic parameter type
+     * @param <E> generic parameter type
      * @param lower the lower bound
      * @param upper the upper bound
      * @return a between rule comparing input with lower and upper
      * @throws NullPointerException if lower or upper is null
      */
-    public static <C extends Comparable<C>> Rule<C> between(C lower, C upper) {
+    public static <C extends Comparable<E>, E> Rule<C> between(E lower, E upper) {
         return gt(lower).and(lt(upper));
     }
     

@@ -55,23 +55,23 @@ public abstract class AbstractRule<T> implements Rule<T> {
     }
 
     @Override
-    public Rule<T> and(Rule<? super T> that) {
-        return new AndRule<T>(this, that);
+    public <S extends T> Rule<S> and(Rule<? super T> that) {
+        return new AndRule<S>(this, that);
+    }
+
+    @Override
+    public <S extends T> Rule<S> or(Rule<? super T> that) {
+        return new OrRule<S>(this, that);
+    }
+
+    @Override
+    public <S extends T> Rule<S> xor(Rule<? super T> that) {
+        return new XorRule<S>(this, that);
     }
 
     @Override
     public Rule<T> not() {
         return new NotRule<T>(this);
-    }
-
-    @Override
-    public Rule<T> or(Rule<? super T> that) {
-        return new OrRule<T>(this, that);
-    }
-
-    @Override
-    public Rule<T> xor(Rule<? super T> that) {
-        return new XorRule<T>(this, that);
     }
 
     @Override

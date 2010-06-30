@@ -8,27 +8,28 @@ import com.google.common.base.Preconditions;
  * @since 1.9
  * @author Willi Schoenborn
  * @param <C> comparable generic parameter type
+ * @param <E> generic parameter type
  */
-final class EqRule<C extends Comparable<C>> extends AbstractRule<C> {
+final class EqRule<C extends Comparable<E>, E> extends AbstractRule<C> {
 
-    private final C comparable;
+    private final E value;
     
-    public EqRule(C comparable) {
-        this.comparable = Preconditions.checkNotNull(comparable, "Comparable");
+    public EqRule(E value) {
+        this.value = Preconditions.checkNotNull(value, "Value");
     }
 
     @Override
     public boolean apply(C input) {
-        return input.compareTo(comparable) == 0;
+        return input.compareTo(value) == 0;
     }
 
     @Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (that instanceof EqRule<?>) {
-            final EqRule<?> other = EqRule.class.cast(that);
-            return comparable.equals(other.comparable);
+        } else if (that instanceof EqRule<?, ?>) {
+            final EqRule<?, ?> other = EqRule.class.cast(that);
+            return value.equals(other.value);
         } else {
             return false;
         }
@@ -36,12 +37,12 @@ final class EqRule<C extends Comparable<C>> extends AbstractRule<C> {
 
     @Override
     public int hashCode() {
-        return comparable.hashCode();
+        return value.hashCode();
     }
 
     @Override
     public String toString() {
-        return "Rules.eq(" + comparable + ")";
+        return "Rules.eq(" + value + ")";
     }
 
 }
