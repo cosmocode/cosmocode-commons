@@ -57,7 +57,7 @@ final class NotRule<T> extends AbstractRule<T> {
     
     @Override
     public int hashCode() {
-        return rule.hashCode();
+        return -rule.hashCode();
     }
     
     @Override
