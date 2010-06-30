@@ -16,7 +16,6 @@
 
 package de.cosmocode.commons.validation;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
 /**
@@ -43,32 +42,90 @@ public final class Rules {
     public static <T> Rule<T> asRule(Predicate<? super T> predicate) {
         return new PredicateRule<T>(predicate);
     }
+    
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is less than the given comparable.
+     * 
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param comparable the comparable
+     * @return a lt rule comparing input and comparable
+     * @throws NullPointerException if comparable is null
+     */
+    public static <C extends Comparable<C>> Rule<C> lt(C comparable) {
+        return new LtRule<C>(comparable);
+    }
 
     /**
-     * Implementation of {@link Rules#asRule(Predicate)}.
-     *
+     * Returns a rule which evaluates to true if the supplied input
+     * is less than or equals to the given comparable.
+     * 
      * @since 1.9
-     * @author Willi Schoenborn
-     * @param <T> generic parameter type
+     * @param <C> the generic parameter type
+     * @param comparable the comparable
+     * @return a le rule comparing input and comparable
+     * @throws NullPointerException if comparable is null
      */
-    private static final class PredicateRule<T> extends AbstractRule<T> {
-        
-        private final Predicate<? super T> predicate;
-        
-        public PredicateRule(Predicate<? super T> predicate) {
-            this.predicate = Preconditions.checkNotNull(predicate, "Predicate");
-        }
+    public static <C extends Comparable<C>> Rule<C> le(C comparable) {
+        return new LeRule<C>(comparable);
+    }
 
-        @Override
-        public boolean apply(T input) {
-            return predicate.apply(input);
-        }
-        
-        @Override
-        public String toString() {
-            return "Rules.asRule(" + predicate + ")";
-        }
-        
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is equals to the given comparable.
+     * 
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param comparable the comparable
+     * @return a eq rule comparing input and comparable
+     * @throws NullPointerException if comparable is null
+     */
+    public static <C extends Comparable<C>> Rule<C> eq(C comparable) {
+        return new EqRule<C>(comparable);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is greater than or equals to the given comparable.
+     * 
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param comparable the comparable
+     * @return a ge rule comparing input and comparable
+     * @throws NullPointerException if comparable is null
+     */
+    public static <C extends Comparable<C>> Rule<C> ge(C comparable) {
+        return new GeRule<C>(comparable);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is greater than the given comparable.
+     * 
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param comparable the comparable
+     * @return a gt rule comparing input and comparable
+     * @throws NullPointerException if comparable is null
+     */
+    public static <C extends Comparable<C>> Rule<C> gt(C comparable) {
+        return new GtRule<C>(comparable);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is greater than lower and less than upper.
+     * 
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param lower the lower bound
+     * @param upper the upper bound
+     * @return a between rule comparing input with lower and upper
+     * @throws NullPointerException if lower or upper is null
+     */
+    public static <C extends Comparable<C>> Rule<C> between(C lower, C upper) {
+        return gt(lower).and(lt(upper));
     }
     
 }
