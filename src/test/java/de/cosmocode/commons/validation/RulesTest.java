@@ -15,7 +15,7 @@ import com.google.common.base.Predicate;
 public final class RulesTest {
 
     /**
-     * Tests {@link Rules#asRule(Predicate)}.
+     * Tests {@link Rules#of(Predicate)}.
      */
     @Test
     public void asRule() {
@@ -28,7 +28,7 @@ public final class RulesTest {
             
         };
         
-        final Rule<String> rule = Rules.asRule(predicate);
+        final Rule<String> rule = Rules.of(predicate);
         
         Assert.assertTrue(rule.apply(""));
         Assert.assertFalse(rule.not().apply(""));
@@ -44,6 +44,16 @@ public final class RulesTest {
         Assert.assertFalse(isSeconds.apply(TimeUnit.MILLISECONDS));
         Assert.assertTrue(isSeconds.apply(TimeUnit.SECONDS));
         Assert.assertFalse(isSeconds.apply(TimeUnit.DAYS));
+    }
+    
+    /**
+     * Tests {@link Rules#between(Object, Object)}.
+     */
+    @Test
+    public void between() {
+        final Rule<TimeUnit> between = Rules.between(TimeUnit.NANOSECONDS, TimeUnit.SECONDS).not();
+        Assert.assertFalse(between.apply(TimeUnit.MICROSECONDS));
+        Assert.assertTrue(between.apply(TimeUnit.HOURS));
     }
 
 }

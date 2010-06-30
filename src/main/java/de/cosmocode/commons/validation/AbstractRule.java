@@ -80,6 +80,11 @@ public abstract class AbstractRule<T> implements Rule<T> {
     }
 
     @Override
+    public Rule<T> transform(Function<? super T, ? extends T> function) {
+        return new TransformingRule<T>(this, function);
+    }
+    
+    @Override
     public abstract String toString();
 
 }

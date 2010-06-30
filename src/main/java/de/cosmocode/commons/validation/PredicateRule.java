@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
 /**
- * Implementation of {@link Rules#asRule(Predicate)}.
+ * Implementation of {@link Rules#of(Predicate)}.
  *
  * @since 1.9
  * @author Willi Schoenborn

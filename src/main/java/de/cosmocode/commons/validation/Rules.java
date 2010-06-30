@@ -39,8 +39,14 @@ public final class Rules {
      * @return a rule backed by the given predicate
      * @throws NullPointerException if predicate is null
      */
-    public static <T> Rule<T> asRule(Predicate<? super T> predicate) {
-        return new PredicateRule<T>(predicate);
+    public static <T> Rule<T> of(Predicate<? super T> predicate) {
+        if (predicate instanceof Rule<?>) {
+            @SuppressWarnings("unchecked")
+            final Rule<T> rule = (Rule<T>) predicate;
+            return rule;
+        } else {
+            return new PredicateRule<T>(predicate);
+        }
     }
     
     /**

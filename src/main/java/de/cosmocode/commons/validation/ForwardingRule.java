@@ -57,7 +57,7 @@ abstract class ForwardingRule<T> extends ForwardingObject implements Rule<T> {
     }
 
     @Override
-    public Rule<T> not() {
+    public <S extends T> Rule<S> not() {
         return delegate().not();
     }
 
