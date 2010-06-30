@@ -17,8 +17,8 @@
 package de.cosmocode.commons.validation;
 
 import com.google.common.base.Function;
-
-import de.cosmocode.commons.Conditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Constraint;
 
 /**
  * Abstract {@link Rule} implementation.
@@ -31,7 +31,27 @@ public abstract class AbstractRule<T> implements Rule<T> {
 
     @Override
     public T checkElement(T element) {
-        return Conditions.checkArgument(this, element);
+        if (apply(element)) {
+            return transform(element);
+        } else {
+            throw new IllegalArgumentException(String.format("%s does not satisfy %s", element, this));
+        }
+    }
+    
+    /**
+     * A hook called by {@link Constraint#checkElement(Object)} in case the supplied
+     * element satisifies {@link Predicate#apply(Object)} of this instance.
+     * 
+     * <p>
+     *   The default implementation just returns the parameter.
+     * </p>
+     * 
+     * @since 1.9
+     * @param element the supplied element
+     * @return element
+     */
+    protected T transform(T element) {
+        return element;
     }
 
     @Override
