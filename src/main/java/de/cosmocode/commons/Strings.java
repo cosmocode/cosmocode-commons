@@ -23,10 +23,10 @@ import org.apache.commons.lang.StringUtils;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import de.cosmocode.commons.predicates.AbstractPredicate;
+import de.cosmocode.commons.validation.AbstractRule;
+import de.cosmocode.commons.validation.Rule;
 
 /**
  * Utility class inspired by {@link StringUtils},
@@ -160,17 +160,17 @@ public final class Strings {
     }
     
     /**
-     * Creates a {@link Predicate} which evaluates to true
+     * Creates a {@link Rule} which evaluates to true
      * when passed in a string which contains the specified char sequence.
      * 
      * @since 1.6
      * @param s the char sequence which should be contained in the input
-     * @return a predicate which returns true when the given input contains s
+     * @return a rule which returns true when the given input contains s
      * @throws NullPointerException if s is null
      */
-    public static Predicate<String> contains(CharSequence s) {
+    public static Rule<String> contains(CharSequence s) {
         Preconditions.checkNotNull(s, "String");
-        return new ContainsPredicate(s);
+        return new ContainsRule(s);
     }
     
     /**
@@ -180,11 +180,11 @@ public final class Strings {
      * @see Strings#contains(CharSequence)
      * @author Willi Schoenborn
      */
-    private static final class ContainsPredicate extends AbstractPredicate<String> {
+    private static final class ContainsRule extends AbstractRule<String> {
         
         private final CharSequence s;
         
-        public ContainsPredicate(CharSequence s) {
+        public ContainsRule(CharSequence s) {
             this.s = s;
         }
       
@@ -201,16 +201,16 @@ public final class Strings {
     }
     
     /**
-     * Creates a {@link Predicate} which evaluates to true
+     * Creates a {@link Rule} which evaluates to true
      * when passed in a char sequence which is contained in the specified string.
      * 
      * @since 1.6
      * @param s the string which should contain the input
-     * @return a predicate which returns true when s contains the given char sequence
+     * @return a rule which returns true when s contains the given char sequence
      * @throws NullPointerException if s is null
      */
-    public static Predicate<CharSequence> containedIn(String s) {
-        return new ContainedInPredicate(s);
+    public static Rule<CharSequence> containedIn(String s) {
+        return new ContainedInRule(s);
     }
     
     /**
@@ -220,11 +220,11 @@ public final class Strings {
      * @see Strings#containedIn(String)
      * @author Willi Schoenborn
      */
-    private static final class ContainedInPredicate extends AbstractPredicate<CharSequence> {
+    private static final class ContainedInRule extends AbstractRule<CharSequence> {
         
         private final String s;
         
-        public ContainedInPredicate(String s) {
+        public ContainedInRule(String s) {
             this.s = s;
         }
         
