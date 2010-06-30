@@ -19,7 +19,7 @@ final class GeRule<C extends Comparable<C>> extends AbstractRule<C> {
 
     @Override
     public boolean apply(C input) {
-        return input.compareTo(comparable) > 0;
+        return input.compareTo(comparable) >= 0;
     }
 
     @Override
