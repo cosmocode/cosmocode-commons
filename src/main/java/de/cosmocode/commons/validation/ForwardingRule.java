@@ -17,6 +17,7 @@
 package de.cosmocode.commons.validation;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ForwardingObject;
 
 /**
@@ -47,15 +48,30 @@ abstract class ForwardingRule<T> extends ForwardingObject implements Rule<T> {
     }
 
     @Override
+    public <S extends T> Rule<S> and(Predicate<? super T> that) {
+        return delegate().and(that);
+    }
+    
+    @Override
     public <S extends T> Rule<S> or(Rule<? super T> that) {
         return delegate().or(that);
     }
 
     @Override
+    public <S extends T> Rule<S> or(Predicate<? super T> that) {
+        return delegate().or(that);
+    }
+    
+    @Override
     public <S extends T> Rule<S> xor(Rule<? super T> that) {
         return delegate().xor(that);
     }
 
+    @Override
+    public <S extends T> Rule<S> xor(Predicate<? super T> that) {
+        return delegate().xor(that);
+    }
+    
     @Override
     public <S extends T> Rule<S> not() {
         return delegate().not();
