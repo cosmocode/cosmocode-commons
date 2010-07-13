@@ -46,6 +46,20 @@ public interface Rule<T> extends Constraint<T>, Predicate<T> {
     <S extends T> Rule<S> and(Rule<? super T> that);
 
     /**
+     * Returns a {@link Rule} that is a conjunction
+     * of this rule and the given predicate.
+     * 
+     * @since 1.9
+     * @param <S> generic type parameter to prevent verbose generics
+     * @param that the other predicate
+     * @return a conjuction rule
+     * @throws NullPointerException if that is null
+     */
+    // type parameter <S> lets us avoid the extra <String> in statements like:
+    // Strings.contains("a").<String>and(Strings.contains("b"));
+    <S extends T> Rule<S> and(Predicate<? super T> that);
+
+    /**
      * Returns a {@link Rule} that is a disjunction
      * of this rule and the given rule.
      * 
@@ -58,6 +72,21 @@ public interface Rule<T> extends Constraint<T>, Predicate<T> {
     // type parameter <S> lets us avoid the extra <String> in statements like:
     // Strings.contains("a").<String>or(Strings.contains("b"));
     <S extends T> Rule<S> or(Rule<? super T> that);
+
+
+    /**
+     * Returns a {@link Rule} that is a disjunction
+     * of this rule and the given predicate.
+     * 
+     * @since 1.9
+     * @param <S> generic type parameter to prevent verbose generics
+     * @param that the other predicate
+     * @return a disjunction rule
+     * @throws NullPointerException if that is null
+     */
+    // type parameter <S> lets us avoid the extra <String> in statements like:
+    // Strings.contains("a").<String>or(Strings.contains("b"));
+    <S extends T> Rule<S> or(Predicate<? super T> that);
     
     /**
      * Returns a {@link Rule} that is a negation of this rule.
@@ -83,6 +112,19 @@ public interface Rule<T> extends Constraint<T>, Predicate<T> {
     // type parameter <S> lets us avoid the extra <String> in statements like:
     // Strings.contains("a").<String>xor(Strings.contains("b"));
     <S extends T> Rule<S> xor(Rule<? super T> that);
+
+    /**
+     * Returns a xor {@link Rule} of this rule and the given predicate.
+     * 
+     * @since 1.9 
+     * @param <S> generic type parameter to prevent verbose generics
+     * @param that the other predicate
+     * @return a xor rule
+     * @throws NullPointerException if that is null
+     */
+    // type parameter <S> lets us avoid the extra <String> in statements like:
+    // Strings.contains("a").<String>xor(Strings.contains("b"));
+    <S extends T> Rule<S> xor(Predicate<? super T> that);
     
     /**
      * Composes this rule into another rule using the specified
@@ -95,17 +137,5 @@ public interface Rule<T> extends Constraint<T>, Predicate<T> {
      * @throws NullPointerException if function is null
      */
     <S> Rule<S> compose(Function<? super S, ? extends T> function);
-    
-    /**
-     * Returns a rule which is backed by this rule and transforms elements
-     * passed to {@link Constraint#checkElement(Object)} using the specified
-     * function.
-     * 
-     * @since 1.9
-     * @param function the function to be called upon checkElement calls
-     * @return a Rule backed by this rule and the given function
-     * @throws NullPointerException if function is null
-     */
-    Rule<T> transform(Function<? super T, ? extends T> function);
     
 }

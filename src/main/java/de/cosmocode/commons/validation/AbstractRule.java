@@ -58,15 +58,30 @@ public abstract class AbstractRule<T> implements Rule<T> {
     public <S extends T> Rule<S> and(Rule<? super T> that) {
         return new AndRule<S>(this, that);
     }
+    
+    @Override
+    public <S extends T> Rule<S> and(Predicate<? super T> that) {
+        return and(Rules.of(that));
+    }
 
     @Override
     public <S extends T> Rule<S> or(Rule<? super T> that) {
         return new OrRule<S>(this, that);
     }
+    
+    @Override
+    public <S extends T> Rule<S> or(Predicate<? super T> that) {
+        return or(Rules.of(that));
+    }
 
     @Override
     public <S extends T> Rule<S> xor(Rule<? super T> that) {
         return new XorRule<S>(this, that);
+    }
+    
+    @Override
+    public <S extends T> Rule<S> xor(Predicate<? super T> that) {
+        return xor(Rules.of(that));
     }
 
     @Override
@@ -79,11 +94,6 @@ public abstract class AbstractRule<T> implements Rule<T> {
         return new ComposedRule<T, S>(this, function);
     }
 
-    @Override
-    public Rule<T> transform(Function<? super T, ? extends T> function) {
-        return new TransformingRule<T>(this, function);
-    }
-    
     @Override
     public abstract String toString();
 
