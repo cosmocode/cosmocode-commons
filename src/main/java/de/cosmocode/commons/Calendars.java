@@ -50,7 +50,7 @@ public final class Calendars {
      * @since 1.9
      * @author Willi Schoenborn
      */
-    private static enum GetTime implements Function<Calendar, Date> {
+    private enum GetTime implements Function<Calendar, Date> {
         
         INSTANCE;
         
