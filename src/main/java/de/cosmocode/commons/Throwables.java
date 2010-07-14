@@ -40,7 +40,7 @@ public final class Throwables {
      * @since 1.9
      * @author Willi Schoenborn
      */
-    private static enum GetMessage implements Function<Throwable, String> {
+    private enum GetMessage implements Function<Throwable, String> {
         
         INSTANCE;
         

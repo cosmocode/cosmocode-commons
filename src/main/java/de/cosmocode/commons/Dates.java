@@ -21,9 +21,9 @@ import java.util.Date;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
-import de.cosmocode.commons.predicates.AbstractPredicate;
+import de.cosmocode.commons.validation.AbstractRule;
+import de.cosmocode.commons.validation.Rule;
 
 /**
  * Utility class providing handy methods
@@ -85,18 +85,18 @@ public final class Dates {
     }
 
     /**
-     * Creates a {@link Predicate} which evaluates to true
+     * Creates a {@link Rule} which evaluates to true
      * when passed in a date which is before the specified date.
      * 
      * @since 1.6
      * @see Date#before(Date)
      * @param when the maximum date
-     * @return a predicate which returns true for all date before the specified date
+     * @return a rule which returns true for all date before the specified date
      * @throws NullPointerException if when is null
      */
-    public static Predicate<Date> before(Date when) {
+    public static Rule<Date> before(Date when) {
         Preconditions.checkNotNull(when, "When");
-        return new BeforePredicate(when);
+        return new BeforeRule(when);
     }
     
     /**
@@ -106,11 +106,11 @@ public final class Dates {
      * @see Dates#before(Date)
      * @author Willi Schoenborn
      */
-    private static final class BeforePredicate extends AbstractPredicate<Date> {
+    private static final class BeforeRule extends AbstractRule<Date> {
         
         private final Date when;
         
-        public BeforePredicate(Date when) {
+        public BeforeRule(Date when) {
             this.when = when;
         }
         
@@ -127,18 +127,18 @@ public final class Dates {
     }
 
     /**
-     * Creates a {@link Predicate} which evaluates to true
+     * Creates a {@link Rule} which evaluates to true
      * when passed in a date which is after the specified date.
      * 
      * @since 1.6
      * @see Date#after(Date)
      * @param when the minimum date
-     * @return a predicate which returns true for all date after the specified date
+     * @return a rule which returns true for all date after the specified date
      * @throws NullPointerException if when is null
      */
-    public static Predicate<Date> after(Date when) {
+    public static Rule<Date> after(Date when) {
         Preconditions.checkNotNull(when, "When");
-        return new AfterPredicate(when);
+        return new AfterRule(when);
     }
 
     /**
@@ -148,11 +148,11 @@ public final class Dates {
      * @see Dates#after(Date)
      * @author Willi Schoenborn
      */
-    private static final class AfterPredicate extends AbstractPredicate<Date> {
+    private static final class AfterRule extends AbstractRule<Date> {
         
         private final Date when;
         
-        public AfterPredicate(Date when) {
+        public AfterRule(Date when) {
             this.when = when;
         }
         
@@ -179,10 +179,10 @@ public final class Dates {
      * @param start the minimum date
      * @param end the maximum date
      * @return a predicate which returns true for all date after the specified start and before the end
-     * @throws NullPointerException if when is null
+     * @throws NullPointerException if start or end is null
      */
     public static Predicate<Date> between(Date start, Date end) {
-        return Predicates.and(after(start), before(end));
+        return after(start).and(before(end));
     }
     
 }

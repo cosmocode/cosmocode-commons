@@ -16,9 +16,13 @@
 
 package de.cosmocode.commons.reflect;
 
+import java.util.Comparator;
 import java.util.concurrent.ConcurrentMap;
 
+import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.MapMaker;
+import com.google.common.collect.Ordering;
 
 /**
  * Static utility class for {@link Class}es.
@@ -29,6 +33,9 @@ import com.google.common.collect.MapMaker;
 public final class Classes {
 
     private static final ConcurrentMap<String, Class<?>> CACHE = new MapMaker().softValues().makeMap();
+    
+    private static final Ordering<Class<?>> ORDER_BY_NAME = Ordering.natural().onResultOf(Classes.getName());
+    private static final Ordering<Class<?>> ORDER_BY_HIERARCHY = Classes.orderByHierarchy(Classes.orderByName());
     
     private Classes() {
         
@@ -52,6 +59,83 @@ public final class Classes {
         final Class<?> type = Class.forName(name);
         CACHE.put(name, type);
         return type;
+    }
+    
+    public static Function<Class<?>, String> getName() {
+        return GetNameFunction.INSTANCE;
+    }
+    
+    private enum GetNameFunction implements Function<Class<?>, String> {
+        
+        INSTANCE;
+        
+        @Override
+        public String apply(Class<?> from) {
+            return from.getName();
+        };
+        
+        @Override
+        public String toString() {
+            return "Classes.getName()";
+        }
+        
+    }
+    
+    public static Ordering<Class<?>> orderByName() {
+        return Classes.ORDER_BY_NAME;
+    }
+    
+    public static Ordering<Class<?>> orderByHierarchy() {
+        return Classes.ORDER_BY_HIERARCHY;
+    }
+    
+    public static Ordering<Class<?>> orderByHierarchy(Comparator<Class<?>> comparator) {
+        return new HierarchyOrdering(comparator);
+    }
+    
+    private static final class HierarchyOrdering extends Ordering<Class<?>> {
+        
+        private final Comparator<Class<?>> comparator;
+        
+        public HierarchyOrdering(Comparator<Class<?>> comparator) {
+            this.comparator = Preconditions.checkNotNull(comparator, "Comparator");
+        }
+        
+        @Override
+        public int compare(Class<?> left, Class<?> right) {
+            if (left.equals(right)) {
+                return 0;
+            } else if (left.isAssignableFrom(right)) {
+                return 1;
+            } else if (right.isAssignableFrom(left)) {
+                return -1;
+            } else {
+                return comparator.compare(left, right);
+            }
+        }
+        
+        @Override
+        public boolean equals(Object that) {
+            if (this == that) {
+                return true;
+            } else if (that instanceof HierarchyOrdering) {
+                final HierarchyOrdering other = HierarchyOrdering.class.cast(that);
+                return comparator.equals(other.comparator);
+            } else {
+                return false;
+            }
+        }
+        
+        @Override
+        public int hashCode() {
+            return comparator.hashCode();
+        }
+        
+        @Override
+        public String toString() {
+            return "Classes.orderByHierarchy(" + comparator + ")";
+        }
+        
     }
     
 }
