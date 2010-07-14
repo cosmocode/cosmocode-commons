@@ -16,7 +16,11 @@
 
 package de.cosmocode.commons;
 
+import java.text.Collator;
 import java.util.Collection;
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -24,6 +28,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
 
 import de.cosmocode.commons.validation.AbstractRule;
 import de.cosmocode.commons.validation.Rule;
@@ -35,6 +40,18 @@ import de.cosmocode.commons.validation.Rule;
  * @author Willi Schoenborn
  */
 public final class Strings {
+
+    /**
+     * Natural ordering on {@link String}s which trims comparee
+     * first using {@link TrimMode#NULL} and puts nulls to the end.
+     */
+    public static final Ordering<String> CASE_SENSITIVE = Ordering.natural().nullsLast().onResultOf(TrimMode.NULL);
+    
+    /**
+     * A case-insensitive version of {@link Strings#CASE_SENSITIVE}.
+     */
+    public static final Ordering<String> CASE_INSENSITIVE = Ordering.from(String.CASE_INSENSITIVE_ORDER).
+        nullsLast().onResultOf(TrimMode.NULL);
     
     public static final String DEFAULT_DELIMITER = " ";
     
@@ -44,6 +61,240 @@ public final class Strings {
      * Prevent instantiation.
      */
     private Strings() {
+        
+    }
+
+    /**
+     * Creates an {@link Ordering} which uses a {@link Collator} based
+     * on the given {@link Locale} to sort Strings.
+     * 
+     * @param locale the desired locale
+     * @return a new {@link Ordering} backed by a {@link Collator}
+     * @throws NullPointerException if locale is null
+     */
+    public static Ordering<String> orderBy(@Nonnull Locale locale) {
+        return new CollatorOrdering(locale);
+    }
+
+    /**
+     * An {@link Ordering} which is based on a given {@link Collator}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private static final class CollatorOrdering extends Ordering<String> {
+
+        private final Locale locale;
+        private final Collator collator;
+
+        public CollatorOrdering(Locale locale) {
+            this.locale = Preconditions.checkNotNull(locale, "Locale");
+            this.collator = Collator.getInstance(locale);
+        }
+        
+        @Override
+        public int compare(String left, String right) {
+            return collator.compare(left, right);
+        }
+        
+        @Override
+        public String toString() {
+            return "Strings.orderBy(" + locale + ")";
+        }
+        
+    }
+    
+    /**
+     * Returns a Function able to convert strings into their lowercase counterparts
+     * using {@link String#toLowerCase()}.
+     * 
+     * <p>
+     *   The returned function handles null by returning them.
+     * </p>
+     * 
+     * @since 1.9
+     * @return a function covnerting strings to lowercase
+     */
+    public static Function<String, String> toLowerCase() {
+        return LowerCaseFunction.INSTANCE;
+    }
+    
+    /**
+     * Implementation for {@link Strings#toLowerCase()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private enum LowerCaseFunction implements Function<String, String> {
+        
+        INSTANCE;
+
+        @Override
+        public String apply(String from) {
+            return from == null ? null : from.toLowerCase();
+        }
+        
+        @Override
+        public String toString() {
+            return "Strings.toLowerCase()";
+        }
+        
+    }
+    
+    /**
+     * Returns a Function able to convert strings into their lowercase counterparts
+     * using {@link String#toLowerCase(Locale))}.
+     * 
+     * <p>
+     *   The returned function handles null by returning them.
+     * </p>
+     * 
+     * @since 1.9
+     * @param locale the locale being used to convert to lowercase
+     * @return a function converting strings to lowercase
+     * @throws NullPointerException if locale is null
+     */
+    public static Function<String, String> toLowerCase(@Nonnull Locale locale) {
+        return new LocaleAwareLowerCaseFunction(locale);
+    }
+    
+    /**
+     * Implementation for {@link Strings#toLowerCase(Locale)}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private static final class LocaleAwareLowerCaseFunction extends AbstractFunction<String, String> {
+
+        private final Locale locale;
+        
+        public LocaleAwareLowerCaseFunction(Locale locale) {
+            this.locale = Preconditions.checkNotNull(locale, "Locale");
+        }
+        
+        @Override
+        public String apply(String from) {
+            return from == null ? null : from.toLowerCase(locale);
+        }
+        
+        @Override
+        public boolean equals(Object that) {
+            if (this == that) {
+                return true;
+            } else if (that instanceof LocaleAwareLowerCaseFunction) {
+                final LocaleAwareLowerCaseFunction other = LocaleAwareLowerCaseFunction.class.cast(that);
+                return locale.equals(other.locale);
+            } else {
+                return false;
+            }
+        }
+        
+        @Override
+        public int hashCode() {
+            return locale.hashCode();
+        }
+        
+        @Override
+        public String toString() {
+            return "Strings.toLowerCase(" + locale + ")";
+        }
+        
+    }
+
+    /**
+     * Returns a Function able to convert strings into their uppercase counterparts
+     * using {@link String#toUpperCase()}.
+     * 
+     * <p>
+     *   The returned function handles null by returning them.
+     * </p>
+     * 
+     * @since 1.9
+     * @return a function covnerting strings to uppercase
+     */
+    public static Function<String, String> toUpperCase() {
+        return UpperCaseFunction.INSTANCE;
+    }
+    
+    /**
+     * Implementation for {@link Strings#toUpperCase()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private enum UpperCaseFunction implements Function<String, String> {
+    
+        INSTANCE;
+        
+        @Override
+        public String apply(String from) {
+            return from == null ? null : from.toUpperCase();
+        }
+        
+        @Override
+        public String toString() {
+            return "Strings.toUpperCase()";
+        }
+        
+    }
+
+    /**
+     * Returns a Function able to convert strings into their uppercase counterparts
+     * using {@link String#toUpperCase(Locale)}.
+     * 
+     * <p>
+     *   The returned function handles null by returning them.
+     * </p>
+     * 
+     * @since 1.9
+     * @param locale the locale being used to convert to uppercase
+     * @return a function converting strings to uppercase
+     * @throws NullPointerException if locale is null
+     */
+    public static Function<String, String> toUpperCase(@Nonnull Locale locale) {
+        return new LocaleAwareUpperCaseFunction(locale);
+    }
+    
+    /**
+     * Implementation for {@link Strings#toUpperCase(Locale)}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private static final class LocaleAwareUpperCaseFunction extends AbstractFunction<String, String> {
+        
+        private final Locale locale;
+        
+        public LocaleAwareUpperCaseFunction(Locale locale) {
+            this.locale = Preconditions.checkNotNull(locale, "Locale");
+        }
+        
+        @Override
+        public String apply(String from) {
+            return from == null ? null : from.toUpperCase(locale);
+        }
+        
+        @Override
+        public boolean equals(Object that) {
+            if (this == that) {
+                return true;
+            } else if (that instanceof LocaleAwareUpperCaseFunction) {
+                final LocaleAwareUpperCaseFunction other = LocaleAwareUpperCaseFunction.class.cast(that);
+                return locale.equals(other.locale);
+            } else {
+                return false;
+            }
+        }
+        
+        @Override
+        public int hashCode() {
+            return locale.hashCode();
+        }
+        
+        @Override
+        public String toString() {
+            return "Strings.toUpperCase(" + locale + ")";
+        }
         
     }
     
@@ -67,7 +318,7 @@ public final class Strings {
      * which transforms instances of T into Strings.
      * 
      * Calling this method is equivalent to
-     * {@code StringUtility.join(collection, " ", walker}
+     * {@code Strings.join(collection, " ", walker}
      * 
      * @deprecated use {@link Joiner}, {@link Function} and {@link Iterables#transform(Iterable, Function)} instead
      * 
@@ -169,7 +420,7 @@ public final class Strings {
      * @throws NullPointerException if s is null
      */
     public static Rule<String> contains(CharSequence s) {
-        Preconditions.checkNotNull(s, "String");
+        Preconditions.checkNotNull(s, "CharSequence");
         return new ContainsRule(s);
     }
     
@@ -195,7 +446,7 @@ public final class Strings {
 
         @Override
         public String toString() {
-            return String.format("Strings.contains(%s)", s);
+            return "Strings.contains(" + s + ")";
         }
         
     }
@@ -210,6 +461,7 @@ public final class Strings {
      * @throws NullPointerException if s is null
      */
     public static Rule<CharSequence> containedIn(String s) {
+        Preconditions.checkNotNull(s, "String");
         return new ContainedInRule(s);
     }
     
@@ -235,7 +487,7 @@ public final class Strings {
         
         @Override
         public String toString() {
-            return String.format("Strings.containedIn(%s)", s);
+            return "Strings.containedIn(" + s + ")";
         }
         
     }
@@ -248,7 +500,7 @@ public final class Strings {
      * @return s
      */
     public static String checkNotEmpty(String s) {
-        return checkNotEmpty(s, "");
+        return checkNotEmpty(s, "s must not be empty but was '%s'", s);
     }
 
     /**
@@ -282,10 +534,10 @@ public final class Strings {
      * 
      * @since 1.6
      * @param s the string being checked
-     * @return trimmed version of s
+     * @return version of s
      */
     public static String checkNotBlank(String s) {
-        return checkNotBlank(s, "");
+        return checkNotBlank(s, "s must not be blank but was '%s'", s);
     }
 
     /**
@@ -294,7 +546,7 @@ public final class Strings {
      * @since 1.6
      * @param s the string being checked
      * @param message the error message
-     * @return trimmed version of s
+     * @return version of s
      */
     public static String checkNotBlank(String s, String message) {
         return checkNotBlank(s, message, EMPTY_ARRAY);
@@ -307,12 +559,11 @@ public final class Strings {
      * @param s the string being checked
      * @param args the error message arguments
      * @param message the error message
-     * @return trimmed version of s
+     * @return version of s
      */
     public static String checkNotBlank(String s, String message, Object... args) {
-        final String trimmed = TrimMode.NULL.apply(s);
-        Preconditions.checkArgument(trimmed != null, message, args);
-        return trimmed;
+        Preconditions.checkArgument(StringUtils.isNotBlank(s), message, args);
+        return s;
     }
     
 }

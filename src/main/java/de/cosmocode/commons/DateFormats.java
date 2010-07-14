@@ -27,14 +27,32 @@ import java.util.Locale;
  */
 public final class DateFormats {
 
+    /**
+     * DateFormat for ISO 8061.
+     * 
+     * @deprecated use {@link DateFormats#iso8061()} instead
+     */
+    @Deprecated
     public static final DateFormat ISO_8061 = DateFormats.concurrent(
         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")
     );
-    
+
+    /**
+     * DateFormat for RFC 822.
+     * 
+     * @deprecated use {@link DateFormats#rfc822()()} instead
+     */
+    @Deprecated
     public static final DateFormat RFC_822 = DateFormats.concurrent(
         new SimpleDateFormat("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US)
     );
-    
+
+    /**
+     * DateFormat for RSS 2.0.
+     * 
+     * @deprecated use {@link DateFormats#rss20()} instead
+     */
+    @Deprecated
     public static final DateFormat RSS_20 = DateFormats.concurrent(
         new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
     );
@@ -55,15 +73,29 @@ public final class DateFormats {
      *   thread safety. Consider implementing an immutable version.
      * <p>
      * 
+     * @deprecated use a separate {@link DateFormat} for each thread, this implementation uses synchronization
      * @param format the {@link DateFormat} to decorate
      * @return a threadsafe version of the {@link DateFormat}
      */
+    @Deprecated
     public static DateFormat concurrent(DateFormat format) {
         if (format instanceof ConcurrentDateFormat) {
             return ConcurrentDateFormat.class.cast(format);
         } else {
             return new ConcurrentDateFormat(format);
         }
+    }
+    
+    public static DateFormat iso8061() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+    }
+    
+    public static DateFormat rfc822() {
+        return new SimpleDateFormat("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US);
+    }
+    
+    public static DateFormat rss20() {
+        return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
     }
     
 }

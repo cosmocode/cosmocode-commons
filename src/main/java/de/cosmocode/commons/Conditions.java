@@ -46,11 +46,8 @@ public final class Conditions {
      */
     public static <T> T checkArgument(Predicate<? super T> predicate, T input) {
         Preconditions.checkNotNull(predicate, "Predicate");
-        if (predicate.apply(input)) {
-            return input;
-        } else {
-            throw new IllegalArgumentException(String.format("%s does not satisfy %s", input, predicate));
-        }
+        Preconditions.checkArgument(predicate.apply(input), "%s does not satisfy %s", input, predicate);
+        return input;
     }
     
     /**
@@ -111,6 +108,15 @@ public final class Conditions {
         
     }
     
+    /**
+     * Adapts the given {@link Constraint} to the {@link Function} interface.
+     * 
+     * @since 1.9
+     * @param <T> generic parameter type
+     * @param constraint the backing constraint
+     * @return a function backed by the given constraint
+     * @throws NullPointerException if constraint is null
+     */
     public static <T> Function<T, T> asFunction(Constraint<T> constraint) {
         return new ConstraintFunction<T>(constraint);
     }

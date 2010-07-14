@@ -49,6 +49,7 @@ public final class TimeUnits {
 
      * <p>
      *   Note: This function does not produce accurate results.
+     *   E.g. 23 hours, 59 minutes and 59 seconds will return hours. 
      * </p>
      * 
      * @param source the source time

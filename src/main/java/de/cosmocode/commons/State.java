@@ -16,9 +16,14 @@
 
 package de.cosmocode.commons;
 
+import com.google.common.base.Service;
+
 /**
  * The lifecycle states of a service.
+ * 
+ * @deprecated use {@link Service.State} instead
  */
+@Deprecated
 public enum State {
 
     /**
