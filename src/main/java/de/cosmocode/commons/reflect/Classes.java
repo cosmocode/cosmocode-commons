@@ -25,6 +25,8 @@ import com.google.common.collect.ComputationException;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Ordering;
 
+import de.cosmocode.commons.Throwables;
+
 /**
  * Static utility class for {@link Class}es.
  *
@@ -102,12 +104,7 @@ public final class Classes {
         try {
             return CACHE.get(name);
         } catch (ComputationException e) {
-            // ugly fix to throw the original ClassNotFoundException
-            if (e.getCause() instanceof IllegalArgumentException) {
-                if (e.getCause().getCause() instanceof ClassNotFoundException) {
-                    throw ClassNotFoundException.class.cast(e.getCause().getCause());
-                }
-            }
+            Throwables.propagateCauseIfInstanceOf(e, ClassNotFoundException.class);
             throw new ClassNotFoundException(e.getMessage(), e);
         }
     }
@@ -178,14 +175,44 @@ public final class Classes {
         
     }
     
+    /**
+     * Returns an {@link Ordering} which uses string comparision of {@link Class#getName()}.
+     * 
+     * @since 1.9
+     * @return an ordering for sorting by name
+     */
     public static Ordering<Class<?>> orderByName() {
         return Classes.ORDER_BY_NAME;
     }
     
+    /**
+     * Returns an {@link Ordering} which uses the relation between classes to compare them.
+     * Two classes that are equals according to {@link Object#equals(Object)} are considered
+     * equals by the returned comparator. Sub types are considered less than super classes.
+     * {@link Double}, {@link Long} and {@link Integer} e.g. are considered less than
+     * {@link Number}. Two classes that are not related regarding inheritence are compared using
+     * {@link Classes#orderByName()}.
+     * 
+     * @since 1.9
+     * @return an ordering which sorts classes by hierarchy
+     */
     public static Ordering<Class<?>> orderByHierarchy() {
         return Classes.ORDER_BY_HIERARCHY;
     }
     
+    /**
+     * Returns an {@link Ordering} which uses the relation between classes to compare them.
+     * Two classes that are equals according to {@link Object#equals(Object)} are considered
+     * equals by the returned comparator. Sub types are considered less than super classes.
+     * {@link Double}, {@link Long} and {@link Integer} e.g. are considered less than
+     * {@link Number}. Two classes that are not related regarding inheritence are compared using
+     * the given comparator
+     * 
+     * @since 1.9
+     * @param comparator the comparator which is used in case of a tie
+     * @return an ordering which sorts classes by hierarchy
+     * @throws NullPointerException if comparator is null
+     */
     public static Ordering<Class<?>> orderByHierarchy(Comparator<Class<?>> comparator) {
         return new HierarchyOrdering(comparator);
     }
