@@ -40,6 +40,23 @@ final class PredicateRule<T> extends AbstractRule<T> {
     }
     
     @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else if (that instanceof PredicateRule<?>) {
+            final PredicateRule<?> other = PredicateRule.class.cast(that);
+            return predicate.equals(other.predicate);
+        } else {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+        return predicate.hashCode();
+    }
+    
+    @Override
     public String toString() {
         return "Rules.asRule(" + predicate + ")";
     }

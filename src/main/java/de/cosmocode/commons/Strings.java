@@ -250,7 +250,6 @@ public final class Strings {
      * @throws NullPointerException if s is null
      */
     public static Rule<String> contains(CharSequence s) {
-        Preconditions.checkNotNull(s, "CharSequence");
         return new StringContainsRule(s);
     }
     
@@ -264,7 +263,6 @@ public final class Strings {
      * @throws NullPointerException if s is null
      */
     public static Rule<CharSequence> containedIn(String s) {
-        Preconditions.checkNotNull(s, "String");
         return new StringContainedInRule(s);
     }
     

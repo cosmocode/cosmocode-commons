@@ -110,7 +110,7 @@ final class DefaultPackages implements Packages {
         if (containedIn(className, packages)) {
             LOG.trace("Loading class {}", className);
             try {
-                builder.add(Classes.forName(className));
+                builder.add(Reflection.forName(className));
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException(e);
             }

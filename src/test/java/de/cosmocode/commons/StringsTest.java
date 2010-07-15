@@ -107,16 +107,25 @@ public class StringsTest {
         Assert.assertEquals(joined, "hello null 0.0");
     }
 
+    /**
+     * Tests {@link Strings#checkNotEmpty(String)} with null.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void checkNotEmptyOfNull() {
         Strings.checkNotEmpty(null);
     }
 
+    /**
+     * Tests {@link Strings#checkNotEmpty(String)} with "".
+     */
     @Test(expected = IllegalArgumentException.class)
     public void checkNotEmptyOfEmpty() {
         Strings.checkNotEmpty("");
     }
 
+    /**
+     * Tests {@link Strings#checkNotEmpty(String)} with "   ".
+     */
     @Test
     public void checkNotEmptyOfBlank() {
         final String expected = "   ";
@@ -124,6 +133,9 @@ public class StringsTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Tests {@link Strings#checkNotEmpty(String)} with "blubb".
+     */
     @Test
     public void checkNotEmptyOfValid() {
         final String expected = "blubb";
@@ -131,46 +143,38 @@ public class StringsTest {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void checkNotEmptyWithMessage() {
-        Strings.checkNotEmpty("", "dummy message");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void checkNotEmptyWithMessageAndArguments() {
-        Strings.checkNotEmpty("", "dummy message", "foo", "bar");
-    }
-
+    /**
+     * Tests {@link Strings#checkNotBlank(String)} with null.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void checkNotBlankOfNull() {
         Strings.checkNotBlank(null);
     }
 
+    /**
+     * Tests {@link Strings#checkNotBlank(String)} with "".
+     */
     @Test(expected = IllegalArgumentException.class)
     public void checkNotBlankOfEmpty() {
         Strings.checkNotBlank("");
     }
 
+    /**
+     * Tests {@link Strings#checkNotBlank(String)} with "   ".
+     */
     @Test(expected = IllegalArgumentException.class)
     public void checkNotBlankOfBlank() {
         Strings.checkNotBlank("   ");
     }
 
+    /**
+     * Tests {@link Strings#checkNotBlank(String)} with "blubb".
+     */
     @Test
     public void checkNotBlankOfValid() {
         final String expected = "blubb";
         final String actual = Strings.checkNotBlank("  blubb  ");
         Assert.assertEquals(expected, actual);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void checkNotBlankWithMessage() {
-        Strings.checkNotBlank("", "dummy message");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void checkNotBlankWithMessageAndArguments() {
-        Strings.checkNotBlank("", "dummy message", "foo", "bar");
     }
     
 }

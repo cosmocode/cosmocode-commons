@@ -40,7 +40,7 @@ final class JoinWalkerFunction<F> extends AbstractFunction<F, String> {
     
     @Override
     public int hashCode() {
-        return walker.hashCode();
+        return walker.hashCode() ^ -921210296;
     }
     
     @Override

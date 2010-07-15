@@ -53,7 +53,7 @@ final class GeRule<C extends Comparable<E>, E> extends AbstractRule<C> {
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return value.hashCode() ^ -454782457;
     }
 
     @Override

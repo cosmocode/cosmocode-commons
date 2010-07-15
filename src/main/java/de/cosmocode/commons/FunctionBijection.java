@@ -34,7 +34,7 @@ final class FunctionBijection<F, T> implements Bijection<F, T> {
 
     @Override
     public int hashCode() {
-        return left.hashCode();
+        return left.hashCode() ^ -921210296;
     }
 
     @Override

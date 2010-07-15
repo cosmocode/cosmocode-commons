@@ -1,5 +1,7 @@
 package de.cosmocode.commons;
 
+import com.google.common.base.Preconditions;
+
 import de.cosmocode.commons.validation.AbstractRule;
 
 /**
@@ -14,12 +16,29 @@ final class StringContainedInRule extends AbstractRule<CharSequence> {
     private final String s;
     
     public StringContainedInRule(String s) {
-        this.s = s;
+        this.s = Preconditions.checkNotNull(s, "String");
     }
     
     @Override
     public boolean apply(CharSequence input) {
         return s.contains(input);
+    }
+    
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else if (that instanceof StringContainedInRule) {
+            final StringContainedInRule other = StringContainedInRule.class.cast(that);
+            return s.equals(other.s);
+        } else {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+        return s.hashCode() ^ 358941548;
     }
     
     @Override

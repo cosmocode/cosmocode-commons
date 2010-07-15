@@ -53,7 +53,7 @@ final class EqRule<C extends Comparable<E>, E> extends AbstractRule<C> {
 
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return value.hashCode() ^ -895454554;
     }
 
     @Override

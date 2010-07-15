@@ -34,7 +34,7 @@ final class ForBiMapBijection<F, T> implements Bijection<F, T> {
     
     @Override
     public int hashCode() {
-        return map.hashCode();
+        return map.hashCode() ^ -921210296;
     }
     
     @Override

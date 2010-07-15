@@ -29,7 +29,7 @@ final class EnumNameCodec<E extends Enum<E>> extends Codec<E, String> {
 
     @Override
     public int hashCode() {
-        return type.hashCode();
+        return type.hashCode() ^ -921210296;
     }
 
     @Override

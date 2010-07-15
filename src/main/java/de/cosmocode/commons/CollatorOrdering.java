@@ -3,7 +3,6 @@ package de.cosmocode.commons;
 import java.text.Collator;
 import java.util.Locale;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Ordering;
 
@@ -42,7 +41,7 @@ final class CollatorOrdering extends Ordering<String> {
     
     @Override
     public int hashCode() {
-        return Objects.hashCode(locale, collator);
+        return collator.hashCode();
     }
     
     @Override

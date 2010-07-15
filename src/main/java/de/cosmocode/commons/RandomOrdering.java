@@ -60,7 +60,7 @@ final class RandomOrdering extends Ordering<Object> {
         // can't be optimized
         return sortedList.indexOf(key);
     }
-
+    
     @Override
     public String toString() {
         return "Orderings.random()";

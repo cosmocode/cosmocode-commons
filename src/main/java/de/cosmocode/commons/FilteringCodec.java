@@ -1,6 +1,7 @@
 package de.cosmocode.commons;
 
 import com.google.common.base.Function;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -33,7 +34,7 @@ final class FilteringCodec<F, T> extends Codec<F, T> {
 
     @Override
     public int hashCode() {
-        return codec.hashCode() ^ function.hashCode();
+        return Objects.hashCode(codec, function);
     }
 
     @Override

@@ -25,6 +25,23 @@ final class DateAfterRule extends AbstractRule<Date> {
     }
     
     @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else if (that instanceof DateAfterRule) {
+            final DateAfterRule other = DateAfterRule.class.cast(that);
+            return when.equals(other.when);
+        } else {
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode() {
+        return when.hashCode() ^ 35487245;
+    }
+    
+    @Override
     public String toString() {
         return String.format("Dates.after(%s)", when);
     }

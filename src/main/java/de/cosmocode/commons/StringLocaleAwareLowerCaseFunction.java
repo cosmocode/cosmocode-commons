@@ -37,7 +37,7 @@ final class StringLocaleAwareLowerCaseFunction extends AbstractFunction<String, 
     
     @Override
     public int hashCode() {
-        return locale.hashCode();
+        return locale.hashCode() ^ -921210296;
     }
     
     @Override

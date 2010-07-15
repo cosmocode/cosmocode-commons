@@ -1,5 +1,6 @@
 package de.cosmocode.commons;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -35,7 +36,7 @@ final class ComposedCodec<F, T, S> extends Codec<F, S> {
 
     @Override
     public int hashCode() {
-        return codec.hashCode() ^ bijection.hashCode();
+        return Objects.hashCode(codec, bijection);
     }
 
     @Override

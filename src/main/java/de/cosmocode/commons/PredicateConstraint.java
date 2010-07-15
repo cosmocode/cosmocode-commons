@@ -38,7 +38,7 @@ final class PredicateConstraint<T> implements Constraint<T> {
 
     @Override
     public int hashCode() {
-        return predicate.hashCode();
+        return predicate.hashCode() ^ -921210296;
     }
 
     @Override
