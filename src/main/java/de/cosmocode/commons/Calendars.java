@@ -41,29 +41,7 @@ public final class Calendars {
      * @return a function converting calendars into dates using {@link Calendar#getTime()}
      */
     public static Function<Calendar, Date> getTime() {
-        return GetTime.INSTANCE;
-    }
-    
-    /**
-     * Implementation of {@link Calendars#getTime()}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private enum GetTime implements Function<Calendar, Date> {
-        
-        INSTANCE;
-        
-        @Override
-        public Date apply(Calendar from) {
-            return from.getTime();
-        }
-        
-        @Override
-        public String toString() {
-            return "Calendars.getTime()";
-        }
-        
+        return CalendarGetTimeCodec.INSTANCE;
     }
     
     /**

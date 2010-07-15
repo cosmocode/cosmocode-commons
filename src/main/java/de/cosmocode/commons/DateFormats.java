@@ -79,21 +79,36 @@ public final class DateFormats {
      */
     @Deprecated
     public static DateFormat concurrent(DateFormat format) {
-        if (format instanceof ConcurrentDateFormat) {
-            return ConcurrentDateFormat.class.cast(format);
+        if (format instanceof SynchronizedDateFormat) {
+            return SynchronizedDateFormat.class.cast(format);
         } else {
-            return new ConcurrentDateFormat(format);
+            return new SynchronizedDateFormat(format);
         }
     }
-    
+
+    /**
+     * DateFormat for ISO 8061.
+     *
+     * @return ISO 8061 {@link DateFormat}
+     */
     public static DateFormat iso8061() {
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
     }
-    
+
+    /**
+     * DateFormat for RFC 822.
+     *
+     * @return RFC 822 {@link DateFormat}
+     */
     public static DateFormat rfc822() {
         return new SimpleDateFormat("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US);
     }
-    
+
+    /**
+     * DateFormat for RSS 2.0.
+     *
+     * @return RSS 2.0 {@link DateFormat}
+     */
     public static DateFormat rss20() {
         return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
     }

@@ -32,29 +32,7 @@ public final class Throwables {
     }
     
     public static Function<Throwable, String> getMessage() {
-        return GetMessage.INSTANCE;
-    }
-    
-    /**
-     * Implementation of {@link Throwables#getMessage()}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private enum GetMessage implements Function<Throwable, String> {
-        
-        INSTANCE;
-        
-        @Override
-        public String apply(Throwable from) {
-            return from.getMessage();
-        }
-        
-        @Override
-        public String toString() {
-            return "Throwables.getMessage()";
-        }
-        
+        return ThrowableGetMessageFunction.INSTANCE;
     }
     
     /**

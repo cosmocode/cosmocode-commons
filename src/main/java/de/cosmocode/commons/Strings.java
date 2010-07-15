@@ -30,7 +30,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 
-import de.cosmocode.commons.validation.AbstractRule;
 import de.cosmocode.commons.validation.Rule;
 
 /**
@@ -77,34 +76,6 @@ public final class Strings {
     }
 
     /**
-     * An {@link Ordering} which is based on a given {@link Collator}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private static final class CollatorOrdering extends Ordering<String> {
-
-        private final Locale locale;
-        private final Collator collator;
-
-        public CollatorOrdering(Locale locale) {
-            this.locale = Preconditions.checkNotNull(locale, "Locale");
-            this.collator = Collator.getInstance(locale);
-        }
-        
-        @Override
-        public int compare(String left, String right) {
-            return collator.compare(left, right);
-        }
-        
-        @Override
-        public String toString() {
-            return "Strings.orderBy(" + locale + ")";
-        }
-        
-    }
-    
-    /**
      * Returns a Function able to convert strings into their lowercase counterparts
      * using {@link String#toLowerCase()}.
      * 
@@ -116,30 +87,9 @@ public final class Strings {
      * @return a function covnerting strings to lowercase
      */
     public static Function<String, String> toLowerCase() {
-        return LowerCaseFunction.INSTANCE;
+        return StringLowerCaseFunction.INSTANCE;
     }
     
-    /**
-     * Implementation for {@link Strings#toLowerCase()}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private enum LowerCaseFunction implements Function<String, String> {
-        
-        INSTANCE;
-
-        @Override
-        public String apply(String from) {
-            return from == null ? null : from.toLowerCase();
-        }
-        
-        @Override
-        public String toString() {
-            return "Strings.toLowerCase()";
-        }
-        
-    }
     
     /**
      * Returns a Function able to convert strings into their lowercase counterparts
@@ -155,50 +105,7 @@ public final class Strings {
      * @throws NullPointerException if locale is null
      */
     public static Function<String, String> toLowerCase(@Nonnull Locale locale) {
-        return new LocaleAwareLowerCaseFunction(locale);
-    }
-    
-    /**
-     * Implementation for {@link Strings#toLowerCase(Locale)}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private static final class LocaleAwareLowerCaseFunction extends AbstractFunction<String, String> {
-
-        private final Locale locale;
-        
-        public LocaleAwareLowerCaseFunction(Locale locale) {
-            this.locale = Preconditions.checkNotNull(locale, "Locale");
-        }
-        
-        @Override
-        public String apply(String from) {
-            return from == null ? null : from.toLowerCase(locale);
-        }
-        
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof LocaleAwareLowerCaseFunction) {
-                final LocaleAwareLowerCaseFunction other = LocaleAwareLowerCaseFunction.class.cast(that);
-                return locale.equals(other.locale);
-            } else {
-                return false;
-            }
-        }
-        
-        @Override
-        public int hashCode() {
-            return locale.hashCode();
-        }
-        
-        @Override
-        public String toString() {
-            return "Strings.toLowerCase(" + locale + ")";
-        }
-        
+        return new StringLocaleAwareLowerCaseFunction(locale);
     }
 
     /**
@@ -213,31 +120,9 @@ public final class Strings {
      * @return a function covnerting strings to uppercase
      */
     public static Function<String, String> toUpperCase() {
-        return UpperCaseFunction.INSTANCE;
+        return StringUpperCaseFunction.INSTANCE;
     }
     
-    /**
-     * Implementation for {@link Strings#toUpperCase()}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private enum UpperCaseFunction implements Function<String, String> {
-    
-        INSTANCE;
-        
-        @Override
-        public String apply(String from) {
-            return from == null ? null : from.toUpperCase();
-        }
-        
-        @Override
-        public String toString() {
-            return "Strings.toUpperCase()";
-        }
-        
-    }
-
     /**
      * Returns a Function able to convert strings into their uppercase counterparts
      * using {@link String#toUpperCase(Locale)}.
@@ -252,63 +137,7 @@ public final class Strings {
      * @throws NullPointerException if locale is null
      */
     public static Function<String, String> toUpperCase(@Nonnull Locale locale) {
-        return new LocaleAwareUpperCaseFunction(locale);
-    }
-    
-    /**
-     * Implementation for {@link Strings#toUpperCase(Locale)}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private static final class LocaleAwareUpperCaseFunction extends AbstractFunction<String, String> {
-        
-        private final Locale locale;
-        
-        public LocaleAwareUpperCaseFunction(Locale locale) {
-            this.locale = Preconditions.checkNotNull(locale, "Locale");
-        }
-        
-        @Override
-        public String apply(String from) {
-            return from == null ? null : from.toUpperCase(locale);
-        }
-        
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof LocaleAwareUpperCaseFunction) {
-                final LocaleAwareUpperCaseFunction other = LocaleAwareUpperCaseFunction.class.cast(that);
-                return locale.equals(other.locale);
-            } else {
-                return false;
-            }
-        }
-        
-        @Override
-        public int hashCode() {
-            return locale.hashCode();
-        }
-        
-        @Override
-        public String toString() {
-            return "Strings.toUpperCase(" + locale + ")";
-        }
-        
-    }
-    
-    // method is private, suppress is ok
-    @SuppressWarnings("deprecation")
-    private static <T> Function<T, String> asFunction(final JoinWalker<? super T> walker) {
-        return new Function<T, String>() {
-            
-            @Override
-            public String apply(T from) {
-                return walker.walk(from);
-            };
-            
-        };
+        return new StringLocaleAwareUpperCaseFunction(locale);
     }
     
     /**
@@ -351,7 +180,8 @@ public final class Strings {
      */
     @Deprecated
     public static <T> String join(Collection<? extends T> collection, String delimiter, JoinWalker<? super T> walker) {
-        return Joiner.on(delimiter).useForNull("null").join(Iterables.transform(collection, asFunction(walker)));
+        final Iterable<String> transformed = Iterables.transform(collection, JoinWalkers.asFunction(walker));
+        return Joiner.on(delimiter).useForNull("null").join(transformed);
     }
     
     /**
@@ -421,34 +251,7 @@ public final class Strings {
      */
     public static Rule<String> contains(CharSequence s) {
         Preconditions.checkNotNull(s, "CharSequence");
-        return new ContainsRule(s);
-    }
-    
-    /**
-     * Contains string predicate.
-     *
-     * @since 1.6
-     * @see Strings#contains(CharSequence)
-     * @author Willi Schoenborn
-     */
-    private static final class ContainsRule extends AbstractRule<String> {
-        
-        private final CharSequence s;
-        
-        public ContainsRule(CharSequence s) {
-            this.s = s;
-        }
-      
-        @Override
-        public boolean apply(String input) {
-            return input.contains(s);
-        };
-
-        @Override
-        public String toString() {
-            return "Strings.contains(" + s + ")";
-        }
-        
+        return new StringContainsRule(s);
     }
     
     /**
@@ -462,34 +265,7 @@ public final class Strings {
      */
     public static Rule<CharSequence> containedIn(String s) {
         Preconditions.checkNotNull(s, "String");
-        return new ContainedInRule(s);
-    }
-    
-    /**
-     * Contained in string predicate.
-     *
-     * @since 1.6
-     * @see Strings#containedIn(String)
-     * @author Willi Schoenborn
-     */
-    private static final class ContainedInRule extends AbstractRule<CharSequence> {
-        
-        private final String s;
-        
-        public ContainedInRule(String s) {
-            this.s = s;
-        }
-        
-        @Override
-        public boolean apply(CharSequence input) {
-            return s.contains(input);
-        }
-        
-        @Override
-        public String toString() {
-            return "Strings.containedIn(" + s + ")";
-        }
-        
+        return new StringContainedInRule(s);
     }
     
     /**

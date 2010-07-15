@@ -19,7 +19,6 @@ package de.cosmocode.commons;
 import java.util.Iterator;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
@@ -67,61 +66,6 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
     }
     
     /**
-     * Implementation of {@link Codec#inverse()}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     * @param <T> the source type
-     * @param <F> the target type
-     */
-    private static final class InverseCodec<T, F> extends Codec<T, F> {
-        
-        private final Codec<F, T> codec;
-        
-        public InverseCodec(Codec<F, T> codec) {
-            this.codec = Preconditions.checkNotNull(codec, "Codec");
-        }
-
-        @Override
-        public F encode(T input) {
-            return codec.decode(input);
-        }
-
-        @Override
-        public T decode(F input) {
-            return codec.encode(input);
-        }
-        
-        @Override
-        public Codec<F, T> inverse() {
-            return codec;
-        }
-        
-        @Override
-        public int hashCode() {
-            return -codec.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof InverseCodec<?, ?>) {
-                final InverseCodec<?, ?> other = InverseCodec.class.cast(that);
-                return codec.equals(other.codec);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return codec + ".inverse()";
-        }
-        
-    }
-    
-    /**
      * Composes this codec and the given bijection into a codec using
      * the bijection as an adapter from {@code T->S} and vice versa.
      * 
@@ -136,61 +80,6 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
     }
     
     /**
-     * Implementation of {@link Codec#compose(Bijection)}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     * @param <F> source type
-     * @param <T> intermediate type
-     * @param <S> target type
-     */
-    private static final class ComposedCodec<F, T, S> extends Codec<F, S> {
-        
-        private final Codec<F, T> codec;
-        private final Bijection<T, S> bijection;
-        private final Bijection<S, T> inverse;
-        
-        public ComposedCodec(Codec<F, T> codec, Bijection<T, S> bijection) {
-            this.codec = Preconditions.checkNotNull(codec, "Codec");
-            this.bijection = Preconditions.checkNotNull(bijection, "Bijection");
-            this.inverse = Preconditions.checkNotNull(bijection.inverse(), "%s.inverse()", bijection);
-        }
-
-        @Override
-        public S encode(F input) {
-            return bijection.apply(codec.encode(input));
-        }
-
-        @Override
-        public F decode(S input) {
-            return codec.decode(inverse.apply(input));
-        }
-
-        @Override
-        public int hashCode() {
-            return codec.hashCode() ^ bijection.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof ComposedCodec<?, ?, ?>) {
-                final ComposedCodec<?, ?, ?> other = ComposedCodec.class.cast(that);
-                return codec.equals(other.codec) && bijection.equals(other.bijection);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return codec + ".compose(" + bijection + ")";
-        }
-        
-    }
-    
-    /**
      * Filters this codec using the specific function. The function
      * will be applied to every parameter passed to {@link Codec#encode(Object)}
      * and every return value of {@link Codec#decode(Object)}.
@@ -202,58 +91,6 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
      */
     public Codec<F, T> filter(Function<? super F, F> function) {
         return new FilteringCodec<F, T>(this, function);
-    }
-    
-    /**
-     * Implementation of {@link Codec#filter(Function)}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     * @param <F> source type
-     * @param <T> target type
-     */
-    private static final class FilteringCodec<F, T> extends Codec<F, T> {
-        
-        private final Codec<F, T> codec;
-        private final Function<? super F, F> function;
-        
-        public FilteringCodec(Codec<F, T> codec, Function<? super F, F> function) {
-            this.codec = Preconditions.checkNotNull(codec, "Codec");
-            this.function = Preconditions.checkNotNull(function, "Function");
-        }
-
-        @Override
-        public T encode(F input) {
-            return codec.encode(function.apply(input));
-        }
-
-        @Override
-        public F decode(T input) {
-            return function.apply(codec.decode(input));
-        }
-
-        @Override
-        public int hashCode() {
-            return codec.hashCode() ^ function.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof FilteringCodec<?, ?>) {
-                final FilteringCodec<?, ?> other = FilteringCodec.class.cast(that);
-                return codec.equals(other.codec) && function.equals(other.function);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return codec + ".filter(" + function + ")";
-        }
-        
     }
     
     /**
@@ -330,58 +167,6 @@ public abstract class Codec<F, T> implements Bijection<F, T> {
         } else {
             return new BijectionCodec<F, T>(bijection);
         }
-    }
-    
-    /**
-     * Implementation of {@link Codec#from(Bijection)}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     * @param <F> source type
-     * @param <T> target type
-     */
-    private static final class BijectionCodec<F, T> extends Codec<F, T> {
-        
-        private final Bijection<F, T> bijection;
-        private final Bijection<T, F> inverse;
-        
-        public BijectionCodec(Bijection<F, T> bijection) {
-            this.bijection = Preconditions.checkNotNull(bijection, "Bijection");
-            this.inverse = Preconditions.checkNotNull(bijection.inverse(), "%s.inverse()", bijection);
-        }
-
-        @Override
-        public T encode(F input) {
-            return bijection.apply(input);
-        }
-
-        @Override
-        public F decode(T input) {
-            return inverse.apply(input);
-        }
-        
-        @Override
-        public int hashCode() {
-            return bijection.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof BijectionCodec<?, ?>) {
-                final BijectionCodec<?, ?> other = BijectionCodec.class.cast(that);
-                return bijection.equals(other.bijection);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "Codec.from(" + bijection + ")";
-        }
-        
     }
     
 }

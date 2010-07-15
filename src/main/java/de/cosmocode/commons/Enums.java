@@ -53,29 +53,7 @@ public final class Enums {
      */
     @SuppressWarnings("unchecked")
     public static <E extends Enum<?>> Function<E, String> name() {
-        return (Function<E, String>) NameFunction.INSTANCE;
-    }
-    
-    /**
-     * Implementation of {@link Enums#name()}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     */
-    private static enum NameFunction implements Function<Enum<?>, String> {
-        
-        INSTANCE;
-        
-        @Override
-        public String apply(Enum<?> from) {
-            return from.name();
-        }
-        
-        @Override
-        public String toString() {
-            return "Enums.name()";
-        }
-        
+        return (Function<E, String>) EnumNameFunction.INSTANCE;
     }
     
     /**
@@ -90,55 +68,6 @@ public final class Enums {
      */
     public static <E extends Enum<E>> Codec<E, String> name(Class<E> type) {
         return new EnumNameCodec<E>(type);
-    }
-    
-    /**
-     * Implementation of {@link Enums#name(Class)}.
-     *
-     * @since 1.9
-     * @author Willi Schoenborn
-     * @param <E> generic enum type
-     */
-    private static final class EnumNameCodec<E extends Enum<E>> extends Codec<E, String> {
-        
-        private final Class<E> type;
-        
-        public EnumNameCodec(Class<E> type) {
-            this.type = Preconditions.checkNotNull(type, "Type");
-        }
-
-        @Override
-        public String encode(E input) {
-            return input.name();
-        }
-
-        @Override
-        public E decode(String input) {
-            return Enum.valueOf(type, input);
-        }
-
-        @Override
-        public int hashCode() {
-            return type.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof EnumNameCodec<?>) {
-                final EnumNameCodec<?> other = EnumNameCodec.class.cast(that);
-                return type.equals(other.type);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "Enums.name(" + type.getName() + ")";
-        }
-        
     }
     
     /**

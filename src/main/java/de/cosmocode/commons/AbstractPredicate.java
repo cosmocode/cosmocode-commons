@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package de.cosmocode.commons.predicates;
+package de.cosmocode.commons;
 
 import com.google.common.base.Predicate;
 
 /**
  * Abstract predicate which requires a "meaningful" {@link #toString()} method.
  *
- * @deprecated use {@link de.cosmocode.commons.AbstractPredicate} instead
- * 
  * @author Willi Schoenborn
  * @param <T> gneric parameter type
  */
-@Deprecated
 public abstract class AbstractPredicate<T> implements Predicate<T> {
 
     @Override

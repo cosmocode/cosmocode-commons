@@ -22,7 +22,6 @@ import java.util.Date;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
-import de.cosmocode.commons.validation.AbstractRule;
 import de.cosmocode.commons.validation.Rule;
 
 /**
@@ -96,36 +95,9 @@ public final class Dates {
      */
     public static Rule<Date> before(Date when) {
         Preconditions.checkNotNull(when, "When");
-        return new BeforeRule(when);
+        return new DateBeforeRule(when);
     }
     
-    /**
-     * Before date predicate implementation.
-     *
-     * @since 1.6
-     * @see Dates#before(Date)
-     * @author Willi Schoenborn
-     */
-    private static final class BeforeRule extends AbstractRule<Date> {
-        
-        private final Date when;
-        
-        public BeforeRule(Date when) {
-            this.when = when;
-        }
-        
-        @Override
-        public boolean apply(Date input) {
-            return input.before(when);
-        };
-        
-        @Override
-        public String toString() {
-            return String.format("Dates.before(%s)", when);
-        }
-        
-    }
-
     /**
      * Creates a {@link Rule} which evaluates to true
      * when passed in a date which is after the specified date.
@@ -138,34 +110,7 @@ public final class Dates {
      */
     public static Rule<Date> after(Date when) {
         Preconditions.checkNotNull(when, "When");
-        return new AfterRule(when);
-    }
-
-    /**
-     * After date predicate implementation.
-     *
-     * @since 1.6
-     * @see Dates#after(Date)
-     * @author Willi Schoenborn
-     */
-    private static final class AfterRule extends AbstractRule<Date> {
-        
-        private final Date when;
-        
-        public AfterRule(Date when) {
-            this.when = when;
-        }
-        
-        @Override
-        public boolean apply(Date input) {
-            return input.after(when);
-        }
-        
-        @Override
-        public String toString() {
-            return String.format("Dates.after(%s)", when);
-        }
-        
+        return new DateAfterRule(when);
     }
 
     /**
