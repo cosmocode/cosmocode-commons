@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ComputationException;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Ordering;
 
@@ -32,12 +33,59 @@ import com.google.common.collect.Ordering;
  */
 public final class Classes {
 
-    private static final ConcurrentMap<String, Class<?>> CACHE = new MapMaker().softValues().makeMap();
+    private static final ConcurrentMap<String, Class<?>> CACHE;
+    
+    static {
+        
+        CACHE = new MapMaker().softValues().makeComputingMap(ForNameFunction.INSTANCE);
+        
+    }
     
     private static final Ordering<Class<?>> ORDER_BY_NAME = Ordering.natural().onResultOf(Classes.getName());
+    
     private static final Ordering<Class<?>> ORDER_BY_HIERARCHY = Classes.orderByHierarchy(Classes.orderByName());
     
     private Classes() {
+        
+    }
+    
+    /**
+     * Returns a function which loads {@link Class}es by their name using {@link Class#forName(String)}.
+     * 
+     * <p>
+     *   The returned function will warp {@link ClassNotFoundException}s inside {@link IllegalArgumentException}s.
+     * </p>
+     * 
+     * @since 1.9
+     * @return a function loading classes
+     */
+    public static Function<String, Class<?>> forName() {
+        return ForNameFunction.INSTANCE;
+    }
+    
+    /**
+     * Implementation for {@link Classes#forName()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private enum ForNameFunction implements Function<String, Class<?>> {
+        
+        INSTANCE;
+        
+        @Override
+        public Class<?> apply(String from) {
+            try {
+                return Class.forName(from);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+        
+        @Override
+        public String toString() {
+            return "Classes.forName()";
+        }
         
     }
     
@@ -51,20 +99,30 @@ public final class Classes {
      * @throws ClassNotFoundException if the class does not exist
      */
     public static Class<?> forName(String name) throws ClassNotFoundException {
-        final Class<?> cached = CACHE.get(name);
-        return cached == null ? store(name) : cached;
+        try {
+            return CACHE.get(name);
+        } catch (ComputationException e) {
+            throw new ClassNotFoundException(e.getMessage(), e);
+        }
     }
     
-    private static Class<?> store(String name) throws ClassNotFoundException {
-        final Class<?> type = Class.forName(name);
-        CACHE.put(name, type);
-        return type;
-    }
-    
+    /**
+     * Returns a function which transforms {@link Class}es into Strings by using
+     * {@link Class#getName()}.
+     * 
+     * @since 1.9
+     * @return a function using getName() to produce Strings
+     */
     public static Function<Class<?>, String> getName() {
         return GetNameFunction.INSTANCE;
     }
     
+    /**
+     * Implementation for {@link Classes#getName()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
     private enum GetNameFunction implements Function<Class<?>, String> {
         
         INSTANCE;
@@ -81,6 +139,39 @@ public final class Classes {
         
     }
     
+    /**
+     * Returns a function which transforms {@link Class}es into Strings by using
+     * {@link Class#getSimpleName()}.
+     * 
+     * @since 1.9
+     * @return a function using getSimpleName() to produce Strings
+     */
+    public static Function<Class<?>, String> getSimpleName() {
+        return GetSimpleNameFunction.INSTANCE;
+    }
+    
+    /**
+     * Implementation for {@link Classes#getSimpleName()}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
+    private enum GetSimpleNameFunction implements Function<Class<?>, String> {
+        
+        INSTANCE;
+        
+        @Override
+        public String apply(Class<?> from) {
+            return from.getSimpleName();
+        }
+        
+        @Override
+        public String toString() {
+            return "Classes.getSimpleName()";
+        }
+        
+    }
+    
     public static Ordering<Class<?>> orderByName() {
         return Classes.ORDER_BY_NAME;
     }
@@ -93,6 +184,12 @@ public final class Classes {
         return new HierarchyOrdering(comparator);
     }
     
+    /**
+     * Implementation for {@link Classes#orderByHierarchy(Comparator)}.
+     *
+     * @since 1.9
+     * @author Willi Schoenborn
+     */
     private static final class HierarchyOrdering extends Ordering<Class<?>> {
         
         private final Comparator<Class<?>> comparator;
