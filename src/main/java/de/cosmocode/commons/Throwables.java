@@ -17,6 +17,7 @@
 package de.cosmocode.commons;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 
 /**
  * Static utility class for {@link Throwable}s.
@@ -54,6 +55,24 @@ public final class Throwables {
             return "Throwables.getMessage()";
         }
         
+    }
+    
+    /**
+     * Propagates {@code throwable} or one of it's causes exactly as-is, if and only if it is an
+     * instance of {@code declaredType}.
+     * 
+     * @since 1.9
+     * @param <X> generic exception type
+     * @param t the thrown throwable
+     * @param declaredType the declared exception type
+     * @throws NullPointerException if declaredType is null
+     * @throws X if t or one of its causes is an instanceof declaredType
+     */
+    public static <X extends Throwable> void propagateCauseIfInstanceOf(Throwable t, Class<X> declaredType) throws X {
+        Preconditions.checkNotNull(declaredType, "DeclaredType");
+        if (t == null) return;
+        com.google.common.base.Throwables.propagateIfInstanceOf(t, declaredType);
+        propagateCauseIfInstanceOf(t.getCause(), declaredType);
     }
     
 }
