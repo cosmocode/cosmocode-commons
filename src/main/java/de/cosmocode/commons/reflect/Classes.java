@@ -91,7 +91,7 @@ public final class Classes {
     
     /**
      * Returns the Class object associated with the class or interface with the given string name.
-     * This method does in contrast to {@link Class#forName(String)} caches the results.
+     * This method does, in contrast to {@link Class#forName(String)}, cache the results.
      * 
      * @since 1.6
      * @param name the class name
@@ -102,6 +102,12 @@ public final class Classes {
         try {
             return CACHE.get(name);
         } catch (ComputationException e) {
+            // ugly fix to throw the original ClassNotFoundException
+            if (e.getCause() instanceof IllegalArgumentException) {
+                if (e.getCause().getCause() instanceof ClassNotFoundException) {
+                    throw ClassNotFoundException.class.cast(e.getCause().getCause());
+                }
+            }
             throw new ClassNotFoundException(e.getMessage(), e);
         }
     }
