@@ -16,7 +16,8 @@
 
 package de.cosmocode.commons.concurrent;
 
-import com.google.common.base.Joiner;
+import java.util.Arrays;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
@@ -26,11 +27,23 @@ import com.google.common.collect.Lists;
  * @author Willi Schoenborn
  */
 public final class Runnables {
-
-    private static final Joiner JOINER = Joiner.on(", ");
     
     private Runnables() {
         
+    }
+
+    /**
+     * Chains multiple {@link Runnable}s together.
+     * 
+     * @param first the first Runnable
+     * @param rest zero or more additional Runnables
+     * @return a Runnable which runs all given Runnables in a sequence
+     * @throws NullPointerException if first or rest is null
+     */
+    public static Runnable chain(Runnable first, Runnable... rest) {
+        Preconditions.checkNotNull(first, "First");
+        Preconditions.checkNotNull(rest, "Rest");
+        return chain(Lists.asList(first, rest));
     }
     
     /**
@@ -42,26 +55,34 @@ public final class Runnables {
      * @return a Runnable which runs all given Runnables in a sequence
      * @throws NullPointerException if first, second or rest is null
      */
-    public static Runnable chain(final Runnable first, final Runnable second, final Runnable... rest) {
+    public static Runnable chain(Runnable first, Runnable second, Runnable... rest) {
         Preconditions.checkNotNull(first, "First");
         Preconditions.checkNotNull(second, "Second");
         Preconditions.checkNotNull(rest, "Rest");
-        final Iterable<Runnable> runnables = Lists.asList(first, second, rest);
-        return new Runnable() {
-            
-            @Override
-            public void run() {
-                for (Runnable runnable : runnables) {
-                    runnable.run();
-                }
-            }
-            
-            @Override
-            public String toString() {
-                return "Runnables.chain(" + JOINER.join(runnables) + ")";
-            }
-            
-        };
+        return chain(Lists.asList(first, second, rest));
+    }
+
+    /**
+     * Chains multiple {@link Runnable}s together.
+     * 
+     * @param runnables zero or more additional Runnables
+     * @return a Runnable which runs all given Runnables in a sequence
+     * @throws NullPointerException if runnables is null
+     */
+    public static Runnable chain(Runnable... runnables) {
+        Preconditions.checkNotNull(runnables, "Runnables");
+        return chain(Arrays.asList(runnables));
+    }
+
+    /**
+     * Chains multiple {@link Runnable}s together.
+     * 
+     * @param runnables zero or more additional Runnables
+     * @return a Runnable which runs all given Runnables in a sequence
+     * @throws NullPointerException if runnables is null
+     */
+    public static Runnable chain(Iterable<Runnable> runnables) {
+        return new ChainedRunnable(runnables);
     }
 
 }
