@@ -172,9 +172,8 @@ public class StringsTest {
      */
     @Test
     public void checkNotBlankOfValid() {
-        final String expected = "blubb";
         final String actual = Strings.checkNotBlank("  blubb  ");
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals("  blubb  ", actual);
     }
     
 }
