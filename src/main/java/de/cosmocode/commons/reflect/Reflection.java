@@ -33,7 +33,7 @@ import de.cosmocode.commons.Throwables;
 import de.cosmocode.commons.validation.Rule;
 
 /**
- * Static utility class for {@link Classpath}s and {@link Packages}.
+ * Static utility class for {@link Class}es, {@link Classpath}s and {@link Packages}.
  *
  * @since 1.8
  * @author Willi Schoenborn
