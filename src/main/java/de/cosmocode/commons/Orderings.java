@@ -16,8 +16,6 @@
 
 package de.cosmocode.commons;
 
-import java.util.Comparator;
-
 import com.google.common.collect.Ordering;
 
 /**
@@ -33,11 +31,21 @@ public final class Orderings {
     }
 
     /**
-     * Returns a shuffling comparator which returns a
-     * random int between -1 and 1 (both inclusive)
-     * on every call of the {@link Comparator#compare(Object, Object)}
-     * method call. The returned ordering is reflexive and anti-symetric
-     * but not transitive.
+     * Returns a comparator which produces random but repeatable 
+     * comparision results when invoked with the same arguments.
+     * The returned ordering is reflexive and anti-symetric
+     * but not transitive. This means:
+     * {@code random.compare(x, x)} will always return true and
+     * {@code random.compare(x, y)} will always be {@code -random.compare(y, x)}.
+     * 
+     * <p>
+     *   The common use case for this ordering is:<br />
+     *   {@code grouping.compound(Orderings.random())}<br />
+     *   where grouping is a predefined ordering which sorts (or groups)
+     *   first. The random ordering will then be applied to the resulting
+     *   list. This results in shuffled groups, without the groups being 
+     *   changed.
+     * </p>
      * 
      * @param <T> generic parameter type
      * @return a comparator which returns randomly generated results

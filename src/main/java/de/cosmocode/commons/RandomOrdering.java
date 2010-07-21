@@ -51,6 +51,7 @@ final class RandomOrdering<T> extends Ordering<T> {
                     // sgn(compare(x, y)) == -sgn(compare(y, x))
                     return -values.get(reverseEntry);
                 } else {
+                    // return -1 or 1 with a 50% possibility (each)
                     return random.nextInt(2) == 0 ? -1 : 1;
                 }
             }
