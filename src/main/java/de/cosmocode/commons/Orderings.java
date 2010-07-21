@@ -36,12 +36,14 @@ public final class Orderings {
      * Returns a shuffling comparator which returns a
      * random int between -1 and 1 (both inclusive)
      * on every call of the {@link Comparator#compare(Object, Object)}
-     * method call.
+     * method call. The returned ordering is reflexive and anti-symetric
+     * but not transitive.
      * 
+     * @param <T> generic parameter type
      * @return a comparator which returns randomly generated results
      */
-    public static Ordering<Object> random() {
-        return RandomOrdering.INSTANCE;
+    public static <T> Ordering<T> random() {
+        return new RandomOrdering<T>();
     }
     
 }

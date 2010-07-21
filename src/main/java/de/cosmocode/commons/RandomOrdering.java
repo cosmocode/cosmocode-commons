@@ -16,65 +16,57 @@
 
 package de.cosmocode.commons;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentMap;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Function;
+import com.google.common.base.Objects;
+import com.google.common.collect.MapMaker;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 /**
  * Implementation for {@link Orderings#random()}.
- *
+ * 
  * @since 1.9
  * @author Willi Schoenborn
+ * @param <T> generic type parameter
  */
-final class RandomOrdering extends Ordering<Object> {
+final class RandomOrdering<T> extends Ordering<T> {
     
-    public static final Ordering<Object> INSTANCE = new RandomOrdering();
-
-    private final Random random = new Random();
+    private final ConcurrentMap<Entry<T, T>, Integer> values;
     
-    private RandomOrdering() {
-        
+    public RandomOrdering() {
+        this.values = new MapMaker().makeComputingMap(new Function<Entry<T, T>, Integer>() {
+            
+            private final Random random = new Random();
+            
+            @Override
+            public Integer apply(Entry<T, T> entry) {
+                final Entry<T, T> reverseEntry = Maps.immutableEntry(
+                    entry.getValue(), entry.getKey()
+                );
+                if (values.containsKey(reverseEntry)) {
+                    // sgn(compare(x, y)) == -sgn(compare(y, x))
+                    return -values.get(reverseEntry);
+                } else {
+                    return random.nextInt(2) == 0 ? -1 : 1;
+                }
+            }
+            
+        });
     }
     
     @Override
-    public int compare(Object left, Object right) {
-        // generate a random number between -1 and 1 (both inclusive)
-        return random.nextInt(3) - 1;
-    }
-    
-    @Override
-    public <E> List<E> sortedCopy(Iterable<E> iterable) {
-        final List<E> list = Lists.newArrayList(iterable);
-        // let shuffle do the hard work
-        Collections.shuffle(list, random);
-        return list;
-    }
-    
-    @Override
-    public boolean isOrdered(Iterable<? extends Object> iterable) {
-        // everything can be considered "ordered" randomly
-        return true;
-    }
-    
-    @Override
-    public boolean isStrictlyOrdered(Iterable<? extends Object> iterable) {
-        // everything can be considered "ordered" randomly
-        return true;
-    }
-    
-    @Override
-    public Ordering<Object> reverse() {
-        // no need to do something
-        return this;
-    }
-    
-    @Override
-    public int binarySearch(List<? extends Object> sortedList, Object key) {
-        // can't be optimized
-        return sortedList.indexOf(key);
+    public int compare(T left, T right) {
+        if (Objects.equal(left, right)) {
+            // compare(x, y)==0) == (x.equals(y)
+            return 0;
+        } else {
+            // will either return a cached value or compute a new one
+            return values.get(Maps.immutableEntry(left, right));
+        }
     }
     
     @Override
