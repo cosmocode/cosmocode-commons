@@ -56,9 +56,10 @@
       <artifactId>guava</artifactId>
     </dependency>
     <dependency>
-      <groupId>de.cosmocode</groupId>
-      <artifactId>cosmocode-patterns</artifactId>
-      <version>[1.5,2)</version>
+      <groupId>com.google.collections</groupId>
+      <artifactId>google-collections-testfw</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
