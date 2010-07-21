@@ -35,6 +35,16 @@ import com.google.common.collect.Ordering;
  */
 final class RandomOrdering<T> extends Ordering<T> {
     
+    /**
+     * Reusable constant for "left-greater-right" to prevent autoboxing.
+     */
+    private static final Integer ONE = 1;
+    
+    /**
+     * Reusable constant for "right-greater-left" to prevent autoboxing.
+     */
+    private static final Integer MINUS_ONE = -1;
+    
     private final ConcurrentMap<Entry<T, T>, Integer> values;
     
     public RandomOrdering() {
@@ -49,10 +59,10 @@ final class RandomOrdering<T> extends Ordering<T> {
                 );
                 if (values.containsKey(reverseEntry)) {
                     // sgn(compare(x, y)) == -sgn(compare(y, x))
-                    return -values.get(reverseEntry);
+                    return values.get(reverseEntry) == ONE ? MINUS_ONE : ONE;
                 } else {
                     // return -1 or 1 with a 50% possibility (each)
-                    return random.nextInt(2) == 0 ? -1 : 1;
+                    return random.nextInt(2) == 0 ? ONE : MINUS_ONE;
                 }
             }
             
