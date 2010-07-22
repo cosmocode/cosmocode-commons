@@ -21,12 +21,13 @@ import java.beans.VetoableChangeListener;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import de.cosmocode.patterns.Builder;
-import de.cosmocode.patterns.Immutable;
-import de.cosmocode.patterns.ThreadSafe;
 
 /**
  * An immmutable view on a {@link TreeNode}. It throws an

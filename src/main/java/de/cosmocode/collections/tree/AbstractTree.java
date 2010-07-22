@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import de.cosmocode.collections.tree.iterator.LevelOrderIterator;
@@ -46,10 +47,11 @@ public abstract class AbstractTree<E> implements Tree<E> {
     /**
      * Indicates that the given root element is null.
      * Can be used in a NullPointerException.
+     * 
+     * @deprecated should be replaced with {@link Preconditions#checkNotNull(Object, Object)}
      */
+    @Deprecated
     public static final String ERR_ROOT_NULL = "root must not be null";
-    
-    
     
     private final Iterable<E> preOrderIterable = new Iterable<E>() {
 

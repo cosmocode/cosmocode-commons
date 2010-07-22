@@ -16,6 +16,8 @@
 
 package de.cosmocode.collections.tree;
 
+import com.google.common.base.Preconditions;
+
 
 /**
  * An immutable view on a {@link Tree}.
@@ -37,9 +39,10 @@ public class ImmutableTree<E> extends AbstractTree<E> implements Tree<E> {
     public ImmutableTree(final TreeNode<E> rootNode) {
         super();
         
-        if (rootNode == null) throw new NullPointerException(ERR_ROOT_NULL);
+        Preconditions.checkNotNull(rootNode, "RootNode");
 
-        this.rootNode = ImmutableNode.<E>builder().deepCopy(rootNode).build();
+        final ImmutableNode.ImmutableBuilder<E> builder = ImmutableNode.builder();
+        this.rootNode = builder.deepCopy(rootNode).build();
     }
     
     /**

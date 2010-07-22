@@ -18,6 +18,8 @@ package de.cosmocode.collections.tree;
 
 import java.io.Serializable;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Represents a Tree of Objects of generic type T. The Tree is represented as
  * a single rootElement of type {@code TreeNode<T>}.
@@ -47,8 +49,8 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
         this.rootElement = new TreeRoot<E>();
     }
     
-    public DefaultTree(final TreeNode<E> rootElement) {
-        if (rootElement == null) throw new NullPointerException(ERR_ROOT_NULL);
+    public DefaultTree(TreeNode<E> rootElement) {
+        Preconditions.checkNotNull(rootElement, "RootElement");
         this.rootElement = new TreeRoot<E>(rootElement);
     }
 
@@ -59,8 +61,8 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
     }
     
     @Override
-    public void setRootElement(final TreeNode<E> rootElement) {
-        if (rootElement == null) throw new NullPointerException(ERR_ROOT_NULL);
+    public void setRootElement(TreeNode<E> rootElement) {
+        Preconditions.checkNotNull(rootElement, "RootElement");
         this.rootElement = new TreeRoot<E>(rootElement);
     }
 
@@ -88,22 +90,22 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
         
         private static final long serialVersionUID = 8553069950829726723L;
         
-        private final TreeNode<E> delegated;
+        private final TreeNode<E> delegate;
         
         public TreeRoot() {
-            this.delegated = new DuplicatesNode<E>();
+            this.delegate = new DuplicatesNode<E>();
         }
         
         public TreeRoot(final TreeNode<E> delegated) {
             if (delegated == null) throw new NullPointerException(ERR_DELEGATED_NULL);
             if (delegated.getParent() != null) throw new IllegalArgumentException(ERR_NOT_ROOT);
             
-            this.delegated = delegated;
+            this.delegate = delegated;
         }
         
         @Override
         protected TreeNode<E> delegate() {
-            return delegated;
+            return delegate;
         }
         
         @Override
@@ -128,7 +130,7 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
         
         @Override
         public TreeNode<E> addChild(E childData) {
-            final TreeNode<E> newChild = delegated.addChild(childData);
+            final TreeNode<E> newChild = delegate.addChild(childData);
             newChild.setParent(this);
             return newChild;
         };
@@ -140,13 +142,13 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
             // test if we have anything to do
             if (child.getParent() == this) return;
             
-            delegated.addChildNode(child);
+            delegate.addChildNode(child);
             child.setParent(this);
         }
         
         @Override
         public void insertChildAt(int index, TreeNode<E> child) throws IndexOutOfBoundsException {
-            delegated.insertChildAt(index, child);
+            delegate.insertChildAt(index, child);
             child.setParent(this);
         }
         
@@ -179,6 +181,5 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
         }
 
     }
-
 
 }
