@@ -49,7 +49,7 @@ final class ChainedRunnable implements Runnable {
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (this instanceof ChainedRunnable) {
+        } else if (that instanceof ChainedRunnable) {
             final ChainedRunnable other = ChainedRunnable.class.cast(that);
             return runnables.equals(other.runnables);
         } else {
