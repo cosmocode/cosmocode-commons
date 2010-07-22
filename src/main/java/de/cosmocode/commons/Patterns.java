@@ -82,7 +82,7 @@ public final class Patterns {
      *   a blank string (either "" or null).
      * </p>
      * 
-     * @see {@link Locale#toString()}
+     * @see Locale
      */
     public static final Pattern LOCALE = Pattern.compile("^([a-z]{2}|(?=.+))(?:_([A-Z]{2}|(?=.+))(?:(?<!^_)_(.+))?)?$");
 
@@ -94,7 +94,7 @@ public final class Patterns {
      *   in groups (from 1 to 4).
      * </div>
      * 
-     * @see {@link Inet4Address}
+     * @see Inet4Address
      */
     public static final Pattern INTERNET_ADDRESS = Pattern.compile("\\b" +
         "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\." +

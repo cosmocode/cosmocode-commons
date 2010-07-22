@@ -223,7 +223,7 @@ public final class Reflection {
      * equals by the returned comparator. Sub types are considered less than super classes.
      * {@link Double}, {@link Long} and {@link Integer} e.g. are considered less than
      * {@link Number}. Two classes that are not related regarding inheritence are compared using
-     * {@link Classes#orderByName()}.
+     * {@link Reflection#orderByName()}.
      * 
      * @since 1.9
      * @return an ordering which sorts classes by hierarchy

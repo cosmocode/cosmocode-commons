@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * {@link Immutable} classes need to contain
  * only final and immutable instance variables.
  * 
- * @deprecated use {@link javax.annotation.concurrent.Immutable} instead
+ * @deprecated use {@linkplain javax.annotation.concurrent.Immutable} instead
  * @author schoenborn@cosmocode.de
  */
 @Retention(RetentionPolicy.RUNTIME)

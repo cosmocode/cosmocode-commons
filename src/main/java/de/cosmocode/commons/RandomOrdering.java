@@ -38,12 +38,12 @@ final class RandomOrdering<T> extends Ordering<T> {
     /**
      * Reusable constant for "left-greater-right" to prevent autoboxing.
      */
-    private static final Integer ONE = 1;
+    private static final Integer LEFT_IS_GREATER = 1;
     
     /**
      * Reusable constant for "right-greater-left" to prevent autoboxing.
      */
-    private static final Integer MINUS_ONE = -1;
+    private static final Integer RIGHT_IS_GREATER = -1;
     
     private final ConcurrentMap<Entry<T, T>, Integer> values;
     
@@ -57,12 +57,16 @@ final class RandomOrdering<T> extends Ordering<T> {
                 final Entry<T, T> reverseEntry = Maps.immutableEntry(
                     entry.getValue(), entry.getKey()
                 );
-                if (values.containsKey(reverseEntry)) {
+                
+                // whenever this function is being called neither (x,y) nor (y,x) has been compared yet
+                if (random.nextInt(2) == 0) {
                     // sgn(compare(x, y)) == -sgn(compare(y, x))
-                    return values.get(reverseEntry) == ONE ? MINUS_ONE : ONE;
+                    values.put(reverseEntry, LEFT_IS_GREATER);
+                    return RIGHT_IS_GREATER;
                 } else {
-                    // return -1 or 1 with a 50% possibility (each)
-                    return random.nextInt(2) == 0 ? ONE : MINUS_ONE;
+                    // sgn(compare(x, y)) == -sgn(compare(y, x))
+                    values.put(reverseEntry, RIGHT_IS_GREATER);
+                    return LEFT_IS_GREATER;
                 }
             }
             

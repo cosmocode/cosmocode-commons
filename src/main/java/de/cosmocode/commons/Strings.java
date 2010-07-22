@@ -93,7 +93,7 @@ public final class Strings {
     
     /**
      * Returns a Function able to convert strings into their lowercase counterparts
-     * using {@link String#toLowerCase(Locale))}.
+     * using {@link String#toLowerCase(Locale)}.
      * 
      * <p>
      *   The returned function handles null by returning them.

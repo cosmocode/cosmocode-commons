@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * can be hard and error-prone.
  * Consider working with {@link Immutable} classes.
  * 
- * @deprecated use {@link javax.annotation.concurrent.ThreadSafe} instead
+ * @deprecated use {@linkplain javax.annotation.concurrent.ThreadSafe} instead
  * @author schoenborn@cosmocode.de
  */
 @Retention(RetentionPolicy.RUNTIME)

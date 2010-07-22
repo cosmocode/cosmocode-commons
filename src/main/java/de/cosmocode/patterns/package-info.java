@@ -18,13 +18,5 @@
  * This package contains interfaces, classes
  * and annotations of the most important and
  * well known design patterns.
- * 
- * See also
- * {@link DesignPatterns}
- * {@link Adapter}
- * {@link Builder}
- * {@link Decorator}
- * {@link Factory}
- * 
  */
 package de.cosmocode.patterns;

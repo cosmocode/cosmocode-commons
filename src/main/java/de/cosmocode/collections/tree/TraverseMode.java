@@ -28,7 +28,6 @@ public enum TraverseMode {
      * The elements are in pre order, meaning 
      * the node itself is visited first and its children afterwards
      * (http://en.wikipedia.org/wiki/Tree_traversal#Traversal).
-     * @return a pre-ordered {@code Iterator<T>}
      */
     PRE_ORDER,
 
@@ -37,7 +36,6 @@ public enum TraverseMode {
      * The elements are in order, meaning 
      * the left part is traversed, then the element itself, then the right part
      * (http://en.wikipedia.org/wiki/Tree_traversal#Traversal).
-     * @return an in-ordered {@code Iterator<T>}
      */
     IN_ORDER,
 
@@ -46,7 +44,6 @@ public enum TraverseMode {
      * The elements are post order, meaning 
      * the children are visited first and the node itself afterwards
      * (http://en.wikipedia.org/wiki/Tree_traversal#Traversal).
-     * @return a post-ordered {@code Iterator<T>}
      */
     POST_ORDER,
     
@@ -55,7 +52,6 @@ public enum TraverseMode {
      * The elements are in level-order, meaning 
      * every level is visited before going to the next level
      * (http://en.wikipedia.org/wiki/Tree_traversal#Traversal).
-     * @return a level-ordered {@code Iterator<T>}
      */
     LEVEL_ORDER
 

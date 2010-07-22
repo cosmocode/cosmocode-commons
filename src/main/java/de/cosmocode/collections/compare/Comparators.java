@@ -86,7 +86,7 @@ public final class Comparators {
      * on every call of the {@link Comparator#compare(Object, Object)}
      * method call.
      * 
-     * @deprecated use {@link Orderings#shuffle()} instead
+     * @deprecated use {@link Orderings#random()} instead
      * @param <E> the element type of the given comparator
      * @return a comparator which returns randomly generated results
      */

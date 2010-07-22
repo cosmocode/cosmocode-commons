@@ -46,7 +46,7 @@ public class ImmutableTree<E> extends AbstractTree<E> implements Tree<E> {
      * Creates a new ImmutableTree of a Tree<T>.
      * All add-, insert-, set- and remove-methods
      * throw an {@link UnsupportedOperationException}.
-     * @param rootNode
+     * @param tree
      */
     public ImmutableTree(final Tree<E> tree) {
         this(tree.getRoot());
