@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
@@ -33,8 +34,10 @@ import com.google.common.collect.Ordering;
  * @author Willi Schoenborn
  * @param <T> generic type parameter
  */
-final class RandomOrdering<T> extends Ordering<T> {
+final class RandomOrdering<T> extends Ordering<T> implements Serializable {
     
+    private static final long serialVersionUID = 1463223861679378549L;
+
     /**
      * Reusable constant for "left-greater-right" to prevent autoboxing.
      */
@@ -59,15 +62,11 @@ final class RandomOrdering<T> extends Ordering<T> {
                 );
                 
                 // whenever this function is being called neither (x,y) nor (y,x) has been compared yet
-                if (random.nextInt(2) == 0) {
-                    // sgn(compare(x, y)) == -sgn(compare(y, x))
-                    values.put(reverseEntry, LEFT_IS_GREATER);
-                    return RIGHT_IS_GREATER;
-                } else {
-                    // sgn(compare(x, y)) == -sgn(compare(y, x))
-                    values.put(reverseEntry, RIGHT_IS_GREATER);
-                    return LEFT_IS_GREATER;
-                }
+                final Integer value = choose(random);
+                final Integer reverse = invert(value);
+                // sgn(compare(x, y)) == -sgn(compare(y, x))
+                values.put(reverseEntry, reverse);
+                return value;
             }
             
         });
@@ -87,6 +86,14 @@ final class RandomOrdering<T> extends Ordering<T> {
     @Override
     public String toString() {
         return "Orderings.random()";
+    }
+    
+    private static Integer choose(Random random) {
+        return random.nextInt(2) == 0 ? LEFT_IS_GREATER : RIGHT_IS_GREATER;
+    }
+    
+    private static Integer invert(Integer value) {
+        return value == LEFT_IS_GREATER ? RIGHT_IS_GREATER : LEFT_IS_GREATER;
     }
     
 }
