@@ -75,16 +75,16 @@ public final class Enums {
      * by using it's simple class name and it's name.
      * 
      * <p>
-     *   e.g. NORMAL from {@link TrimMode} would return:
+     *   e.g. NORMAL of {@link TrimMode} would return:
      *   {@code TrimMode.NORMAL}
      * </p>
      * 
-     * @param <E> the generic enum value
      * @param e the enum value
      * @return full name of the enum constant
      * @throws NullPointerException if e is null
      */
-    public static <E extends Enum<E>> String toString(E e) {
+    public static String toString(Enum<?> e) {
+        Preconditions.checkNotNull(e, "Enum");
         return e.getClass().getSimpleName() + "." + e.name();
     }
     
@@ -101,6 +101,7 @@ public final class Enums {
      * @return the enum instance with the given ordinal
      */
     public static <E extends Enum<E>> E valueOf(Class<E> type, int ordinal) {
+        Preconditions.checkNotNull(type, "Type");
         if (ordinal < 0) throw new IndexOutOfBoundsException("Ordinal must not be negative");
         final E[] enums = type.getEnumConstants();
         if (ordinal < enums.length) {
