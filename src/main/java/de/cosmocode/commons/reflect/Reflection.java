@@ -104,6 +104,17 @@ public final class Reflection {
     public static Function<Class<?>, String> getSimpleName() {
         return GetSimpleName.INSTANCE;
     }
+
+    /**
+     * Returns a function which transforms {@link Class}es into {@link Class}es by using
+     * {@link Class#getSuperclass()}.
+     * 
+     * @since 2.0
+     * @return a function using getSuperclass() to produce Classes
+     */
+    public static Function<Class<?>, Class<?>> getSuperClass() {
+        return GetSuperClass.INSTANCE;
+    }
     
     /**
      * Returns a function which casts class literals into subclass literals
