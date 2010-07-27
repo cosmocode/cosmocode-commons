@@ -23,7 +23,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ComputationException;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Ordering;
@@ -136,7 +135,7 @@ public final class Reflection {
      * @since 1.8
      * @return a predicate which matches enum types
      */
-    public static Predicate<Class<?>> isEnum() {
+    public static Rule<Class<?>> isEnum() {
         return IsEnum.INSTANCE;
     }
     
@@ -146,7 +145,7 @@ public final class Reflection {
      * @since 1.8
      * @return a predicate which matches annotation types
      */
-    public static Predicate<Class<?>> isAnnotation() {
+    public static Rule<Class<?>> isAnnotation() {
         return IsAnnotation.INSTANCE;
     }
 
@@ -156,7 +155,7 @@ public final class Reflection {
      * @since 1.8
      * @return a predicate which matches array types
      */
-    public static Predicate<Class<?>> isArray() {
+    public static Rule<Class<?>> isArray() {
         return IsArray.INSTANCE;
     }
 
@@ -176,7 +175,7 @@ public final class Reflection {
      * @since 1.8
      * @return a predicate which matches interfaces
      */
-    public static Predicate<Class<?>> isInterface() {
+    public static Rule<Class<?>> isInterface() {
         return IsInterface.INSTANCE;
     }
 
@@ -189,7 +188,7 @@ public final class Reflection {
      * @return a predicate which matches super types of the given type
      * @throws NullPointerException if type is null
      */
-    public static Predicate<Class<?>> isSupertypeOf(Class<?> type) {
+    public static Rule<Class<?>> isSupertypeOf(Class<?> type) {
         return new IsSuperTypeOf(type);
     }
     
@@ -202,7 +201,7 @@ public final class Reflection {
      * @return a predicate which matches sub types of the given type
      * @throws NullPointerException if type is null
      */
-    public static Predicate<Class<?>> isSubtypeOf(Class<?> type) {
+    public static Rule<Class<?>> isSubtypeOf(Class<?> type) {
         return new IsSubTypeOf(type);
     }
     
