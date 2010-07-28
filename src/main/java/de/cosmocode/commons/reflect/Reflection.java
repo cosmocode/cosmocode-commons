@@ -108,11 +108,55 @@ public final class Reflection {
      * Returns a function which transforms {@link Class}es into {@link Class}es by using
      * {@link Class#getSuperclass()}.
      * 
-     * @since 2.0
+     * @since 1.10
      * @return a function using getSuperclass() to produce Classes
      */
     public static Function<Class<?>, Class<?>> getSuperClass() {
         return GetSuperClass.INSTANCE;
+    }
+
+    /**
+     * Returns a function which transforms {@link Class}es into an array of {@link Class}es by using
+     * {@link Class#getInterfaces()}.
+     * 
+     * @since 1.11
+     * @return a function using getInterfaces() to produce an array of Classes
+     */
+    public static Function<Class<?>, Class<?>[]> getInterfaces() {
+        return GetInterfaces.INSTANCE;
+    }
+
+    /**
+     * Returns a function which returns an iterable over all interfaces the given
+     * input implements either explicitly or implicitly.
+     * 
+     * <p>
+     *   Note: The iterable provided by the returned function may return
+     *   the same interface twice.
+     * </p>
+     * 
+     * @since 1.11
+     * @return a function using getInterfaces() to produce an array of Classes
+     */
+    public static Function<Class<?>, Iterable<Class<?>>> getAllInterfaces() {
+        return GetAllInterfaces.INSTANCE;
+    }
+    
+    /**
+     * Returns an iterable over all interfaces the given
+     * input implements either explicitly or implicitly.
+     * 
+     * <p>
+     *   Note: The returned iterable may return the same interface twice.
+     * </p>
+     * 
+     * @since 1.11
+     * @param type the type being inspected
+     * @return an iterable over all interfaces of the given type
+     * @throws NullPointerException if type is null
+     */
+    public static Iterable<Class<?>> getAllInterfaces(Class<?> type) {
+        return getAllInterfaces().apply(type);
     }
     
     /**

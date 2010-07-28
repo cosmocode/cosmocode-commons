@@ -19,18 +19,23 @@ package de.cosmocode.commons.reflect;
 import com.google.common.base.Function;
 
 /**
- * Implementation for {@link Reflection#getSuperClass()}.
+ * Implementation of {@link Reflection#getInterfaces()}.
  *
- * @since 2.0
+ * @since 1.10
  * @author Willi Schoenborn
  */
-enum GetSuperClass implements Function<Class<?>, Class<?>> {
-
+public enum GetInterfaces implements Function<Class<?>, Class<?>[]> {
+    
     INSTANCE;
     
     @Override
-    public Class<?> apply(Class<?> from) {
-        return from.getSuperclass();
+    public Class<?>[] apply(Class<?> from) {
+        return from.getInterfaces();
     }
     
+    @Override
+    public String toString() {
+        return "Reflection.getInterfaces()";
+    }
+
 }
