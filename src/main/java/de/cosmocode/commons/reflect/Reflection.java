@@ -156,7 +156,44 @@ public final class Reflection {
      * @throws NullPointerException if type is null
      */
     public static Iterable<Class<?>> getAllInterfaces(Class<?> type) {
+        Preconditions.checkNotNull(type, "Type");
         return getAllInterfaces().apply(type);
+    }
+
+    /**
+     * Returns a function which returns an iterable over all super type the given
+     * input extends or implements either explicitly or implicitly in level
+     * order. Super classes are returned before interfaces.
+     * 
+     * <p>
+     *   Note: The iterable provided by the returned function may return
+     *   the same type twice.
+     * </p>
+     * 
+     * @since 1.12
+     * @return a function using getInterfaces() to produce an array of Classes
+     */
+    public static Function<Class<?>, Iterable<Class<?>>> getAllSuperTypes() {
+        return GetAllSuperTypes.INSTANCE;
+    }
+
+    /**
+     * Returns an iterable over all super types the given
+     * input implements either explicitly or implicitly in level
+     * order. Super classes are returned before interfaces.
+     * 
+     * <p>
+     *   Note: The returned iterable may return the same type twice.
+     * </p>
+     * 
+     * @since 1.12
+     * @param type the type being inspected
+     * @return an iterable over all interfaces of the given type
+     * @throws NullPointerException if type is null
+     */
+    public static Iterable<Class<?>> getAllSuperTypes(Class<?> type) {
+        Preconditions.checkNotNull(type, "Type");
+        return getAllSuperTypes().apply(type);
     }
     
     /**

@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import de.cosmocode.collections.tree.iterator.LevelOrderIterator;
@@ -60,6 +61,11 @@ public abstract class AbstractTree<E> implements Tree<E> {
             return new PreOrderIterator<E>(getRoot());
         }
         
+        @Override
+        public String toString() {
+            return Iterables.toString(this);
+        };
+        
     };
     
     private final Iterable<E> postOrderIterable = new Iterable<E>() {
@@ -69,6 +75,11 @@ public abstract class AbstractTree<E> implements Tree<E> {
             return new PostOrderIterator<E>(getRoot());
         }
         
+        @Override
+        public String toString() {
+            return Iterables.toString(this);
+        };
+        
     };
     
     private final Iterable<E> levelOrderIterable = new Iterable<E>() {
@@ -77,6 +88,11 @@ public abstract class AbstractTree<E> implements Tree<E> {
         public Iterator<E> iterator() {
             return new LevelOrderIterator<E>(getRoot());
         }
+        
+        @Override
+        public String toString() {
+            return Iterables.toString(this);
+        };
         
     };
     
