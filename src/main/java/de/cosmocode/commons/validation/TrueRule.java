@@ -17,6 +17,7 @@
 package de.cosmocode.commons.validation;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
 /**
@@ -41,12 +42,12 @@ enum TrueRule implements Rule<Object> {
     
     @Override
     public <S> Rule<S> and(Rule<? super Object> that) {
-        return Rules.of(that);
+        return Rules.of(checkNotNull(that));
     }
     
     @Override
     public <S> Rule<S> and(Predicate<? super Object> that) {
-        return Rules.of(that);
+        return Rules.of(checkNotNull(that));
     }
     
     @Override
@@ -66,17 +67,21 @@ enum TrueRule implements Rule<Object> {
     
     @Override
     public <S> Rule<S> xor(Rule<? super Object> that) {
-        return new XorRule<S>(this, that);
+        return checkNotNull(that).not();
     }
     
     @Override
     public <S> Rule<S> xor(Predicate<? super Object> that) {
-        return xor(Rules.of(that));
+        return xor(Rules.of(checkNotNull(that)));
     }
     
     @Override
     public <S> Rule<S> compose(Function<? super S, ? extends Object> function) {
         return new ComposedRule<Object, S>(this, function);
+    }
+    
+    private <O> O checkNotNull(O that) {
+        return Preconditions.checkNotNull(that, "That");
     }
     
     @Override

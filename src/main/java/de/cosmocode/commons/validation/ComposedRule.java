@@ -28,7 +28,7 @@ import com.google.common.base.Preconditions;
  * @param <T> generic parameter type of backing rule
  * @param <S> generic parameter type
  */
-final class ComposedRule<T, S> extends AbstractRule<S> {
+public final class ComposedRule<T, S> extends AbstractRule<S> {
 
     private final Rule<T> rule;
     private final Function<? super S, ? extends T> function;
