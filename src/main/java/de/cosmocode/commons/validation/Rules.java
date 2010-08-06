@@ -17,6 +17,7 @@
 package de.cosmocode.commons.validation;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 /**
  * Utility class for {@link Rule}s.
@@ -47,6 +48,30 @@ public final class Rules {
         } else {
             return new PredicateRule<T>(predicate);
         }
+    }
+    
+    /**
+     * Rule based alternative to {@link Predicates#alwaysTrue()}.
+     * 
+     * @since 1.13
+     * @param <T> generic parameter type
+     * @return a rule which always evaluates to true
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Rule<T> alwaysTrue() {
+        return (Rule<T>) TrueRule.INSTANCE;
+    }
+
+    /**
+     * Rule based alternative to {@link Predicates#alwaysFalse()}.
+     * 
+     * @since 1.13
+     * @param <T> generic parameter type
+     * @return a rule which always evaluates to false
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Rule<T> alwaysFalse() {
+        return (Rule<T>) FalseRule.INSTANCE;
     }
     
     /**

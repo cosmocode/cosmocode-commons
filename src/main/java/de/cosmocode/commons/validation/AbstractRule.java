@@ -16,6 +16,9 @@
 
 package de.cosmocode.commons.validation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Constraint;
@@ -28,9 +31,11 @@ import com.google.common.collect.Constraint;
  * @param <T> generic parameter type.
  */
 public abstract class AbstractRule<T> implements Rule<T> {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractRule.class);
 
     @Override
-    public T checkElement(T element) {
+    public final T checkElement(T element) {
         if (apply(element)) {
             return transform(element);
         } else {
@@ -56,7 +61,12 @@ public abstract class AbstractRule<T> implements Rule<T> {
 
     @Override
     public <S extends T> Rule<S> and(Rule<? super T> that) {
-        return new AndRule<S>(this, that);
+        if (equals(that)) {
+            LOG.info("{}.and({}) has been optimized", this, that);
+            return Rules.<S>of(this);
+        } else {
+            return new AndRule<S>(this, that);
+        }
     }
     
     @Override
@@ -66,7 +76,12 @@ public abstract class AbstractRule<T> implements Rule<T> {
 
     @Override
     public <S extends T> Rule<S> or(Rule<? super T> that) {
-        return new OrRule<S>(this, that);
+        if (equals(that)) {
+            LOG.info("{}.or({}) has been optimized", this, that);
+            return Rules.<S>of(this);
+        } else {
+            return new OrRule<S>(this, that);
+        }
     }
     
     @Override
@@ -76,7 +91,14 @@ public abstract class AbstractRule<T> implements Rule<T> {
 
     @Override
     public <S extends T> Rule<S> xor(Rule<? super T> that) {
-        return new XorRule<S>(this, that);
+        if (equals(that)) {
+            LOG.warn("{}.xor({}) evaluates to {}", new Object[] {
+                this, that, Rules.alwaysFalse()
+            });
+            return Rules.<S>alwaysFalse();
+        } else {
+            return new XorRule<S>(this, that);
+        }
     }
     
     @Override
