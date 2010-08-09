@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.cosmocode</groupId>
     <artifactId>cosmocode-parent</artifactId>
-    <version>2.3.3</version>
+    <version>2.4.0</version>
   </parent>
   <name>CosmoCode Commons</name>
   <groupId>de.cosmocode</groupId>
@@ -21,45 +21,6 @@
       <url>http://mvn.cosmocode.de/</url>
     </repository>
   </repositories>
-  <profiles>
-    <profile>
-      <id>scala</id>
-      <activation>
-        <file>
-          <exists>src/main/scala</exists>
-        </file>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.scala-lang</groupId>
-          <artifactId>scala-library</artifactId>
-          <version>2.8.0</version>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scala-tools</groupId>
-            <artifactId>maven-scala-plugin</artifactId>
-            <version>2.14.1</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>compile</goal>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <includes>
-                    <inlcude>**/*.scala</inlcude>
-                  </includes>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
