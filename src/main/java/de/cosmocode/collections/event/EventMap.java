@@ -62,7 +62,7 @@ final class EventMap<K, V> extends ForwardingMap<K, V> {
     
     private final EventListener<? super Entry<? extends K, ? extends V>> listener;
 
-    public EventMap(Map<K, V> map, EventListener<? super Entry<? extends K, ? extends V>> listener) {
+    public EventMap(Map<K, V> map, EventListener<? super Map.Entry<? extends K, ? extends V>> listener) {
         this.map = Preconditions.checkNotNull(map, "Map");
         this.listener = Preconditions.checkNotNull(listener, "Listener");
     }
@@ -89,7 +89,7 @@ final class EventMap<K, V> extends ForwardingMap<K, V> {
     }
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Map.Entry<K, V>> entrySet() {
         return Events.compose(super.entrySet(), listener);
     }
 
