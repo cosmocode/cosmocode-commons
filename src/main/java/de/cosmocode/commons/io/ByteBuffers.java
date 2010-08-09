@@ -16,7 +16,6 @@
 
 package de.cosmocode.commons.io;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
@@ -43,34 +42,7 @@ public final class ByteBuffers {
      */
     public static InputStream asInputStream(final ByteBuffer buffer) {
         Preconditions.checkNotNull(buffer, "Buffer");
-        return new InputStream() {
-            
-            @Override
-            public synchronized int read() throws IOException {
-                if (buffer.hasRemaining()) {
-                    return buffer.get();
-                } else {
-                    return -1;
-                }
-            }
-            
-            @Override
-            public synchronized int read(byte[] b, int off, int len) throws IOException {
-                if (buffer.hasRemaining()) {
-                    final int length = Math.min(len, buffer.remaining());
-                    buffer.get(b, off, length);
-                    return length;
-                } else {
-                    return -1;
-                }
-            }
-            
-            @Override
-            public String toString() {
-                return String.format("ByteBuffers.asInputStream(%s)", buffer);
-            }
-            
-        };
+        return new ByteBufferInputStream(buffer);
     }
 
     /**
@@ -82,24 +54,7 @@ public final class ByteBuffers {
      */
     public static OutputStream asOutputStream(final ByteBuffer buffer) {
         Preconditions.checkNotNull(buffer, "Buffer");
-        return new OutputStream() {
-            
-            @Override
-            public synchronized void write(int b) throws IOException {
-                buffer.put((byte) b);
-            }
-            
-            @Override
-            public synchronized void write(byte[] b, int off, int len) throws IOException {
-                buffer.put(b, off, len);
-            }
-            
-            @Override
-            public String toString() {
-                return String.format("ByteBuffers.asOutputStream(%s)", buffer);
-            }
-            
-        };
+        return new ByteBufferOutputStream(buffer);
     }
     
 }

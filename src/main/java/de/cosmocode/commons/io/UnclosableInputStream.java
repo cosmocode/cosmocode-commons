@@ -24,14 +24,15 @@ import com.google.common.base.Preconditions;
 /**
  * An {@link InputStream} which is not closable.
  *
- * @deprecated use {@link InputStreams#asUncloseable(InputStream)}
  * @author Willi Schoenborn
  */
-@Deprecated
 public final class UnclosableInputStream extends FilterInputStream {
 
-    public UnclosableInputStream(InputStream input) {
-        super(Preconditions.checkNotNull(input, "Input"));
+    private final InputStream stream;
+    
+    public UnclosableInputStream(InputStream stream) {
+        super(stream);
+        this.stream = Preconditions.checkNotNull(stream, "Stream");
     }
 
     /**
@@ -40,6 +41,11 @@ public final class UnclosableInputStream extends FilterInputStream {
     @Override
     public void close() {
         // we don't close
+    }
+    
+    @Override
+    public String toString() {
+        return "InputStreams.asUncloseable(" + stream + ")";
     }
 
 }
