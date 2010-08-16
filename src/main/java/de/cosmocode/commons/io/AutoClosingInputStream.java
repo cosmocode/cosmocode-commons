@@ -20,6 +20,9 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -30,6 +33,8 @@ import com.google.common.base.Preconditions;
  * @author Willi Schoenborn
  */
 final class AutoClosingInputStream extends FilterInputStream {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(AutoClosingInputStream.class);
 
     private final InputStream stream;
     
@@ -100,13 +105,13 @@ final class AutoClosingInputStream extends FilterInputStream {
         try {
             close();
         } catch (IOException e) {
-            InputStreams.LOG.warn("Unable to close " + this, e);
+            LOG.warn("Unable to close " + this, e);
         }
     }
     
     @Override
     public String toString() {
-        return String.format("InputStreams.asAutoClosing(%s)", stream);
+        return "InputStreams.asAutoClosing(" + stream + ")";
     }
     
 }

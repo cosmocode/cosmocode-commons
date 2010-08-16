@@ -48,7 +48,7 @@ final class ByteBufferOutputStream extends OutputStream {
 
     @Override
     public String toString() {
-        return String.format("ByteBuffers.asOutputStream(%s)", buffer);
+        return "ByteBuffers.asOutputStream(" + buffer + ")";
     }
     
 }

@@ -85,7 +85,7 @@ final class ByteBufferInputStream extends InputStream {
     
     @Override
     public String toString() {
-        return String.format("ByteBuffers.asInputStream(%s)", buffer);
+        return "ByteBuffers.asInputStream(" + buffer + ")";
     }
     
 }

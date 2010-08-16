@@ -18,9 +18,6 @@ package de.cosmocode.commons.io;
 
 import java.io.InputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 
 /**
@@ -30,8 +27,6 @@ import com.google.common.base.Preconditions;
  */
 public final class InputStreams {
     
-    static final Logger LOG = LoggerFactory.getLogger(InputStreams.class);
-
     private InputStreams() {
         
     }
@@ -95,7 +90,7 @@ public final class InputStreams {
      * @return an empty input stream
      */
     public static InputStream empty() {
-        return EmptyInputStream.getInstance();
+        return EmptyInputStream.INSTANCE;
     }
     
 }

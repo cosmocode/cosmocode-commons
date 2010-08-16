@@ -45,7 +45,7 @@ public final class UnclosableInputStream extends FilterInputStream {
     
     @Override
     public String toString() {
-        return "InputStreams.asUncloseable(" + stream + ")";
+        return "InputStreams.asUnclosable(" + stream + ")";
     }
 
 }

@@ -27,7 +27,7 @@ import java.io.InputStream;
  */
 final class EmptyInputStream extends InputStream {
 
-    private static final InputStream INSTANCE = new EmptyInputStream();
+    static final InputStream INSTANCE = new EmptyInputStream();
     
     private EmptyInputStream() {
         
@@ -56,10 +56,6 @@ final class EmptyInputStream extends InputStream {
     @Override
     public String toString() {
         return "InputStreams.empty()";
-    }
-
-    public static InputStream getInstance() {
-        return INSTANCE;
     }
 
 }
