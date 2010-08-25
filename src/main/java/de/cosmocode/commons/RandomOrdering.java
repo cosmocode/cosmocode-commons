@@ -17,8 +17,8 @@
 package de.cosmocode.commons;
 
 import java.io.Serializable;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.concurrent.ConcurrentMap;
 
 import com.google.common.base.Function;

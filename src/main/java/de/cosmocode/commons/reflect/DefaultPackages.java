@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.ImmutableSet.Builder;
+import com.google.common.collect.Iterables;
 import com.google.common.io.Files;
 
 /**
