@@ -8,7 +8,7 @@
   <name>CosmoCode Commons</name>
   <groupId>de.cosmocode</groupId>
   <artifactId>cosmocode-commons</artifactId>
-  <version>1.14-SNAPSHOT</version>
+  <version>1.14.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <scm>
     <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-commons/trunk</developerConnection>
