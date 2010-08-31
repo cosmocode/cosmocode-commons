@@ -34,10 +34,16 @@ import java.util.Map;
  */
 public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, UtilityMap<K, V> {
 
+    private V checkAndGet(K key, String type) {
+        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected %s value", key, type);
+        final V value = get(key);
+        Preconditions.checkNotNull(value, "Required value for key '%s' is null, but should be a %s", key, type);
+        return value;
+    }
+
     @Override
     public boolean getBoolean(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected boolean value", key);
-        return Convert.intoBoolean(get(key));
+        return Convert.intoBoolean(checkAndGet(key, "boolean"));
     }
 
     @Override
@@ -47,7 +53,6 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
     
     @Override
     public int getInt(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected int value", key);
         return (int) getLong(key);
     }
     
@@ -58,8 +63,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public long getLong(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected long value", key);
-        return Convert.intoLong(get(key));
+        return Convert.intoLong(checkAndGet(key, "long"));
     }
 
     @Override
@@ -69,8 +73,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public double getDouble(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected double value", key);
-        return Convert.intoDouble(get(key));
+        return Convert.intoDouble(checkAndGet(key, "double"));
     }
 
     @Override
@@ -80,8 +83,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public Date getDate(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected date value", key);
-        return Convert.intoDate(get(key));
+        return Convert.intoDate(checkAndGet(key, "Date"));
     }
 
     @Override
@@ -91,9 +93,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public <T extends Enum<T>> T getEnum(K key, Class<T> enumType) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key),
-            "No key named '%s' present for expected enum value of class %s", key, enumType);
-        return Convert.intoEnum(get(key), enumType);
+        return Convert.intoEnum(checkAndGet(key, "enum (Class " + enumType + ")"), enumType);
     }
 
     @Override
@@ -103,8 +103,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public String getString(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected String value", key);
-        return Convert.intoString(get(key));
+        return Convert.intoString(checkAndGet(key, "String"));
     }
 
     @Override
@@ -114,8 +113,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public Locale getLocale(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected Locale value", key);
-        return Convert.intoLocale(get(key));
+        return Convert.intoLocale(checkAndGet(key, "Locale"));
     }
 
     @Override
@@ -125,8 +123,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
     
     @Override
     public UtilityList<Object> getList(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected List value", key);
-        return Convert.intoUtilityList(get(key));
+        return Convert.intoUtilityList(checkAndGet(key, "List"));
     }
 
     @Override
@@ -136,8 +133,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public UtilityMap<Object, Object> getMap(K key) throws IllegalArgumentException {
-        Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected Map value", key);
-        return Convert.intoUtilityMap(get(key));
+        return Convert.intoUtilityMap(checkAndGet(key, "Map"));
     }
 
     @Override
@@ -155,7 +151,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
     public UtilitySet<K> keySet() {
         return Utility.asUtilitySet(super.keySet());
     }
-    
+
     @Override
     public UtilityCollection<V> values() {
         return Utility.asUtilityCollection(super.values());
