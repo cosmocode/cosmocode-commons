@@ -33,28 +33,31 @@ import java.util.List;
  * @param <E> a generic type that indicates the data stored in this TreeNode
  */
 public interface TreeNode<E> {
-    
-    // TODO: let TreeNode<T> extend Iterable<T>
-    
-    // TODO: TreeNode<T> search(T data) -> searches in tree hierarchy for data T,
-    //                                     returns corresponding TreeNode<T> or null
-    // TODO: TreeNode<T> getChild(T data)  -> returns the child node for data T or null if no such child exists
-    // TODO: boolean isBranch() -> returns true if this node neither root nor leaf, i.e. has parent and children
-    // TODO: boolean isRoot()  -> returns true if this is the root node, false otherwise
-    // TODO: TreeNode<T> removeChild(T childData) -> removes first child with data T
-    // TODO: int height()   -> the height of the tree, that is: the number of parents until root is reached
-    // TODO: int depth()    -> depth is the minimum number of steps to get to the deepest possible child
-    
-    // TODO: TreeNode<T> firstChild()      -> returns first child or null if none exists
-    // TODO: TreeNode<T> lastChild()       -> returns last child      --- "" ---
-    // TODO: TreeNode<T> previousSibling() -> returns previous sibling   --- "" ---
-    //                                      previous sibling = the child of the parent that is before this node
-    // TODO: TreeNode<T> nextSibling()     -> next sibling ... see above
-    
-    // TODO: addChildNode(TreeNode<T>) should return a boolean, indicating success (or not)
-    // TODO: removeChildNode(TreeNode<T>) should return a boolean, indicating success
-    // TODO: removeChildAt(int) should return the TreeNode<T> that was removed
-    // TODO: insertChildAt(int, TreeNode<T>) should return a boolean, indicating success
+
+    /* possible improvements:
+     *
+     * let TreeNode<T> extend Iterable<T>
+     *
+     * TreeNode<T> search(T data) -> searches in tree hierarchy for data T,
+     *                                     returns corresponding TreeNode<T> or null
+     * TreeNode<T> getChild(T data)  -> returns the child node for data T or null if no such child exists
+     * boolean isBranch() -> returns true if this node neither root nor leaf, i.e. has parent and children
+     * boolean isRoot()  -> returns true if this is the root node, false otherwise
+     * TreeNode<T> removeChild(T childData) -> removes first child with data T
+     * int height()   -> the height of the tree, that is: the number of parents until root is reached
+     * int depth()    -> depth is the minimum number of steps to get to the deepest possible child
+     *
+     * TreeNode<T> firstChild()      -> returns first child or null if none exists
+     * TreeNode<T> lastChild()       -> returns last child      --- "" ---
+     * TreeNode<T> previousSibling() -> returns previous sibling   --- "" ---
+     *                                      previous sibling = the child of the parent that is before this node
+     * TreeNode<T> nextSibling()     -> next sibling ... see above
+     *
+     * addChildNode(TreeNode<T>) should return a boolean, indicating success (or not)
+     * removeChildNode(TreeNode<T>) should return a boolean, indicating success
+     * removeChildAt(int) should return the TreeNode<T> that was removed
+     * insertChildAt(int, TreeNode<T>) should return a boolean, indicating success
+     */
     
     
     String DATA_PROPERTY = "TreeNode data";
