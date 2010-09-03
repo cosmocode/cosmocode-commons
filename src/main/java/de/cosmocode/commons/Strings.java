@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -238,6 +239,29 @@ public final class Strings {
      */
     public static String defaultIfBlank(String s, String defaultValue) {
         return StringUtils.isBlank(s) ? defaultValue : s;
+    }
+    
+    /**
+     * A nullsafe toString method.
+     * 
+     * @since 1.14
+     * @param object the object
+     * @return {@code object.toString()} or null, if object is null
+     */
+    public static String toString(@Nullable Object object) {
+        return toString(object, null);
+    }
+
+    /**
+     * A nullsafe toString method.
+     * 
+     * @since 1.14
+     * @param object the object
+     * @param defaultValue the default value
+     * @return {@code object.toString()} or {@code defaultValue}, if object is null
+     */
+    public static String toString(@Nullable Object object, String defaultValue) {
+        return object == null ? defaultValue : object.toString();
     }
     
     /**
