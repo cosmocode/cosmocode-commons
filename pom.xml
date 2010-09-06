@@ -8,10 +8,10 @@
   <name>CosmoCode Commons</name>
   <groupId>de.cosmocode</groupId>
   <artifactId>cosmocode-commons</artifactId>
-  <version>1.15.0</version>
+  <version>1.16-SNAPSHOT</version>
   <packaging>jar</packaging>
   <scm>
-    <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-commons/tags/1.15.0</developerConnection>
+    <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-commons/trunk</developerConnection>
   </scm>
   <repositories>
     <repository>
