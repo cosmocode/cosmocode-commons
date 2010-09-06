@@ -60,6 +60,30 @@ public final class Procedures {
     }
     
     /**
+     * Chains multiple procedures into one.
+     * 
+     * @since 1.15
+     * @param <T> the generic parameter type
+     * @param procedures the backing procedures
+     * @return a {@link Procedure} executing all given procedures in sequence
+     * @throws NullPointerException if procedures is null
+     */
+    public static <T> Procedure<T> chain(final Iterable<? extends Procedure<? super T>> procedures) {
+        Preconditions.checkNotNull(procedures, "Procedures");
+        return new Procedure<T>() {
+
+            @Override
+            public void apply(T input) {
+                for (Procedure<? super T> procedure : procedures) {
+                    procedure.apply(input);
+                }
+            }
+
+            
+        };
+    }
+    
+    /**
      * Adapts the specified {@link Procedure} to the {@link Function} interface.
      * 
      * @since 1.6
