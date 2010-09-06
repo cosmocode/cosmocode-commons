@@ -470,7 +470,7 @@ public final class Convert {
     public static UtilityList<Object> intoUtilityList(Object value) {
         final List<Object> list = doIntoList(value);
         if (list == null) {
-            throw fail(list, UtilityList.class);
+            throw fail(value, UtilityList.class);
         } else {
             return Utility.asUtilityList(list);
         }
