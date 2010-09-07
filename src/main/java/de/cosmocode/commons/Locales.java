@@ -55,15 +55,11 @@ public final class Locales {
     public static Locale parse(String value) {
         Preconditions.checkNotNull(value, "Value");
         final Matcher matcher = Patterns.LOCALE.matcher(value);
-        if (matcher.matches()) {
-            final String language = Strings.defaultIfBlank(matcher.group(1), "");
-            final String country = Strings.defaultIfBlank(matcher.group(2), "");
-            final String variant = Strings.defaultIfBlank(matcher.group(3), "");
-            return new Locale(language, country, variant);
-        } else {
-            final String message = String.format("%s does not match %s", value, Patterns.LOCALE.pattern());
-            throw new IllegalArgumentException(message);
-        }
+        Preconditions.checkArgument(matcher.matches(), "%s does not match %s", value, Patterns.LOCALE);
+        final String language = Strings.defaultIfBlank(matcher.group(1), "");
+        final String country = Strings.defaultIfBlank(matcher.group(2), "");
+        final String variant = Strings.defaultIfBlank(matcher.group(3), "");
+        return new Locale(language, country, variant);
     }
     
 }
