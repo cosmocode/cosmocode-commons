@@ -28,7 +28,6 @@ import com.google.common.collect.MapMaker;
 import com.google.common.collect.Ordering;
 
 import de.cosmocode.commons.Strings;
-import de.cosmocode.commons.Throwables;
 import de.cosmocode.commons.validation.Rule;
 
 /**
@@ -63,7 +62,6 @@ public final class Reflection {
         try {
             return CACHE.get(name);
         } catch (ComputationException e) {
-            Throwables.propagateCauseIfInstanceOf(e, ClassNotFoundException.class);
             throw new ClassNotFoundException(e.getMessage(), e);
         }
     }
@@ -72,7 +70,7 @@ public final class Reflection {
      * Returns a function which loads {@link Class}es by their name using {@link Class#forName(String)}.
      * 
      * <p>
-     *   The returned function will warp {@link ClassNotFoundException}s inside {@link IllegalArgumentException}s.
+     *   The returned function will wrap {@link ClassNotFoundException}s inside {@link IllegalArgumentException}s.
      * </p>
      * 
      * @since 1.9
