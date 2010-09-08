@@ -22,7 +22,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Ordering;
 
 /**
- * Implementation for {@link Classes#orderByHierarchy(Comparator)}.
+ * Implementation for {@link Reflection#orderByHierarchy(Comparator)}.
  *
  * @since 1.9
  * @author Willi Schoenborn
