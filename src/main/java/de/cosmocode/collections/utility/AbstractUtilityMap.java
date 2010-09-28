@@ -37,7 +37,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
     private V checkAndGet(K key, String type) {
         Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected %s value", key, type);
         final V value = get(key);
-        Preconditions.checkNotNull(value, "Required value for key '%s' is null, but should be a %s", key, type);
+        Preconditions.checkNotNull(value, "Required value for key '%s' is null, but should be of type %s", key, type);
         return value;
     }
 
@@ -93,7 +93,7 @@ public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> impleme
 
     @Override
     public <T extends Enum<T>> T getEnum(K key, Class<T> enumType) throws IllegalArgumentException {
-        return Convert.intoEnum(checkAndGet(key, "enum (Class " + enumType + ")"), enumType);
+        return Convert.intoEnum(checkAndGet(key, "enum " + enumType.getName()), enumType);
     }
 
     @Override
