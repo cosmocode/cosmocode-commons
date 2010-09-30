@@ -137,7 +137,7 @@ public abstract class AbstractTreeNode<E> implements TreeNode<E> {
             childNodes.add(this.addChild(child));
         }
         return childNodes;
-    };
+    }
     
     @Override
     public boolean contains(final TreeNode<E> descendant) {
@@ -194,7 +194,7 @@ public abstract class AbstractTreeNode<E> implements TreeNode<E> {
         
         // we found nothing
         return false;
-    };
+    }
     
     @Override
     public boolean isLeaf() {
@@ -229,7 +229,7 @@ public abstract class AbstractTreeNode<E> implements TreeNode<E> {
         
         // new data approved: do the update
         setDataUnchecked(data);
-    };
+    }
     
     /**
      * <p> This method sets the data unchecked. It is called by {@link #setData(Object)}.
@@ -304,9 +304,7 @@ public abstract class AbstractTreeNode<E> implements TreeNode<E> {
                 return false;
         } else if (!data.equals(other.getData()))
             return false;
-        if (!this.equalsChildren(other))
-            return false;
-        return true;
+        return this.equalsChildren(other);
     }
     
     /**

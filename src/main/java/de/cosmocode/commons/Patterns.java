@@ -37,6 +37,15 @@ public final class Patterns {
      * @see <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">Wikpedia</a>
      */
     public static final Pattern ISO_3166_1_ALPHA_2 = Pattern.compile("^[A-Z]{2}$");
+
+    /**
+     * ISO 3166-1 alpha-3 codes are three-letter country codes defined in ISO 3166-1, part of the
+     * ISO 3166 standard published by the International Organization for Standardization (ISO),
+     * to represent countries, dependent territories, and special areas of geographical interest.
+     *
+     * @see <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3">Wikpedia</a>
+     */
+    public static final Pattern ISO_3166_1_ALPHA_3 = Pattern.compile("^[A-Z]{3}$");
     
     /**
      * ISO 639-1 is the first part of the ISO 639 international-standard language-code family.

@@ -21,6 +21,8 @@ import java.util.MissingResourceException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import de.cosmocode.commons.TrimMode;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +45,19 @@ public final class LocaleCountryIsoConverter extends Codec<Locale, String> imple
 
     @Override
     public String toAlpha3(String iso3166Alpha2) {
+        Preconditions.checkNotNull(iso3166Alpha2, "iso3166Alpha2 must not be null");
         if (Patterns.ISO_3166_1_ALPHA_2.matcher(iso3166Alpha2).matches()) {
-            return encode(new Locale("", iso3166Alpha2));
+            try {
+                return new Locale("", iso3166Alpha2).getISO3Country();
+            } catch (MissingResourceException e) {
+                throw new IsoConversionException("No known alpha-3 code for " + iso3166Alpha2, e);
+            }
+        } else if (Patterns.ISO_3166_1_ALPHA_3.matcher(iso3166Alpha2).matches()) {
+            // already ISO 639-2 (three letter)
+            return iso3166Alpha2;
+        } else if (StringUtils.isBlank(iso3166Alpha2)) {
+            // this is here for convenience, to allow empty languages
+            return TrimMode.EMPTY.apply(iso3166Alpha2);
         } else {
             throw new IllegalArgumentException("given country code " + iso3166Alpha2  + " not in ISO 3166 alpha-2");
         }
@@ -56,7 +69,12 @@ public final class LocaleCountryIsoConverter extends Codec<Locale, String> imple
         if (Patterns.ISO_3166_1_ALPHA_2.matcher(iso3166Alpha3).matches()) {
             // already ISO 3166-1 alpha-2 (two letter)
             return iso3166Alpha3;
+        } else if (StringUtils.isBlank(iso3166Alpha3)) {
+            // this is here for convenience, to allow empty languages
+            return TrimMode.EMPTY.apply(iso3166Alpha3);
         }
+        Preconditions.checkArgument(Patterns.ISO_3166_1_ALPHA_3.matcher(iso3166Alpha3).matches(),
+            "Language Code %s not in ISO 3166 alpha-3", iso3166Alpha3);
 
         // try to get two letter code from cache
         final String fromCache = cache.get(iso3166Alpha3);
@@ -80,12 +98,7 @@ public final class LocaleCountryIsoConverter extends Codec<Locale, String> imple
 
     @Override
     public String encode(Locale input) {
-        Preconditions.checkNotNull(input);
-        try {
-            return input.getISO3Country();
-        } catch (MissingResourceException e) {
-            throw new IsoConversionException("No known alpha-3 code for " + input, e);
-        }
+        return toAlpha3(input.getCountry());
     }
 
     @Override

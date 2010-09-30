@@ -64,7 +64,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
         @Override
         public String toString() {
             return Iterables.toString(this);
-        };
+        }
         
     };
     
@@ -78,7 +78,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
         @Override
         public String toString() {
             return Iterables.toString(this);
-        };
+        }
         
     };
     
@@ -92,7 +92,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
         @Override
         public String toString() {
             return Iterables.toString(this);
-        };
+        }
         
     };
     
@@ -229,15 +229,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
 
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (obj instanceof Tree<?>) {
-            return equals((Tree<?>) obj);
-        } else {
-            return false;
-        }
+        return this == obj || obj != null && obj instanceof Tree<?> && this.equals((Tree<?>) obj);
     }
     
     @Override

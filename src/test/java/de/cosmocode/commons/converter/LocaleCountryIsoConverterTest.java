@@ -61,6 +61,27 @@ public class LocaleCountryIsoConverterTest implements UnitProvider<LocaleCountry
             Assert.assertEquals(expected, actual);
         }
     }
+
+    /**
+     * Tests {@link LocaleCountryIsoConverter#toAlpha3(String)} with an alpha-3 as input.
+     * Should return the input.
+     */
+    @Test
+    public void toAlpha3OfAlpha3() {
+        final String expected = "DEU";
+        final String actual = unit().toAlpha3("DEU");
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link LocaleCountryIsoConverter#toAlpha3(String)} with a blank input.
+     */
+    @Test
+    public void toAlpha3OfBlank() {
+        final String expected = "";
+        final String actual = unit().toAlpha3("   ");
+        Assert.assertEquals(expected, actual);
+    }
     
     /**
      * Tests {@link LocaleCountryIsoConverter#toAlpha2(String)}.
@@ -72,6 +93,27 @@ public class LocaleCountryIsoConverterTest implements UnitProvider<LocaleCountry
             final String actual = unit().toAlpha2(alpha3);
             Assert.assertEquals(expected, actual);
         }
+    }
+
+    /**
+     * Tests {@link LocaleCountryIsoConverter#toAlpha2(String)} with an alpha-2 as input.
+     * Should return the input.
+     */
+    @Test
+    public void toAlpha2OfAlpha2() {
+        final String expected = Locale.GERMAN.getCountry();
+        final String actual = unit().toAlpha2(expected);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link LocaleCountryIsoConverter#toAlpha2(String)} with a blank input.
+     */
+    @Test
+    public void toAlpha2OfBlank() {
+        final String expected = "";
+        final String actual = unit().toAlpha2("  ");
+        Assert.assertEquals(expected, actual);
     }
 
 }
