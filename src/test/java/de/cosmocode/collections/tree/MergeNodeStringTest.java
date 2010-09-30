@@ -197,16 +197,15 @@ public class MergeNodeStringTest extends TreeNodeTest<String> {
      */
     @Test
     public void testAddChildNodeMergeDeep() {
-        final TreeNode<String> node = emptyNode();
+        final TreeNode<String> actual = emptyNode();
         for (final TreeNode<String> child : createRealWorldChildren()) {
-            node.addChildNode(child);
+            actual.addChildNode(child);
         }
         for (final TreeNode<String> child : createRealWorldChildren2()) {
-            node.addChildNode(child);
+            actual.addChildNode(child);
         }
         
         final TreeNode<String> expected = mergedRealWorld();
-        final TreeNode<String> actual = node;
         System.out.println(expected.toString());
         System.out.println(actual.toString());
         Assert.assertEquals(expected, actual);

@@ -65,7 +65,7 @@ public abstract class TreeNodeTest<T> {
     
     /**
      * Returns a list of test childnodes, which should reflect a real world example.
-     * Used by {@link #fillTree(Tree)}
+     * Used by {@link #fillTree(TreeNode)}
      * @return a list of test childnodes
      */
     protected abstract Collection<TreeNode<T>> createRealWorldChildren();
@@ -334,7 +334,7 @@ public abstract class TreeNodeTest<T> {
     }
 
     /**
-     * Tests {@link TreeNode#setChildren(List)}.
+     * Tests {@link TreeNode#setChildren(java.util.Collection)}.
      */
     @Test
     public void testSetChildren() {
@@ -377,7 +377,7 @@ public abstract class TreeNodeTest<T> {
     }
     
     /**
-     * Tests {@link TreeNode#setChildren(List)} with a null value.
+     * Tests {@link TreeNode#setChildren(java.util.Collection)} with a null value.
      * Expects a {@link NullPointerException}.
      */
     @Test(expected = NullPointerException.class)
@@ -491,7 +491,7 @@ public abstract class TreeNodeTest<T> {
     }
     
     /**
-     * Tests {@link TreeNode#addChildren(Object...)} with 3 values.
+     * Tests {@link TreeNode#addChildren(Object[])} with 3 values.
      */
     @SuppressWarnings("unchecked")
     @Test

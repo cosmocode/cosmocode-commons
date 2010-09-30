@@ -384,9 +384,8 @@ public abstract class AbstractTreeTest<T> {
         Assert.assertEquals("wrong number of children after add", 1, instance.getNumberOfChildren());
         Assert.assertEquals("instance not parent of new node", getRoot(), newNode.getParent());
         
-        final T expected = data;
         final T actual = newNode.getData();
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals(data, actual);
     }
 
     /**
@@ -466,9 +465,8 @@ public abstract class AbstractTreeTest<T> {
         final TreeNode<T> child1 = instance.addChild(newData());
         instance.addChild(newData());
         
-        final TreeNode<T> expected = child1;
         final TreeNode<T> actual = instance.getChildAt(1);
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals(child1, actual);
     }
 
     /**

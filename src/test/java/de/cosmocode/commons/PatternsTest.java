@@ -281,6 +281,7 @@ public class PatternsTest {
     /**
      * Tests valid values for {@link Patterns#INTERNET_ADDRESS}.
      */
+    @Test
     public void internetAddressValid() {
         Asserts.assertMatches(Patterns.INTERNET_ADDRESS, "192.168.100.1");
         Asserts.assertMatches(Patterns.INTERNET_ADDRESS, "192.168.200.0");

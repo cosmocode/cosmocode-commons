@@ -198,12 +198,12 @@ public class UniqueNode<E> extends AbstractTreeNode<E>
             newNode.addVetoableChangeListener(this);
             return newNode;
         }
-    };
+    }
     
     @Override
     public boolean hasChild(E childData) {
-        return children == null ? false : children.containsKey(childData);
-    };
+        return children != null && children.containsKey(childData);
+    }
     
     @Override
     public void insertChildAt(int index, TreeNode<E> child) throws IndexOutOfBoundsException {

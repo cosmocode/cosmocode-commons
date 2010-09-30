@@ -188,8 +188,8 @@ public class MergeNode<T> extends AbstractTreeNode<T>
     
     @Override
     public boolean hasChild(final T childData) {
-        return children == null ? false : children.containsKey(childData);
-    };
+        return children != null && children.containsKey(childData);
+    }
 
     @Override
     public Collection<TreeNode<T>> getChildren() {
