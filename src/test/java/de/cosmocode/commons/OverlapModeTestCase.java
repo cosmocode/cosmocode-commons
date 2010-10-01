@@ -78,22 +78,26 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      * Period2:              |--------|
      */
     @Test
-    public void period1LeftOfPeriod2() {
+    public void period1BeforePeriod2() {
         final boolean expected = false;
         final boolean actual = unit().isOverlapping(lastWeek(), yesterday(), today(), tomorrow());
         Assert.assertEquals(expected, actual);
     }
 
     /**
-     * Tests overlapping when period1 lies right of period2.
+     * Tests overlapping when period1 is shortly before period2.
      * As a diagram:
-     * Period1:               |-------|
-     * Period2:  |--------|
+     * Period1:   |-------|
+     * Period2:            |--------|
      */
     @Test
-    public void period1RightOfPeriod2() {
+    public void period1ShortlyBeforePeriod2() {
         final boolean expected = false;
-        final boolean actual = unit().isOverlapping(today(), tomorrow(), lastWeek(), yesterday());
+        final long s1 = lastWeek().getTime();
+        final long e1 = yesterday().getTime() - 1;
+        final long s2 = yesterday().getTime();
+        final long e2 = tomorrow().getTime();
+        final boolean actual = unit().isOverlapping(s1, e1, s2, e2);
         Assert.assertEquals(expected, actual);
     }
 
@@ -101,8 +105,8 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      * Tests overlapping when period1 lies left of period2,
      * but the end of period1 is the same as start of period2.
      * As a diagram:
-     * Period1:           |-------|
-     * Period2:  |--------|
+     * Period1:   |-------|
+     * Period2:           |--------|
      */
     @Test
     public void period1BordersAtPeriod2() {
@@ -112,16 +116,85 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     }
 
     /**
+     * Tests overlapping when period1 intersects period2, with start of period1 being before period2.
+     * As a diagram:
+     * Period1:    |--------|
+     * Period2:        |--------|
+     */
+    @Test
+    public void period1IntersectsPeriod2() {
+        final boolean expected = isOverlappingOnIntersection();
+        final boolean actual = unit().isOverlapping(lastWeek(), today(), yesterday(), tomorrow());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when both periods have the same length
+     * As a diagram:
+     * Period1:    |--------|
+     * Period2:    |--------|
+     */
+    @Test
+    public void periodsAreSameLength() {
+        final boolean expected = isOverlappingOnSameLength();
+        final boolean actual = unit().isOverlapping(lastWeek(), today(), lastWeek(), today());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when period1 intersects period2, with start of period2 being before period1.
+     * As a diagram:
+     * Period1:        |--------|
+     * Period2:    |--------|
+     */
+    @Test
+    public void period2IntersectsPeriod1() {
+        final boolean expected = isOverlappingOnIntersection();
+        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), lastWeek(), today());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
      * Tests overlapping when period1 lies right of period2,
      * but the end of period2 is the same as start of period1.
      * As a diagram:
-     * Period1:   |-------|
-     * Period2:           |--------|
+     * Period1:           |-------|
+     * Period2:  |--------|
      */
     @Test
     public void period2BordersAtPeriod1() {
         final boolean expected = isOverlappingOnBorders();
         final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), lastWeek(), yesterday());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when period1 is shortly after period2.
+     * As a diagram:
+     * Period1:            |--------|
+     * Period2:   |-------|
+     */
+    @Test
+    public void period1ShortlyAfterPeriod2() {
+        final boolean expected = false;
+        final long s2 = lastWeek().getTime();
+        final long e2 = yesterday().getTime() - 1;
+        final long s1 = yesterday().getTime();
+        final long e1 = tomorrow().getTime();
+        final boolean actual = unit().isOverlapping(s1, e1, s2, e2);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when period1 lies right of period2.
+     * As a diagram:
+     * Period1:              |--------|
+     * Period2:   |-------|
+     */
+    @Test
+    public void period1AfterPeriod2() {
+        final boolean expected = false;
+        final boolean actual = unit().isOverlapping(today(), tomorrow(), lastWeek(), yesterday());
         Assert.assertEquals(expected, actual);
     }
 
@@ -148,6 +221,32 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     public void period2InPeriod1() {
         final boolean expected = isOverlappingOnContaining();
         final boolean actual = unit().isOverlapping(lastWeek(), tomorrow(), yesterday(), today());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when period2 completely lies in period1 and period2 is empty.
+     * As a diagram:
+     * Period1:    |--------|
+     * Period2:        |
+     */
+    @Test
+    public void period2EmptyInPeriod1() {
+        final boolean expected = isOverlappingOnContaining();
+        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), today(), today());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when period1 completely lies in period2 and period1 is empty.
+     * As a diagram:
+     * Period1:        |
+     * Period2:    |--------|
+     */
+    @Test
+    public void period1EmptyInPeriod2() {
+        final boolean expected = isOverlappingOnContaining();
+        final boolean actual = unit().isOverlapping(today(), today(), yesterday(), tomorrow());
         Assert.assertEquals(expected, actual);
     }
 
@@ -204,19 +303,6 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     }
 
     /**
-     * Tests overlapping when both periods have the same length
-     * As a diagram:
-     * Period1:    |--------|
-     * Period2:    |--------|
-     */
-    @Test
-    public void periodsAreSameLength() {
-        final boolean expected = isOverlappingOnSameLength();
-        final boolean actual = unit().isOverlapping(lastWeek(), today(), lastWeek(), today());
-        Assert.assertEquals(expected, actual);
-    }
-
-    /**
      * Tests overlapping when both periods are empty (s1 == e1 and s2 == e2), and on the same point.
      * So that s1 == e1 == s2 == e2.
      * As a diagram:
@@ -257,28 +343,58 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     }
 
     /**
-     * Tests overlapping when period1 intersects period2, with start of period1 being before period2.
+     * Tests overlapping when first period is empty and period2 is after period1.
      * As a diagram:
-     * Period1:    |--------|
-     * Period2:        |--------|
+     * Period1:    |
+     * Period2:        |-----|
      */
     @Test
-    public void period1IntersectsPeriod2() {
-        final boolean expected = isOverlappingOnIntersection();
-        final boolean actual = unit().isOverlapping(lastWeek(), today(), yesterday(), tomorrow());
+    public void period1EmptyAndPeriod2AfterPeriod1() {
+        final boolean expected = false;
+        final boolean actual = unit().isOverlapping(yesterday(), yesterday(), today(), tomorrow());
         Assert.assertEquals(expected, actual);
     }
 
     /**
-     * Tests overlapping when period1 intersects period2, with start of period2 being before period1.
+     * Tests overlapping when first period is empty and period2 is before period1.
      * As a diagram:
-     * Period1:        |--------|
-     * Period2:    |--------|
+     * Period1:              |
+     * Period2:    |-----|
      */
     @Test
-    public void period2IntersectsPeriod1() {
-        final boolean expected = isOverlappingOnIntersection();
-        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), lastWeek(), today());
+    public void period1EmptyAndPeriod2BeforePeriod1() {
+        final boolean expected = false;
+        final boolean actual = unit().isOverlapping(today(), today(), lastWeek(), yesterday());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when the start of period1 lies left of period2,
+     * but the end of period1 is the same as the start and end of period2.
+     * This means that Period2 is empty (== is a point in time instead of a period).
+     * As a diagram:
+     * Period1:  |--------|
+     * Period2:           |
+     */
+    @Test
+    public void period1BordersAtPeriod2Empty() {
+        final boolean expected = isOverlappingOnBorders();
+        final boolean actual = unit().isOverlapping(lastWeek(), yesterday(), yesterday(), yesterday());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when period1 lies right of period2,
+     * but the start and end of period2 is the same as start of period1.
+     * This means that Period2 is empty (== is a point in time instead of a period).
+     * As a diagram:
+     * Period1:   |-------|
+     * Period2:   |
+     */
+    @Test
+    public void period2EmptyBordersAtPeriod1() {
+        final boolean expected = isOverlappingOnBorders();
+        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), yesterday(), yesterday());
         Assert.assertEquals(expected, actual);
     }
 
@@ -292,7 +408,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
         final long start = System.nanoTime();
         for (int i = 0; i < loopCount; i++) {
             // the values used here are just randomly chosen, any other values would do too
-            unit().isOverlapping(i / 10, i + 2, i % 100, i + (i % 20));
+            unit().isOverlapping(i / 100, 10000 / (i + 1), i % 100, i + (i % 20));
         }
         final long elapsed = System.nanoTime() - start;
         final TimeUnit mortalUnit = TimeUnits.forMortals(elapsed, TimeUnit.NANOSECONDS);
@@ -310,7 +426,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
         final long start = System.nanoTime();
         for (int i = 0; i < loopCount; i++) {
             // the values used here are just randomly chosen, any other values would do too
-            unit().isOverlapping(new Date(i / 10), new Date(i + 2), new Date(i % 100), new Date(i + (i % 20)));
+            unit().isOverlapping(new Date(i / 10), new Date(10000 / (i + 1)), new Date(i % 100), new Date(i + (i % 20)));
         }
         final long elapsed = System.nanoTime() - start;
         final TimeUnit mortalUnit = TimeUnits.forMortals(elapsed, TimeUnit.NANOSECONDS);
