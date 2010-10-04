@@ -17,12 +17,19 @@
 package de.cosmocode.commons;
 
 /**
+ * Tests {@link de.cosmocode.commons.OverlapMode#IGNORE_BORDERS}.
+ *
  * @author Oliver Lorenz
  */
-public class OverlapModeAllTest extends OverlapModeTestCase {
+public class OverlapModeIgnoreBordersTest extends OverlapModeTestCase {
 
     @Override
     protected boolean isOverlappingOnBorders() {
+        return false;
+    }
+
+    @Override
+    protected boolean isOverlappingOnContaining() {
         return true;
     }
 
@@ -32,8 +39,8 @@ public class OverlapModeAllTest extends OverlapModeTestCase {
     }
 
     @Override
-    protected boolean isOverlappingOnContaining() {
-        return true;
+    protected boolean isOverlappingOnNoIntersection() {
+        return false;
     }
 
     @Override
@@ -43,7 +50,6 @@ public class OverlapModeAllTest extends OverlapModeTestCase {
 
     @Override
     public OverlapMode unit() {
-        return OverlapMode.ALL;
+        return OverlapMode.IGNORE_BORDERS;
     }
-
 }

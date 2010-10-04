@@ -34,12 +34,16 @@ import java.util.Date;
 enum OverlapMode {
 
     /**
-     * <p> The two periods overlap if they intersect.
-     * This means that they do not overlap only if one whole period
-     * is right or left of the other period, so that they do not intersect.
+     * <p>
+     * The two periods overlap if they intersect.
+     * </p>
+     * <p>
+     * This means that they do NOT overlap if and only if one whole period
+     * is completely before or after the other period,
+     * so that they do not intersect (not even on one point).
      * </p>
      */
-    ALL {
+    NORMAL {
         @Override
         public boolean isOverlapping(final long s1, final long e1, final long s2, final long e2) {
             /*
@@ -58,12 +62,18 @@ enum OverlapMode {
     },
 
     /**
+     * <p>
      * The two periods overlap if they intersect, and borders are not considered to overlap.
+     * </p>
+     * <p>
      * This means that if the start date of one period and the end date of the other period are equal
      * (this means that the two periods "touch" each other, but do not intersect otherwise),
-     * then they are not considered overlapping, and isOverlapping would return false.
+     * then they are not considered overlapping, and isOverlapping returns false.
+     * They also do not overlap if one whole period is completely before or after the other period,
+     * so that they do not intersect.
+     * </p>
      */
-    NO_BORDERS {
+    IGNORE_BORDERS {
         @Override
         @Magic(type = MagicType.WHITE)
         @CantTouchThis(Stop.HAMMERTIME)
@@ -77,9 +87,11 @@ enum OverlapMode {
             // r2 is the sum of the second period
             final long r1 = s1 + e1;
             final long r2 = s2 + e2;
+
             // all points of the first and second period are put into an array and sorted ascending
             final long[] a = {s1, e1, s2, e2};
             Arrays.sort(a);
+
             /* here the magic happens:
              *  after sorting the points, the sum of the first two points must either be:
              *   - equal to the sum of the first period
@@ -92,6 +104,22 @@ enum OverlapMode {
              * This is like a VERY simple hash.
              */
             return !(a[0] + a[1] == r1 || a[0] + a[1] == r2);
+        }
+    },
+
+    /**
+     * <p>
+     * The two periods never overlap.
+     * </p>
+     * <p>
+     * This is implemented out of convenience.
+     * It is a simple method that always returns false.
+     * </p>
+     */
+    NEVER {
+        @Override
+        public boolean isOverlapping(long s1, long e1, long s2, long e2) {
+            return false;
         }
     };
 

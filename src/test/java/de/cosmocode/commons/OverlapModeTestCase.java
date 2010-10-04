@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Tests {@link de.cosmocode.commons.OverlapMode#ALL}.
+ * Tests {@link de.cosmocode.commons.OverlapMode}.
  *
  * @author Oliver Lorenz
  */
@@ -65,9 +65,11 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
 
     protected abstract boolean isOverlappingOnBorders();
 
+    protected abstract boolean isOverlappingOnContaining();
+
     protected abstract boolean isOverlappingOnIntersection();
 
-    protected abstract boolean isOverlappingOnContaining();
+    protected abstract boolean isOverlappingOnNoIntersection();
 
     protected abstract boolean isOverlappingOnSameLength();
 
@@ -79,7 +81,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void period1BeforePeriod2() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final boolean actual = unit().isOverlapping(lastWeek(), yesterday(), today(), tomorrow());
         Assert.assertEquals(expected, actual);
     }
@@ -92,7 +94,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void period1ShortlyBeforePeriod2() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final long s1 = lastWeek().getTime();
         final long e1 = yesterday().getTime() - 1;
         final long s2 = yesterday().getTime();
@@ -176,7 +178,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void period1ShortlyAfterPeriod2() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final long s2 = lastWeek().getTime();
         final long e2 = yesterday().getTime() - 1;
         final long s1 = yesterday().getTime();
@@ -193,7 +195,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void period1AfterPeriod2() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final boolean actual = unit().isOverlapping(today(), tomorrow(), lastWeek(), yesterday());
         Assert.assertEquals(expected, actual);
     }
@@ -324,7 +326,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void periodsAreEmptyPeriod1BeforePeriod2() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final boolean actual = unit().isOverlapping(today(), today(), tomorrow(), tomorrow());
         Assert.assertEquals(expected, actual);
     }
@@ -337,7 +339,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void periodsAreEmptyPeriod2BeforePeriod1() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final boolean actual = unit().isOverlapping(tomorrow(), tomorrow(), today(), today());
         Assert.assertEquals(expected, actual);
     }
@@ -350,7 +352,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void period1EmptyAndPeriod2AfterPeriod1() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final boolean actual = unit().isOverlapping(yesterday(), yesterday(), today(), tomorrow());
         Assert.assertEquals(expected, actual);
     }
@@ -363,7 +365,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
      */
     @Test
     public void period1EmptyAndPeriod2BeforePeriod1() {
-        final boolean expected = false;
+        final boolean expected = isOverlappingOnNoIntersection();
         final boolean actual = unit().isOverlapping(today(), today(), lastWeek(), yesterday());
         Assert.assertEquals(expected, actual);
     }
@@ -399,6 +401,36 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     }
 
     /**
+     * Tests overlapping when the start of period1 lies left of period2,
+     * but the start and end of period1 is the same as the start period2.
+     * This means that Period1 is empty (== is a point in time instead of a period).
+     * As a diagram:
+     * Period1:  |
+     * Period2:  |--------|
+     */
+    @Test
+    public void period1EmptyBordersAtPeriod2() {
+        final boolean expected = isOverlappingOnBorders();
+        final boolean actual = unit().isOverlapping(lastWeek(), lastWeek(), lastWeek(), yesterday());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests overlapping when period1 lies right of period2,
+     * but the start and end of period1 is the same as end of period2.
+     * This means that Period1 is empty (== is a point in time instead of a period).
+     * As a diagram:
+     * Period1:           |
+     * Period2:   |-------|
+     */
+    @Test
+    public void period2BordersAtPeriod1Empty() {
+        final boolean expected = isOverlappingOnBorders();
+        final boolean actual = unit().isOverlapping(tomorrow(), tomorrow(), yesterday(), tomorrow());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
      * This is a non-scientific performance test.
      * It just loops several times and invokes the isOverlapping method with some data.
      */
@@ -408,7 +440,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
         final long start = System.nanoTime();
         for (int i = 0; i < loopCount; i++) {
             // the values used here are just randomly chosen, any other values would do too
-            unit().isOverlapping(i / 100, 10000 / (i + 1), i % 100, i + (i % 20));
+            unit().isOverlapping(i / 100, 100000 / (i + 1), i % 100, i + (i % 20));
         }
         final long elapsed = System.nanoTime() - start;
         final TimeUnit mortalUnit = TimeUnits.forMortals(elapsed, TimeUnit.NANOSECONDS);
@@ -426,7 +458,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
         final long start = System.nanoTime();
         for (int i = 0; i < loopCount; i++) {
             // the values used here are just randomly chosen, any other values would do too
-            unit().isOverlapping(new Date(i / 10), new Date(10000 / (i + 1)), new Date(i % 100), new Date(i + (i % 20)));
+            unit().isOverlapping(new Date(i / 10), new Date(100000 / (i + 1)), new Date(i % 100), new Date(i + (i % 20)));
         }
         final long elapsed = System.nanoTime() - start;
         final TimeUnit mortalUnit = TimeUnits.forMortals(elapsed, TimeUnit.NANOSECONDS);
