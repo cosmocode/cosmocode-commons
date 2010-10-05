@@ -21,7 +21,7 @@ package de.cosmocode.commons;
  *
  * @author Oliver Lorenz
  */
-public class OverlapModeIgnoreBordersTest extends OverlapModeTestCase {
+public final class OverlapModeIgnoreBordersTest extends OverlapModeTestCase {
 
     @Override
     protected boolean isOverlappingOnBorders() {
@@ -45,6 +45,11 @@ public class OverlapModeIgnoreBordersTest extends OverlapModeTestCase {
 
     @Override
     protected boolean isOverlappingOnSameLength() {
+        return true;
+    }
+
+    @Override
+    protected boolean canHandleFlippedPeriods() {
         return true;
     }
 

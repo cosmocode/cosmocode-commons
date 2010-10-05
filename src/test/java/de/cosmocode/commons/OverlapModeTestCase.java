@@ -73,6 +73,22 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
 
     protected abstract boolean isOverlappingOnSameLength();
 
+    protected abstract boolean canHandleFlippedPeriods();
+
+    private void assertIsOverlappingAsExpected(boolean expected, long s1, long e1, long s2, long e2) {
+        Assert.assertEquals(expected, unit().isOverlapping(s1, e1, s2, e2));
+
+        if (this.canHandleFlippedPeriods()) {
+            Assert.assertEquals("Flipped second period", expected, unit().isOverlapping(s1, e1, e2, s2));
+            Assert.assertEquals("Flipped first period", expected, unit().isOverlapping(e1, s1, s2, e2));
+            Assert.assertEquals("Flipped both periods", expected, unit().isOverlapping(e1, s1, e2, s2));
+        }
+    }
+
+    private void assertIsOverlappingAsExpected(boolean expected, Date s1, Date e1, Date s2, Date e2) {
+        assertIsOverlappingAsExpected(expected, s1.getTime(), e1.getTime(), s2.getTime(), e2.getTime());
+    }
+
     /**
      * Tests overlapping when period1 lies left of period2.
      * As a diagram:
@@ -82,8 +98,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1BeforePeriod2() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(lastWeek(), yesterday(), today(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), yesterday(), today(), tomorrow());
     }
 
     /**
@@ -99,8 +114,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
         final long e1 = yesterday().getTime() - 1;
         final long s2 = yesterday().getTime();
         final long e2 = tomorrow().getTime();
-        final boolean actual = unit().isOverlapping(s1, e1, s2, e2);
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, s1, e1, s2, e2);
     }
 
     /**
@@ -113,8 +127,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1BordersAtPeriod2() {
         final boolean expected = isOverlappingOnBorders();
-        final boolean actual = unit().isOverlapping(lastWeek(), yesterday(), yesterday(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), yesterday(), yesterday(), tomorrow());
     }
 
     /**
@@ -126,8 +139,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1IntersectsPeriod2() {
         final boolean expected = isOverlappingOnIntersection();
-        final boolean actual = unit().isOverlapping(lastWeek(), today(), yesterday(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), today(), yesterday(), tomorrow());
     }
 
     /**
@@ -139,8 +151,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsAreSameLength() {
         final boolean expected = isOverlappingOnSameLength();
-        final boolean actual = unit().isOverlapping(lastWeek(), today(), lastWeek(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), today(), lastWeek(), today());
     }
 
     /**
@@ -152,8 +163,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2IntersectsPeriod1() {
         final boolean expected = isOverlappingOnIntersection();
-        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), lastWeek(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, yesterday(), tomorrow(), lastWeek(), today());
     }
 
     /**
@@ -166,8 +176,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2BordersAtPeriod1() {
         final boolean expected = isOverlappingOnBorders();
-        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), lastWeek(), yesterday());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, yesterday(), tomorrow(), lastWeek(), yesterday());
     }
 
     /**
@@ -179,12 +188,11 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1ShortlyAfterPeriod2() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final long s2 = lastWeek().getTime();
-        final long e2 = yesterday().getTime() - 1;
-        final long s1 = yesterday().getTime();
-        final long e1 = tomorrow().getTime();
-        final boolean actual = unit().isOverlapping(s1, e1, s2, e2);
-        Assert.assertEquals(expected, actual);
+        final Date s2 = lastWeek();
+        final Date e2 = new Date(yesterday().getTime() - 1);
+        final Date s1 = yesterday();
+        final Date e1 = tomorrow();
+        assertIsOverlappingAsExpected(expected, s1, e1, s2, e2);
     }
 
     /**
@@ -196,8 +204,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1AfterPeriod2() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(today(), tomorrow(), lastWeek(), yesterday());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, today(), tomorrow(), lastWeek(), yesterday());
     }
 
     /**
@@ -209,8 +216,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsStartSamePeriod1EndsBeforePeriod2() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(lastWeek(), today(), lastWeek(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), today(), lastWeek(), tomorrow());
     }
 
     /**
@@ -222,8 +228,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1InPeriod2() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(yesterday(), today(), lastWeek(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, yesterday(), today(), lastWeek(), tomorrow());
     }
 
     /**
@@ -235,8 +240,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsPeriod1StartsAfterPeriod2EndSame() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(yesterday(), today(), lastWeek(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, yesterday(), today(), lastWeek(), today());
     }
 
     /**
@@ -248,8 +252,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsStartSamePeriod1EndsAfterPeriod2() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(lastWeek(), tomorrow(), lastWeek(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), tomorrow(), lastWeek(), today());
     }
 
     /**
@@ -261,8 +264,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2InPeriod1() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(lastWeek(), tomorrow(), yesterday(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), tomorrow(), yesterday(), today());
     }
 
     /**
@@ -274,8 +276,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsPeriod1StartsBeforePeriod2EndSame() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(lastWeek(), today(), yesterday(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), today(), yesterday(), today());
     }
 
     /**
@@ -287,8 +288,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1EmptyAndPeriod2AfterPeriod1() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(yesterday(), yesterday(), today(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, yesterday(), yesterday(), today(), tomorrow());
     }
 
     /**
@@ -302,8 +302,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1EmptyBordersAtPeriod2() {
         final boolean expected = isOverlappingOnBorders();
-        final boolean actual = unit().isOverlapping(lastWeek(), lastWeek(), lastWeek(), yesterday());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), lastWeek(), lastWeek(), yesterday());
     }
 
     /**
@@ -315,8 +314,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1EmptyInPeriod2() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(today(), today(), yesterday(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, today(), today(), yesterday(), tomorrow());
     }
 
     /**
@@ -330,8 +328,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2BordersAtPeriod1Empty() {
         final boolean expected = isOverlappingOnBorders();
-        final boolean actual = unit().isOverlapping(tomorrow(), tomorrow(), yesterday(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, tomorrow(), tomorrow(), yesterday(), tomorrow());
     }
 
     /**
@@ -343,8 +340,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1EmptyAndPeriod1AfterPeriod2() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(today(), today(), lastWeek(), yesterday());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, today(), today(), lastWeek(), yesterday());
     }
 
     /**
@@ -357,8 +353,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2EmptyBeforePeriod1() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(today(), tomorrow(), yesterday(), yesterday());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, today(), tomorrow(), yesterday(), yesterday());
     }
 
     /**
@@ -372,8 +367,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2EmptyBordersAtPeriod1() {
         final boolean expected = isOverlappingOnBorders();
-        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), yesterday(), yesterday());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, yesterday(), tomorrow(), yesterday(), yesterday());
     }
 
     /**
@@ -385,8 +379,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2EmptyInPeriod1() {
         final boolean expected = isOverlappingOnContaining();
-        final boolean actual = unit().isOverlapping(yesterday(), tomorrow(), today(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, yesterday(), tomorrow(), today(), today());
     }
 
     /**
@@ -400,8 +393,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period1BordersAtPeriod2Empty() {
         final boolean expected = isOverlappingOnBorders();
-        final boolean actual = unit().isOverlapping(lastWeek(), yesterday(), yesterday(), yesterday());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), yesterday(), yesterday(), yesterday());
     }
 
     /**
@@ -413,8 +405,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void period2EmptyAfterPeriod1() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(lastWeek(), yesterday(), today(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, lastWeek(), yesterday(), today(), today());
     }
 
     /**
@@ -426,8 +417,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsAreEmptyPeriod1BeforePeriod2() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(today(), today(), tomorrow(), tomorrow());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, today(), today(), tomorrow(), tomorrow());
     }
 
     /**
@@ -440,8 +430,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsAreEmptySamePosition() {
         final boolean expected = isOverlappingOnSameLength();
-        final boolean actual = unit().isOverlapping(today(), today(), today(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, today(), today(), today(), today());
     }
 
     /**
@@ -453,8 +442,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     @Test
     public void periodsAreEmptyPeriod1AfterPeriod2() {
         final boolean expected = isOverlappingOnNoIntersection();
-        final boolean actual = unit().isOverlapping(tomorrow(), tomorrow(), today(), today());
-        Assert.assertEquals(expected, actual);
+        assertIsOverlappingAsExpected(expected, tomorrow(), tomorrow(), today(), today());
     }
 
     /**

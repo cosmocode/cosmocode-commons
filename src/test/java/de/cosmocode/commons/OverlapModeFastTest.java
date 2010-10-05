@@ -17,11 +17,11 @@
 package de.cosmocode.commons;
 
 /**
- * Tests {@link de.cosmocode.commons.OverlapMode#NORMAL}.
+ * Tests {@link OverlapMode#NORMAL}.
  *
  * @author Oliver Lorenz
  */
-public final class OverlapModeNormalTest extends OverlapModeTestCase {
+public final class OverlapModeFastTest extends OverlapModeTestCase {
 
     @Override
     protected boolean isOverlappingOnBorders() {
@@ -50,12 +50,12 @@ public final class OverlapModeNormalTest extends OverlapModeTestCase {
 
     @Override
     protected boolean canHandleFlippedPeriods() {
-        return true;
+        return false;
     }
 
     @Override
     public OverlapMode unit() {
-        return OverlapMode.NORMAL;
+        return OverlapMode.FAST;
     }
 
 }

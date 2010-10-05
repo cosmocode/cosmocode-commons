@@ -48,6 +48,7 @@ import java.util.Date;
  * <p>
  * Implementations may or may not be able to handle flipped time periods
  * (that means that the start and end of a period is in reverse: end is before start).
+ * Each implementation states whether it can handle flipped periods or not.
  * </p>
  *
  * <h4> Example </h4>
@@ -96,6 +97,25 @@ public enum OverlapMode {
              */
             return !((s1 > s2 && s1 > e2 && e1 > s2 && e1 > e2) ||
                      (s1 < s2 && s1 < e2 && e1 < s2 && e1 < e2));
+        }
+    },
+
+    /**
+     * <p>
+     * The two periods overlap if they intersect, which means that they share at least one point in time.
+     * </p>
+     * <p>
+     * This mode behaves like {@link #NORMAL}, but assumes that the periods are in order,
+     * which makes the comparisons a lot easier and the method faster than NORMAL mode.
+     * </p>
+     * <p>
+     * This overlap mode can NOT handle flipped periods, so it must be that s1 <= e1 and s2 <= e2.
+     * </p>
+     */
+    FAST {
+        @Override
+        public boolean isOverlapping(long s1, long e1, long s2, long e2) {
+            return !(s2 > e1 || e2 < s1);
         }
     },
 
@@ -158,8 +178,10 @@ public enum OverlapMode {
      * The two periods never overlap.
      * </p>
      * <p>
-     * This is implemented out of convenience.
-     * It is a simple method that always returns false.
+     * This is implemented out of convenience. It is a simple method that always returns false.
+     * </p>
+     * <p>
+     * Because this overlap mode always returns a constant, it can of course handle flipped values.
      * </p>
      */
     NEVER {
