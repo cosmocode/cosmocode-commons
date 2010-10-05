@@ -25,22 +25,60 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * Overlap mode. This class will get better documentation later on (when it will become public).
+ * <p>
+ * The overlap mode is an enum that can be used to determine overlapping time ranges.
+ * </p>
+ * <h4>Usage</h4>
+ * <p>
+ * This class can either be used by directly using the overlap mode that you need in the given situation
+ * or by requiring any {@code OverlapMode} as parameter. Works either way.
+ * </p>
+ * <p>
+ * To use it you can call {@link #isOverlapping(Date, Date, Date, Date)} with the first two parameters
+ * being the start and end of the first period, and the last 2 parameters being the start and end
+ * of the second period.
+ * </p>
+ * <p>
+ * Alternatively you can pass in Java timestamps with the {@link #isOverlapping(long, long, long, long)} method.
+ * </p>
+ * <p>
+ * The general contract is that the start and end of each period are allowed to be the same,
+ * thereby describing a point in time rather than a time period.
+ * </p>
+ * <p>
+ * Implementations may or may not be able to handle flipped time periods
+ * (that means that the start and end of a period is in reverse: end is before start).
+ * </p>
+ *
+ * <h4> Example </h4>
+ * <code>
+ * class Period {<br />
+ *   Date startsAt() {...}; <br />
+ *   Date endsAt() {...} <br />
+ * } <br />
+ * <br />
+ * Period p1 = ...; <br />
+ * Period p2 = ...; <br />
+ * OverlapMode.isOverlapping(p1.startsAt(), p1.endsAt(), p2.startsAt(), p2.endsAt());
+ * </code>
  *
  * @author Oliver Lorenz
  * @author Adrian Lang
  * @author Willi Schönborn
 */
-enum OverlapMode {
+public enum OverlapMode {
 
     /**
      * <p>
-     * The two periods overlap if they intersect.
+     * The two periods overlap if they intersect, which means that they share at least one point in time.
      * </p>
      * <p>
      * This means that they do NOT overlap if and only if one whole period
      * is completely before or after the other period,
      * so that they do not intersect (not even on one point).
+     * </p>
+     * <p>
+     * This overlap mode can handle flipped time periods, so it may be that s1 > e1 or s2 > e2.
      * </p>
      */
     NORMAL {
@@ -71,6 +109,14 @@ enum OverlapMode {
      * then they are not considered overlapping, and isOverlapping returns false.
      * They also do not overlap if one whole period is completely before or after the other period,
      * so that they do not intersect.
+     * </p>
+     * <p>
+     * If one period is a point in time (s1 == e1 or s2 == e2),
+     * then the point does not overlap with the period if it is the same as the start or end of the period.
+     * All other rules apply normally.
+     * <p>
+     * If both periods are points (s1 == e1 && s2 == e2), then this method behaves like the normal mode,
+     * so that both overlap if they are all equal.
      * </p>
      */
     IGNORE_BORDERS {
