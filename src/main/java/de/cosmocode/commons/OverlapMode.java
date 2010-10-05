@@ -116,7 +116,7 @@ public enum OverlapMode {
      * All other rules apply normally.
      * <p>
      * If both periods are points (s1 == e1 && s2 == e2), then this method behaves like the normal mode,
-     * so that both overlap if they are all equal.
+     * so that both overlap if and only if they are all equal (s1 == e1 == s2 == e2).
      * </p>
      */
     IGNORE_BORDERS {
