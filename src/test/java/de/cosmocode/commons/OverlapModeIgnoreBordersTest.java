@@ -19,6 +19,7 @@ package de.cosmocode.commons;
 /**
  * Tests {@link de.cosmocode.commons.OverlapMode#IGNORE_BORDERS}.
  *
+ * @since 1.16
  * @author Oliver Lorenz
  */
 public final class OverlapModeIgnoreBordersTest extends OverlapModeTestCase {

@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Tests {@link de.cosmocode.commons.OverlapMode}.
  *
+ * @since 1.16
  * @author Oliver Lorenz
  */
 public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {

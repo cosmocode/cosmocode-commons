@@ -19,6 +19,7 @@ package de.cosmocode.commons;
 /**
  * Tests {@link OverlapMode#NORMAL}.
  *
+ * @since 1.16
  * @author Oliver Lorenz
  */
 public final class OverlapModeFastTest extends OverlapModeTestCase {

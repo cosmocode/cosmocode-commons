@@ -63,6 +63,7 @@ import java.util.Date;
  * OverlapMode.isOverlapping(p1.startsAt(), p1.endsAt(), p2.startsAt(), p2.endsAt());
  * </code>
  *
+ * @since 1.16
  * @author Oliver Lorenz
  * @author Adrian Lang
  * @author Willi Schönborn
@@ -81,6 +82,8 @@ public enum OverlapMode {
      * <p>
      * This overlap mode can handle flipped time periods, so it may be that s1 > e1 or s2 > e2.
      * </p>
+     *
+     * @since 1.16
      */
     NORMAL {
         @Override
@@ -111,6 +114,8 @@ public enum OverlapMode {
      * <p>
      * This overlap mode can NOT handle flipped periods, so it must be that s1 <= e1 and s2 <= e2.
      * </p>
+     *
+     * @since 1.16
      */
     FAST {
         @Override
@@ -138,6 +143,8 @@ public enum OverlapMode {
      * If both periods are points (s1 == e1 && s2 == e2), then this method behaves like the normal mode,
      * so that both overlap if and only if they are all equal (s1 == e1 == s2 == e2).
      * </p>
+     *
+     * @since 1.16
      */
     IGNORE_BORDERS {
         @Override
@@ -183,6 +190,8 @@ public enum OverlapMode {
      * <p>
      * Because this overlap mode always returns a constant, it can of course handle flipped values.
      * </p>
+     *
+     * @since 1.16
      */
     NEVER {
         @Override
