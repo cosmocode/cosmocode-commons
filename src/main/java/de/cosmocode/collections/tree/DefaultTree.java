@@ -21,8 +21,8 @@ import java.io.Serializable;
 import com.google.common.base.Preconditions;
 
 /**
- * Represents a Tree of Objects of generic type T. The Tree is represented as
- * a single rootElement of type {@code TreeNode<T>}.
+ * Represents a Tree of Objects of generic type E. The Tree is represented as
+ * a single rootElement of type {@code TreeNode<E>}.
  * It forwards every call to the extended {@link AbstractTree}.
  * 
  * <br> Taken from: http://sujitpal.blogspot.com/2006/05/java-data-structure-generic-tree.html
@@ -84,7 +84,7 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
      * 
      * @author Oliver Lorenz
      *
-     * @param <T>
+     * @param <E>
      */
     private static final class TreeRoot<E> extends ForwardingTreeNode<E> implements Serializable {
         
@@ -133,7 +133,7 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
             final TreeNode<E> newChild = delegate.addChild(childData);
             newChild.setParent(this);
             return newChild;
-        };
+        }
         
         @Override
         public void addChildNode(final TreeNode<E> child) {
@@ -154,15 +154,7 @@ public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Se
         
         @Override
         public boolean contains(TreeNode<E> descendant) {
-            if (descendant == null) {
-                return false;
-            } else if (descendant.getParent() == this) {
-                // this node is the parent of the descendant
-                return true;
-            } else {
-                // recurse further
-                return this.contains(descendant.getParent());
-            }
+            return descendant != null && (descendant.getParent() == this || this.contains(descendant.getParent()));
         }
         
         @Override

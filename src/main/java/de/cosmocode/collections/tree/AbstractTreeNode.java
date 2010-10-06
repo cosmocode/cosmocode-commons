@@ -27,7 +27,7 @@ import java.util.List;
 import com.google.common.collect.Iterators;
 
 /**
- * This is an abstract implementation of a TreeNode<T>.
+ * This is an abstract implementation of a TreeNode<E>.
  * Most methods are left abstract, but {@link #hashCode()}, {@link #equals(Object)}
  * and {@link #toString()} are implemented in a convenient way.
  * 
@@ -141,15 +141,7 @@ public abstract class AbstractTreeNode<E> implements TreeNode<E> {
     
     @Override
     public boolean contains(final TreeNode<E> descendant) {
-        if (descendant == null) {
-            return false;
-        } else if (descendant.getParent() == this) {
-            // this node is the parent of the descendant
-            return true;
-        } else {
-            // recurse further
-            return this.contains(descendant.getParent());
-        }
+        return descendant != null && (descendant.getParent() == this || this.contains(descendant.getParent()));
     }
     
     @Override
@@ -159,11 +151,8 @@ public abstract class AbstractTreeNode<E> implements TreeNode<E> {
         } else if (index >= getNumberOfChildren()) {
             throw new IndexOutOfBoundsException("index >= number of children (" + getNumberOfChildren() + ")");
         } else {
-            // we don't have to check on children (with initChildren()),
-            // because index >= getNumberOfChildren() would be index >= 0 if children is null,
-            // and with this every possible value of index throws an IndexOutOfBoundsException
-            final Iterator<TreeNode<E>> iter = getChildren().iterator();
-            return Iterators.get(iter, index);
+            final Iterator<TreeNode<E>> iterator = getChildren().iterator();
+            return Iterators.get(iterator, index);
         }
     }
 

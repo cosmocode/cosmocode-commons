@@ -21,9 +21,9 @@ import java.util.List;
 
 
 /**
- * Represents a Tree of Objects of generic type T. The Tree is represented as
- * a single rootElement which points to a List<Node<T>> of children. There is
- * no restriction on the number of children that a particular node may have.
+ * Represents a Tree of Objects of generic type E. The Tree is represented as
+ * a single rootElement which itself has several children as {@code Collection<TreeNode<E>>}.
+ * There is no restriction on the number of children that a particular node may have.
  * This Tree provides a method to serialize the Tree into a List.
  * It has several methods to allow easy updates of Nodes in the Tree.
  * 
@@ -133,9 +133,9 @@ public interface Tree<E> {
     boolean contains(TreeNode<E> descendant);
     
     /**
-     * Returns the Tree<T> as a List of TreeNode<T> objects.
+     * Returns the Tree<E> as a List of TreeNode<E> objects.
      * The elements are in pre-order.
-     * @return a {@code List<TreeNode<T>>}.
+     * @return a {@code List<TreeNode<E>>}.
      * @deprecated use {@code traverse(TraverseMode.PRE_ORDER)} instead
      */
     @Deprecated

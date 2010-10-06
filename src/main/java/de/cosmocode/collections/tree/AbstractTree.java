@@ -36,7 +36,6 @@ import de.cosmocode.collections.tree.iterator.PreOrderIterator;
  * <ul>
  *   <li>{@link #getRoot()}</li>
  *   <li>{@link #setRootElement(TreeNode)}</li>
- *   <li>{@link #toPreOrderedList()}</li>
  * </ul>
  * 
  * @author Oliver Lorenz
