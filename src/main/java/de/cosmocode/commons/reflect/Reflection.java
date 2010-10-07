@@ -258,6 +258,10 @@ public final class Reflection {
         return IsInterface.INSTANCE;
     }
 
+    public static Rule<Class<?>> isConcreteClass() {
+        return IsConcreteClass.INSTANCE;
+    }
+    
     /**
      * Returns a predicate which matches super types of the specified
      * type.
