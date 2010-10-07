@@ -258,6 +258,13 @@ public final class Reflection {
         return IsInterface.INSTANCE;
     }
 
+    /**
+     * Returns a predicate which returns true if the given input
+     * is neither an interface, abstract, an enum or an array.
+     *
+     * @since 1.17
+     * @return a predice which matches concrete classes
+     */
     public static Rule<Class<?>> isConcreteClass() {
         return IsConcreteClass.INSTANCE;
     }
