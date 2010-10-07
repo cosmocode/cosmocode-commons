@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons.reflect;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.Comparator;
@@ -365,7 +366,7 @@ public final class Reflection {
      * Creates a {@link Classpath} using the specified classpath value.
      * 
      * @since 1.8
-     * @param classpath the backing classpath value (; separated)
+     * @param classpath the backing classpath value ({@link File#pathSeparator} separated)
      * @return a {@link Classpath} backed by the specified classpath
      * @throws NullPointerException if classpath is null
      */
