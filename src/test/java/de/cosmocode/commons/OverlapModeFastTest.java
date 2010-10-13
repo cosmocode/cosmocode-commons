@@ -17,12 +17,12 @@
 package de.cosmocode.commons;
 
 /**
- * Tests {@link OverlapMode#NORMAL}.
+ * Tests {@link OverlapMode#FAST}.
  *
  * @since 1.16
  * @author Oliver Lorenz
  */
-public final class OverlapModeFastTest extends OverlapModeTestCase {
+public final class OverlapModeFastTest extends AbstractOverlapModeTest {
 
     @Override
     protected boolean isOverlappingOnBorders() {

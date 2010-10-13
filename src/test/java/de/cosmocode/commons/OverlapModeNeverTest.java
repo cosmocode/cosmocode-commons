@@ -22,7 +22,7 @@ package de.cosmocode.commons;
  * @since 1.16
  * @author Oliver Lorenz
  */
-public final class OverlapModeNeverTest extends OverlapModeTestCase {
+public final class OverlapModeNeverTest extends AbstractOverlapModeTest {
 
     @Override
     protected boolean isOverlappingOnBorders() {

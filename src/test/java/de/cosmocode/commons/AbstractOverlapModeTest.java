@@ -33,9 +33,9 @@ import java.util.concurrent.TimeUnit;
  * @since 1.16
  * @author Oliver Lorenz
  */
-public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
+public abstract class AbstractOverlapModeTest implements UnitProvider<OverlapMode> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OverlapModeTestCase.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractOverlapModeTest.class);
 
     private Date lastWeek() {
         final Calendar calendar = Calendar.getInstance();
@@ -64,22 +64,58 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
         return calendar.getTime();
     }
 
+    /**
+     * Enables "overlapping on borders" test.
+     *
+     * @since 1.16
+     * @return true if enabled, false otherwise
+     */
     protected abstract boolean isOverlappingOnBorders();
 
+    /**
+     * Enables "overlapping on containing" test.
+     *
+     * @since 1.16
+     * @return true if enabled, false otherwise
+     */
     protected abstract boolean isOverlappingOnContaining();
 
+    /**
+     * Enables "overlapping on intersection" test.
+     *
+     * @since 1.16
+     * @return true if enabled, false otherwise
+     */
     protected abstract boolean isOverlappingOnIntersection();
 
+    /**
+     * Enables "overlapping on no intersection" test.
+     *
+     * @since 1.16
+     * @return true if enabled, false otherwise
+     */
     protected abstract boolean isOverlappingOnNoIntersection();
 
+    /**
+     * Enables "overlapping on same length" test.
+     *
+     * @since 1.16
+     * @return true if enabled, false otherwise
+     */
     protected abstract boolean isOverlappingOnSameLength();
 
+    /**
+     * Determines whether the overlapmode under test can handle flipped periods.
+     *
+     * @since 1.16
+     * @return true if mode can handle flipped periods, false otherwise
+     */
     protected abstract boolean canHandleFlippedPeriods();
 
     private void assertIsOverlappingAsExpected(boolean expected, long s1, long e1, long s2, long e2) {
         Assert.assertEquals(expected, unit().isOverlapping(s1, e1, s2, e2));
 
-        if (this.canHandleFlippedPeriods()) {
+        if (canHandleFlippedPeriods()) {
             Assert.assertEquals("Flipped second period", expected, unit().isOverlapping(s1, e1, e2, s2));
             Assert.assertEquals("Flipped first period", expected, unit().isOverlapping(e1, s1, s2, e2));
             Assert.assertEquals("Flipped both periods", expected, unit().isOverlapping(e1, s1, e2, s2));
@@ -144,7 +180,7 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
     }
 
     /**
-     * Tests overlapping when both periods have the same length
+     * Tests overlapping when both periods have the same length.
      * As a diagram:
      * Period1:    |--------|
      * Period2:    |--------|
@@ -474,7 +510,10 @@ public abstract class OverlapModeTestCase implements UnitProvider<OverlapMode> {
         final long start = System.nanoTime();
         for (int i = 0; i < loopCount; i++) {
             // the values used here are just randomly chosen, any other values would do too
-            unit().isOverlapping(new Date(i / 10), new Date(100000 / (i + 1)), new Date(i % 100), new Date(i + (i % 20)));
+            unit().isOverlapping(
+                new Date(i / 10), new Date(100000 / (i + 1)), 
+                new Date(i % 100), new Date(i + (i % 20))
+            );
         }
         final long elapsed = System.nanoTime() - start;
         final TimeUnit mortalUnit = TimeUnits.forMortals(elapsed, TimeUnit.NANOSECONDS);
