@@ -22,6 +22,7 @@ import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 
 /**
  * Utility class providing all kind of useful
@@ -161,11 +162,13 @@ public final class Enums {
     /**
      * Creates a union of enum {@link Collection}s.
      * 
+     * @deprecated use {@link Sets#union(Set, Set)}
      * @param <E> the enum type
      * @param a {@link Collection} of enums
      * @param b {@link Collection} of enums
      * @return a {@link Collection} containing all elements of a and b
      */
+    @Deprecated
     public static <E extends Enum<E>> Set<E> union(Collection<E> a, Collection<E> b) {
         final EnumSet<E> union = EnumSet.copyOf(a);
         union.addAll(b);
