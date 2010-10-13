@@ -102,6 +102,12 @@ public abstract class ForwardingTree<E> extends ForwardingObject implements Tree
         delegate().setRootElement(rootElement);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @deprecated use {@link #traverse(TraverseMode)}
+     */
+    @Deprecated
     @Override
     public List<TreeNode<E>> toPreOrderedList() {
         return delegate().toPreOrderedList();
