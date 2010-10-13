@@ -18,6 +18,9 @@ package de.cosmocode.commons;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.gag.annotation.remark.Booyah;
+import com.google.gag.annotation.remark.Hack;
+import com.google.gag.annotation.remark.Magic;
 
 /**
  * Static utility class for {@link Throwable}s.
@@ -51,6 +54,26 @@ public final class Throwables {
         if (t == null) return;
         com.google.common.base.Throwables.propagateIfInstanceOf(t, declaredType);
         propagateCauseIfInstanceOf(t.getCause(), declaredType);
+    }
+
+    /**
+     * Throws any checked exception without the need to declare it in the
+     * throws clause.
+     * 
+     * @see http://blog.jayway.com/2010/01/29/sneaky-throw/
+     * @param throwable the throwable to throw
+     * @return nothing, this method <strong>always</strong> throws an exception
+     */
+    @Hack
+    @Booyah
+    public static RuntimeException sneakyThrow(Throwable throwable) {
+        Throwables.<RuntimeException>doSneakyThrow(throwable);
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Throwable> void doSneakyThrow(Throwable throwable) throws T {
+        throw (T) Preconditions.checkNotNull(throwable, "Throwable");
     }
     
 }
