@@ -86,6 +86,7 @@ public enum OverlapMode {
      * @since 1.16
      */
     NORMAL {
+        
         @Override
         public boolean isOverlapping(final long s1, final long e1, final long s2, final long e2) {
             /*
@@ -101,6 +102,7 @@ public enum OverlapMode {
             return !((s1 > s2 && s1 > e2 && e1 > s2 && e1 > e2) ||
                      (s1 < s2 && s1 < e2 && e1 < s2 && e1 < e2));
         }
+        
     },
 
     /**
@@ -118,10 +120,12 @@ public enum OverlapMode {
      * @since 1.16
      */
     FAST {
+        
         @Override
         public boolean isOverlapping(long s1, long e1, long s2, long e2) {
             return !(s2 > e1 || e2 < s1);
         }
+        
     },
 
     /**
@@ -147,6 +151,7 @@ public enum OverlapMode {
      * @since 1.16
      */
     IGNORE_BORDERS {
+        
         @Override
         @Magic(type = MagicType.WHITE)
         @CantTouchThis(Stop.HAMMERTIME)
@@ -178,6 +183,7 @@ public enum OverlapMode {
              */
             return !(a[0] + a[1] == r1 || a[0] + a[1] == r2);
         }
+        
     },
 
     /**
@@ -194,10 +200,12 @@ public enum OverlapMode {
      * @since 1.16
      */
     NEVER {
+        
         @Override
         public boolean isOverlapping(long s1, long e1, long s2, long e2) {
             return false;
         }
+        
     };
 
     /**
