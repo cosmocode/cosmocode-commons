@@ -198,7 +198,6 @@ public abstract class AbstractTree<E> implements Tree<E> {
                 return getPostOrderIterable();
             }
             case IN_ORDER: {
-                // TODO implement this traverse mode
                 throw new UnsupportedOperationException("not yet implemented");
             }
             case LEVEL_ORDER: {
