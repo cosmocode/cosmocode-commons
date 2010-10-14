@@ -16,7 +16,6 @@
 
 package de.cosmocode.commons;
 
-
 /**
  * The lifecycle states of a service.
  */
