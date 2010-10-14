@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.cosmocode</groupId>
@@ -9,10 +8,10 @@
   <name>CosmoCode Commons</name>
   <groupId>de.cosmocode</groupId>
   <artifactId>cosmocode-commons</artifactId>
-  <version>1.18-SNAPSHOT</version>
+  <version>1.18.0</version>
   <packaging>jar</packaging>
   <scm>
-    <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-commons/trunk</developerConnection>
+    <developerConnection>scm:svn:https://commons.svn.cosmocode.de/cosmocode-commons/tags/1.18.0</developerConnection>
   </scm>
   <repositories>
     <repository>
