@@ -33,9 +33,7 @@ public final class DateFormats {
      * @deprecated use {@link DateFormats#iso8061()} instead
      */
     @Deprecated
-    public static final DateFormat ISO_8061 = DateFormats.concurrent(
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")
-    );
+    public static final DateFormat ISO_8061 = DateFormats.concurrent(iso8061());
 
     /**
      * DateFormat for RFC 822.
@@ -43,9 +41,7 @@ public final class DateFormats {
      * @deprecated use {@link DateFormats#rfc822()()} instead
      */
     @Deprecated
-    public static final DateFormat RFC_822 = DateFormats.concurrent(
-        new SimpleDateFormat("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US)
-    );
+    public static final DateFormat RFC_822 = DateFormats.concurrent(rfc822());
 
     /**
      * DateFormat for RSS 2.0.
@@ -53,9 +49,7 @@ public final class DateFormats {
      * @deprecated use {@link DateFormats#rss20()} instead
      */
     @Deprecated
-    public static final DateFormat RSS_20 = DateFormats.concurrent(
-        new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z")
-    );
+    public static final DateFormat RSS_20 = DateFormats.concurrent(rss20());
     
     /**
      * Prevent instantiation.
