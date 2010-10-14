@@ -26,13 +26,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import com.google.common.base.Supplier;
+
+import de.cosmocode.commons.base.MoreSuppliers;
+
 /**
  * The {@link SynchronizedDateFormat} is {@link DateFormat}
  * which delegates all calls to another {@link DateFormat}
  * using synchronized method calls.
  * 
+ * @deprecated use one {@link DateFormat} per {@link Thread}, if you want to reuse them, consider
+ *               using {@link MoreSuppliers#memoizePerThread(Supplier)}
  * @author schoenborn@cosmocode.de
  */
+@Deprecated
 final class SynchronizedDateFormat extends DateFormat {
 
     private static final long serialVersionUID = -2375861144495307593L;
