@@ -16,6 +16,8 @@
 
 package de.cosmocode.commons;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.gag.annotation.remark.Booyah;
@@ -49,7 +51,9 @@ public final class Throwables {
      * @throws NullPointerException if declaredType is null
      * @throws X if t or one of its causes is an instanceof declaredType
      */
-    public static <X extends Throwable> void propagateCauseIfInstanceOf(Throwable t, Class<X> declaredType) throws X {
+    public static <X extends Throwable> void propagateCauseIfInstanceOf(@Nullable Throwable t, 
+            Class<X> declaredType) throws X {
+        
         Preconditions.checkNotNull(declaredType, "DeclaredType");
         if (t == null) return;
         com.google.common.base.Throwables.propagateIfInstanceOf(t, declaredType);
@@ -62,7 +66,7 @@ public final class Throwables {
      * 
      * @see http://blog.jayway.com/2010/01/29/sneaky-throw/
      * @param throwable the throwable to throw
-     * @return nothing, this method <strong>always</strong> throws an exception
+     * @return never, this method <strong>always</strong> throws an exception
      */
     @Hack
     @Booyah
