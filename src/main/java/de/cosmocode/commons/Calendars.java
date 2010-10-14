@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 
 /**
  * Utility class providng factory and
@@ -41,7 +42,7 @@ public final class Calendars {
      * @return a function converting calendars into dates using {@link Calendar#getTime()}
      */
     public static Function<Calendar, Date> getTime() {
-        return CalendarGetTimeCodec.INSTANCE;
+        return CalendarToDate.INSTANCE;
     }
     
     /**
@@ -53,7 +54,7 @@ public final class Calendars {
      * @throws NullPointerException if date is null
      */
     public static GregorianCalendar of(Date date) {
-        if (date == null) throw new NullPointerException("Date must not be null");
+        Preconditions.checkNotNull(date, "Date");
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         return calendar;
@@ -67,7 +68,7 @@ public final class Calendars {
      * @throws NullPointerException if calendar is null
      */
     public static void toBeginningOfTheDay(Calendar calendar) {
-        if (calendar == null) throw new NullPointerException("Calendar must not be null");
+        Preconditions.checkNotNull(calendar, "Calendar");
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
