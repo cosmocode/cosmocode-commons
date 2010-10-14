@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons;
 
+import com.google.common.base.Preconditions;
 import com.google.gag.annotation.enforceable.CantTouchThis;
 import com.google.gag.annotation.remark.Magic;
 import com.google.gag.enumeration.MagicType;
@@ -236,6 +237,10 @@ public enum OverlapMode {
      * @throws NullPointerException if any of the given Dates is null
      */
     public boolean isOverlapping(final Date s1, final Date e1, final Date s2, final Date e2) {
+        Preconditions.checkNotNull(s1, "s1");
+        Preconditions.checkNotNull(e1, "e1");
+        Preconditions.checkNotNull(s2, "s2");
+        Preconditions.checkNotNull(e2, "e2");
         return isOverlapping(s1.getTime(), e1.getTime(), s2.getTime(), e2.getTime());
     }
 
