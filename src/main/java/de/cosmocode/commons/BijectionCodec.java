@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -48,7 +49,7 @@ final class BijectionCodec<F, T> extends Codec<F, T> {
     
     @Override
     public int hashCode() {
-        return bijection.hashCode();
+        return Objects.hashCode(bijection, inverse);
     }
 
     @Override
