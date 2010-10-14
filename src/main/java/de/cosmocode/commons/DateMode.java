@@ -19,6 +19,10 @@ package de.cosmocode.commons;
 import java.util.Comparator;
 import java.util.Date;
 
+import javax.annotation.concurrent.Immutable;
+
+import com.google.common.primitives.Longs;
+
 /**
  * A {@link DateMode} determines the way how to
  * transform a timestamp of type long into a {@link Date} instance.
@@ -45,8 +49,8 @@ public enum DateMode implements Comparator<Date>, Bijection<Long, Date> {
         }
         
         @Override
-        public int compare(Date d1, Date d2) {
-            return d1.compareTo(d2);
+        public int compare(Date left, Date right) {
+            return left.compareTo(right);
         }
         
     },
@@ -68,50 +72,15 @@ public enum DateMode implements Comparator<Date>, Bijection<Long, Date> {
         }
         
         @Override
-        public int compare(Date d1, Date d2) {
-            final long diff = d1.getTime() - d2.getTime();
-            return Math.abs(diff) < 1000L ? 0 : (diff < 0L ? -1 : 1); 
+        public int compare(Date left, Date right) {
+            final long leftRounded = left.getTime() / 1000L;
+            final long rightRounded = right.getTime() / 1000L;
+            return Longs.compare(leftRounded, rightRounded);
         }
         
     };
     
-    /**
-     * Transforms a timestamp into a {@link Date} instance.
-     * 
-     * @param value the timestamp
-     * @return a new {@link Date} instance
-     */
-    public abstract Date parse(long value);
-    
-    /**
-     * Transforms a {@link Date} instance into a timestamp.
-     * 
-     * @param date the date instance
-     * @return a timestamp created from the date, or -1 if date is null
-     */
-    public abstract long format(Date date);
-
-    /**
-     * <p>
-     *   This implementations returns 0 if the two given
-     *   {@link Date}s are equals as defined by the semantics of
-     *   this {@link DateMode}. 
-     * </p>
-     * 
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract int compare(Date d1, Date d2);
-    
-    @Override
-    public Date apply(Long from) {
-        return from == null ? null : parse(from.longValue());
-    }
-    
-    @Override
-    public Bijection<Date, Long> inverse() {
-        return new InverseDateMode();
-    }
+    private final Bijection<Date, Long> inverse = new InverseDateMode();
     
     /**
      * Implementation of {@link DateMode#inverse()}.
@@ -119,6 +88,7 @@ public enum DateMode implements Comparator<Date>, Bijection<Long, Date> {
      * @since 1.9
      * @author Willi Schoenborn
      */
+    @Immutable
     private final class InverseDateMode implements Bijection<Date, Long> {
         
         @Override
@@ -136,6 +106,32 @@ public enum DateMode implements Comparator<Date>, Bijection<Long, Date> {
             return DateMode.this + ".inverse()";
         }
         
+    }
+    
+    /**
+     * Transforms a timestamp into a {@link Date} instance.
+     * 
+     * @param value the timestamp
+     * @return a new {@link Date} instance
+     */
+    public abstract Date parse(long value);
+    
+    /**
+     * Transforms a {@link Date} instance into a timestamp.
+     * 
+     * @param date the date instance
+     * @return a timestamp created from the date, or -1 if date is null
+     */
+    public abstract long format(Date date);
+
+    @Override
+    public Date apply(Long from) {
+        return from == null ? null : parse(from.longValue());
+    }
+    
+    @Override
+    public Bijection<Date, Long> inverse() {
+        return inverse;
     }
     
 }
