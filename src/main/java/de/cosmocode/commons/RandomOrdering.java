@@ -34,7 +34,7 @@ import com.google.common.collect.Ordering;
  * @author Willi Schoenborn
  * @param <T> generic type parameter
  */
-final class RandomOrdering<T> extends Ordering<T> implements Serializable {
+final class RandomOrdering<T> extends Ordering<T> implements Function<Entry<T, T>, Integer>, Serializable {
     
     private static final long serialVersionUID = 1463223861679378549L;
 
@@ -48,30 +48,24 @@ final class RandomOrdering<T> extends Ordering<T> implements Serializable {
      */
     private static final Integer RIGHT_IS_GREATER = -1;
     
-    private final ConcurrentMap<Entry<T, T>, Integer> values;
+    private final Random random = new Random();
     
-    public RandomOrdering() {
-        this.values = new MapMaker().makeComputingMap(new Function<Entry<T, T>, Integer>() {
+    private final ConcurrentMap<Entry<T, T>, Integer> values = new MapMaker().makeComputingMap(this);
+    
+    @Override
+    public Integer apply(Entry<T, T> entry) {
+        final Entry<T, T> reverseEntry = Maps.immutableEntry(
+            entry.getValue(), entry.getKey()
+        );
             
-            private final Random random = new Random();
-            
-            @Override
-            public Integer apply(Entry<T, T> entry) {
-                final Entry<T, T> reverseEntry = Maps.immutableEntry(
-                    entry.getValue(), entry.getKey()
-                );
-                
-                // whenever this function is being called neither (x,y) nor (y,x) has been compared yet
-                final Integer value = choose(random);
-                final Integer reverse = invert(value);
-                // sgn(compare(x, y)) == -sgn(compare(y, x))
-                values.put(reverseEntry, reverse);
-                return value;
-            }
-            
-        });
+        // whenever this function is being called neither (x,y) nor (y,x) has been compared yet
+        final Integer value = choose();
+        final Integer reverse = invert(value);
+        // sgn(compare(x, y)) == -sgn(compare(y, x))
+        values.put(reverseEntry, reverse);
+        return value;
     }
-    
+
     @Override
     public int compare(T left, T right) {
         if (Objects.equal(left, right)) {
@@ -83,17 +77,17 @@ final class RandomOrdering<T> extends Ordering<T> implements Serializable {
         }
     }
     
-    @Override
-    public String toString() {
-        return "Orderings.random()";
-    }
-    
-    private static Integer choose(Random random) {
+    private Integer choose() {
         return random.nextInt(2) == 0 ? LEFT_IS_GREATER : RIGHT_IS_GREATER;
     }
     
-    private static Integer invert(Integer value) {
+    private Integer invert(Integer value) {
         return value == LEFT_IS_GREATER ? RIGHT_IS_GREATER : LEFT_IS_GREATER;
+    }
+    
+    @Override
+    public String toString() {
+        return "Orderings.random()";
     }
     
 }
