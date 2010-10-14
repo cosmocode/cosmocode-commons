@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package de.cosmocode.commons.concurrent;
+package de.cosmocode.commons.base;
 
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.lang.mutable.MutableInt;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -42,7 +39,7 @@ public final class ThreadLocalMemoizingSupplierTest implements UnitProvider<Supp
     
     @Override
     public Supplier<UUID> unit() {
-        return ThreadLocalMemoizingSupplier.of(new Supplier<UUID>() {
+        return MoreSuppliers.memoizePerThread(new Supplier<UUID>() {
             
             @Override
             public UUID get() {

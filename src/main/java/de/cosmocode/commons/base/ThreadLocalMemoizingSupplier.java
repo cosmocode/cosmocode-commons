@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package de.cosmocode.commons.concurrent;
-
-import javax.annotation.Nonnull;
+package de.cosmocode.commons.base;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
@@ -30,18 +28,21 @@ import com.google.common.base.Suppliers;
  * @author Willi Schoenborn
  * @param <T> generic value type
  */
-public final class ThreadLocalMemoizingSupplier<T> implements Supplier<T> {
+final class ThreadLocalMemoizingSupplier<T> implements Supplier<T> {
 
+    private final Supplier<T> supplier;
+    
     private final ThreadLocal<T> local;
     
-    private ThreadLocalMemoizingSupplier(final Supplier<T> supplier) {
-        Preconditions.checkNotNull(supplier, "Supplier");
+    ThreadLocalMemoizingSupplier(final Supplier<T> supplier) {
+        this.supplier = Preconditions.checkNotNull(supplier, "Supplier");
+        
         this.local = new ThreadLocal<T>() {
-            
+
             @Override
             protected T initialValue() {
                 return supplier.get();
-            };
+            }
             
         };
     }
@@ -50,20 +51,10 @@ public final class ThreadLocalMemoizingSupplier<T> implements Supplier<T> {
     public T get() {
         return local.get();
     }
-
-    /**
-     * Returns a supplier which caches the instance retrieved during the first
-     * call to {@code get()} in a thread local and returns that value on subsequent calls to
-     * {@code get()} in the same thread.
-     *
-     * @since 1.18
-     * @param <T> the generic value type
-     * @param supplier the backing supplier
-     * @return a memoizing supplier which delegates to the given supplier
-     * @throws NullPointerException if supplier is null
-     */
-    public static <T> Supplier<T> of(@Nonnull Supplier<T> supplier) {
-        return new ThreadLocalMemoizingSupplier<T>(supplier);
+    
+    @Override
+    public String toString() {
+        return "MoreSuppliers.memoizePerThread(" + supplier + ")";
     }
     
 }
