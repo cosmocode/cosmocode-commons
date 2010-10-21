@@ -21,6 +21,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
+import de.cosmocode.commons.base.Joiners;
+
 /**
  * Implementation for {@link Runnables#chain(Runnable, Runnable, Runnable...)}.
  *
@@ -28,8 +30,6 @@ import com.google.common.collect.Iterables;
  * @author Willi Schoenborn
  */
 final class ChainedRunnable implements Runnable {
-
-    private static final Joiner JOINER = Joiner.on(", ");
 
     private final Iterable<Runnable> runnables;
         
@@ -59,12 +59,12 @@ final class ChainedRunnable implements Runnable {
     
     @Override
     public int hashCode() {
-        return runnables.hashCode();
+        return runnables.hashCode() ^ 12865424;
     }
     
     @Override
     public String toString() {
-        return "Runnables.chain(" + JOINER.join(runnables) + ")";
+        return "Runnables.chain(" + Joiners.COLLECTION_ELEMENTS.join(runnables) + ")";
     }
 
 }
