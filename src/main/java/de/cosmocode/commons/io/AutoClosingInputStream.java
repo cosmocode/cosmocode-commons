@@ -32,22 +32,21 @@ import com.google.common.base.Preconditions;
  * @see InputStreams#asAutoClosing(InputStream)
  * @author Willi Schoenborn
  */
-final class AutoClosingInputStream extends FilterInputStream {
+final class AutoClosingInputStream extends InputStream {
     
     private static final Logger LOG = LoggerFactory.getLogger(AutoClosingInputStream.class);
 
     private final InputStream stream;
     
     public AutoClosingInputStream(InputStream stream) {
-        super(stream);
         this.stream = Preconditions.checkNotNull(stream, "Stream");
     }
 
     @Override
     public int read() throws IOException {
         try {
-            final int read = super.read();
-            if (read == -1) endOfStream();
+            final int read = stream.read();
+            if (read == -1) close();
             return read;
         } catch (IOException e) {
             closeFinally();
@@ -58,8 +57,8 @@ final class AutoClosingInputStream extends FilterInputStream {
     @Override
     public int read(byte[] b) throws IOException {
         try {
-            final int read = super.read(b);
-            if (read == -1) endOfStream();
+            final int read = stream.read(b);
+            if (read == -1) close();
             return read;
         } catch (IOException e) {
             closeFinally();
@@ -68,9 +67,22 @@ final class AutoClosingInputStream extends FilterInputStream {
     }
     
     @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        try {
+            final int read = stream.read(b, off, len);
+            if (read == -1) close();
+            return read;
+        } catch (IOException e) {
+            closeFinally();
+            throw e;
+        }
+    }
+
+    
+    @Override
     public long skip(long n) throws IOException {
         try {
-            return super.skip(n);
+            return stream.skip(n);
         } catch (IOException e) {
             closeFinally();
             throw e;
@@ -80,32 +92,44 @@ final class AutoClosingInputStream extends FilterInputStream {
     @Override
     public int available() throws IOException {
         try {
-            return super.available();
+            return stream.available();
         } catch (IOException e) {
             closeFinally();
             throw e;
         }
     }
     
+    
+    @Override
+    public void close() throws IOException {
+        stream.close();
+    }
+
+    @Override
+    public void mark(int readlimit) {
+        stream.mark(readlimit);
+    }
+
+    @Override
+    public boolean markSupported() {
+        return stream.markSupported();
+    }
+
     @Override
     public void reset() throws IOException {
         try {
-            super.reset();
+            stream.reset();
         } catch (IOException e) {
             closeFinally();
             throw e;
         }
-    }
-    
-    private void endOfStream() throws IOException {
-        close();
     }
     
     private void closeFinally() {
         try {
             close();
         } catch (IOException e) {
-            LOG.warn("Unable to close " + this, e);
+            LOG.warn("Unable to close " + stream, e);
         }
     }
     
