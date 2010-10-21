@@ -19,12 +19,15 @@ package de.cosmocode.commons.io;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * {@link InputStream} implementation which mimics the behaviour of an empty stream.
  *
  * @since 1.13
  * @author Willi Schoenborn
  */
+@ThreadSafe
 final class EmptyInputStream extends InputStream {
 
     static final InputStream INSTANCE = new EmptyInputStream();
