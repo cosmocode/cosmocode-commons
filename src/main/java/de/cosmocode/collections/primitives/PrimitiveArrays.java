@@ -22,6 +22,14 @@ import java.util.List;
 import org.w3c.dom.DOMException;
 
 import com.google.common.base.Preconditions;
+import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Chars;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Floats;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
+import com.google.common.primitives.Shorts;
 import com.google.gag.annotation.remark.OhNoYouDidnt;
 
 /**
@@ -55,7 +63,7 @@ public final class PrimitiveArrays {
         final Class<?> type = primitiveArray.getClass();
         Preconditions.checkArgument(type.isArray(), "%s is not an array", type);
         final Class<?> componentType = type.getComponentType();
-        Preconditions.checkArgument(componentType.isPrimitive(), "%s.getComponentType() is not primitive", type);
+        Preconditions.checkArgument(componentType.isPrimitive(), "%s is not primitive", componentType);
 
         if (componentType == boolean.class) {
             return asList(boolean[].class.cast(primitiveArray));
@@ -90,11 +98,7 @@ public final class PrimitiveArrays {
      */
     public static List<Boolean> asList(boolean... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveBooleanArrayList(array);
-        }
+        return Booleans.asList(array);
     }
 
     /**
@@ -109,11 +113,7 @@ public final class PrimitiveArrays {
      */
     public static List<Byte> asList(byte... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveByteArrayList(array);
-        }
+        return Bytes.asList(array);
     }
 
     /**
@@ -128,11 +128,7 @@ public final class PrimitiveArrays {
      */
     public static List<Short> asList(short... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveShortArrayList(array);
-        }
+        return Shorts.asList(array);
     }
 
     /**
@@ -147,11 +143,7 @@ public final class PrimitiveArrays {
      */
     public static List<Character> asList(char... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveCharArrayList(array);
-        }
+        return Chars.asList(array);
     }
 
     /**
@@ -166,11 +158,7 @@ public final class PrimitiveArrays {
      */
     public static List<Integer> asList(int... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveIntArrayList(array);
-        }
+        return Ints.asList(array);
     }
 
     /**
@@ -185,11 +173,7 @@ public final class PrimitiveArrays {
      */
     public static List<Long> asList(long... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveLongArrayList(array);
-        }
+        return Longs.asList(array);
     }
 
     /**
@@ -204,11 +188,7 @@ public final class PrimitiveArrays {
      */
     public static List<Float> asList(float... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveFloatArrayList(array);
-        }
+        return Floats.asList(array);
     }
 
     /**
@@ -223,11 +203,7 @@ public final class PrimitiveArrays {
      */
     public static List<Double> asList(double... array) {
         Preconditions.checkNotNull(array, "Array");
-        if (array.length == 0) {
-            return Collections.emptyList();
-        } else {
-            return new PrimitiveDoubleArrayList(array);
-        }
+        return Doubles.asList(array);
     }
     
 }
