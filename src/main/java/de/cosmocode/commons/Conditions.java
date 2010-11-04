@@ -45,8 +45,51 @@ public final class Conditions {
      * @throws IllegalArgumentException if input does not satisfy predicate
      */
     public static <T> T checkArgument(Predicate<? super T> predicate, T input) {
+        return checkArgument(predicate, input, "%s does not satisfy %s");
+    }
+    
+    /**
+     * Checks the given input using the specified attribute.
+     *
+     * <p>
+     *   Using this method is equivalent to:<br />
+     *   {@code Conditions.checkArgument(predicate, input, message, input, predicate);}
+     * </p>
+     *
+     * @since 1.19
+     * @param <T> the generic parameter type
+     * @param predicate the predicate being used to check inout
+     * @param input the input to be checked
+     * @param message the error message
+     * @return input
+     * @throws NullPointerException if predicate is null
+     * @throws IllegalArgumentException if input does not satisfy predicate
+     */
+    public static <T> T checkArgument(Predicate<? super T> predicate, T input, String message) {
+        return checkArgument(predicate, input, message, input, predicate);
+    }
+    
+    /**
+     * Checks the given input using the specified attribute.
+     *
+     * <p>
+     *   Using this method is equivalent to:<br />
+     *   {@code Conditions.checkArgument(predicate, input, message, input, predicate);}
+     * </p>
+     *
+     * @since 1.19
+     * @param <T> the generic parameter type
+     * @param predicate the predicate being used to check inout
+     * @param input the input to be checked
+     * @param message the error message
+     * @param args the error message arguments
+     * @return input
+     * @throws NullPointerException if predicate is null
+     * @throws IllegalArgumentException if input does not satisfy predicate
+     */
+    public static <T> T checkArgument(Predicate<? super T> predicate, T input, String message, Object... args) {
         Preconditions.checkNotNull(predicate, "Predicate");
-        Preconditions.checkArgument(predicate.apply(input), "%s does not satisfy %s", input, predicate);
+        Preconditions.checkArgument(predicate.apply(input), message, args);
         return input;
     }
     
