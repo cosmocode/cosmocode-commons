@@ -64,7 +64,7 @@ public final class Throwables {
      * Throws any checked exception without the need to declare it in the
      * throws clause.
      * 
-     * @see http://blog.jayway.com/2010/01/29/sneaky-throw/
+     * @see <a href="http://blog.jayway.com/2010/01/29/sneaky-throw">blog.jayway.com/2010/01/29/sneaky-throw</a>
      * @param throwable the throwable to throw
      * @return never, this method <strong>always</strong> throws an exception
      */
