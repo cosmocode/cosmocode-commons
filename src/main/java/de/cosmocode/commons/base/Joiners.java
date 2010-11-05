@@ -16,7 +16,7 @@
 
 package de.cosmocode.commons.base;
 
-import java.util.Collections;
+import java.util.Collection;
 
 import com.google.common.base.Joiner;
 
