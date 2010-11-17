@@ -21,7 +21,7 @@ import java.util.Set;
 
 /**
  * An extension of the {@link List} and {@link Set} interfaces which
- * combines the semantics of both, which leads a collection
+ * combines the semantics of both, which leads to a collection
  * type which supports index-based access and ensures no element
  * is added twice.
  *
