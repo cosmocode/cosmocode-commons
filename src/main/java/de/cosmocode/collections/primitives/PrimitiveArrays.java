@@ -16,10 +16,7 @@
 
 package de.cosmocode.collections.primitives;
 
-import java.util.Collections;
 import java.util.List;
-
-import org.w3c.dom.DOMException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Booleans;

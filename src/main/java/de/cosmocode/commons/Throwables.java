@@ -22,7 +22,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.gag.annotation.remark.Booyah;
 import com.google.gag.annotation.remark.Hack;
-import com.google.gag.annotation.remark.Magic;
 
 /**
  * Static utility class for {@link Throwable}s.

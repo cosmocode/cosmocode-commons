@@ -16,16 +16,17 @@
 
 package de.cosmocode.commons;
 
-import de.cosmocode.commons.concurrent.TimeUnits;
-import de.cosmocode.junit.UnitProvider;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import de.cosmocode.commons.concurrent.TimeUnits;
+import de.cosmocode.junit.UnitProvider;
 
 /**
  * Tests {@link de.cosmocode.commons.OverlapMode}.

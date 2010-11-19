@@ -16,7 +16,6 @@
 
 package de.cosmocode.commons.concurrent;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;

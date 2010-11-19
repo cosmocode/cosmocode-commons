@@ -16,12 +16,12 @@
 
 package de.cosmocode.collections.utility;
 
-import com.google.common.base.Preconditions;
-
 import java.util.AbstractMap;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Abstract skeleton implementation of

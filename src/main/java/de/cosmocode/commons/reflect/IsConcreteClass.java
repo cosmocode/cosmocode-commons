@@ -16,11 +16,8 @@
 
 package de.cosmocode.commons.reflect;
 
-import com.google.common.base.Predicate;
-
 import de.cosmocode.commons.validation.AbstractRule;
 import de.cosmocode.commons.validation.Rule;
-import de.cosmocode.commons.validation.Rules;
 
 /**
  * Implementation for {@link Reflection#isConcreteClass()}.

@@ -16,14 +16,14 @@
 
 package de.cosmocode.commons;
 
+import java.util.Arrays;
+import java.util.Date;
+
 import com.google.common.base.Preconditions;
 import com.google.gag.annotation.enforceable.CantTouchThis;
 import com.google.gag.annotation.remark.Magic;
 import com.google.gag.enumeration.MagicType;
 import com.google.gag.enumeration.Stop;
-
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * <p>
