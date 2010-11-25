@@ -34,25 +34,35 @@ final class ForBiMapWithDefaultBijection<F, T> implements Bijection<F, T> {
     private final F defaultKey;
     private final T defaultValue;
     
+    private final Bijection<T, F> inverse;
+    
     public ForBiMapWithDefaultBijection(BiMap<F, T> map, F defaultKey, T defaultValue) {
         this.map = Preconditions.checkNotNull(map, "Map");
         this.defaultKey = defaultKey;
         this.defaultValue = defaultValue;
+        this.inverse = new ForBiMapWithDefaultBijection<T, F>(map.inverse(), defaultValue, defaultKey, this);
     }
-
+    
+    private ForBiMapWithDefaultBijection(BiMap<F, T> map, F defaultKey, T defaultValue, Bijection<T, F> inverse) {
+        this.map = Preconditions.checkNotNull(map, "Map");
+        this.defaultKey = defaultKey;
+        this.defaultValue = defaultValue;
+        this.inverse = Preconditions.checkNotNull(inverse, "Inverse");
+    }
+    
     @Override
     public T apply(F from) {
         final T result = map.get(from);
-        if (result != null || map.containsKey(result)) {
-            return result;
+        if (result == null) {
+            return map.containsKey(from) ? null : defaultValue;
         } else {
-            return defaultValue;
+            return result;
         }
     }
 
     @Override
     public Bijection<T, F> inverse() {
-        return new InverseBiMapDefaultBijection<T, F>(this, map.inverse(), defaultKey);
+        return inverse;
     }
     
     @Override
@@ -79,65 +89,4 @@ final class ForBiMapWithDefaultBijection<F, T> implements Bijection<F, T> {
         return "Bijections.forBiMap(" + map + ", " + defaultKey + ", " + defaultValue + ")";
     }
 
-    /**
-     * Inverse implementation of {@link ForBiMapWithDefaultBijection}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     * @param <T> source type
-     * @param <F> target type
-     */
-    public static final class InverseBiMapDefaultBijection<T, F> implements Bijection<T, F> {
-        
-        private final Bijection<F, T> original;
-        
-        private final BiMap<T, F> map;
-        private final F defaultKey;
-        
-        public InverseBiMapDefaultBijection(Bijection<F, T> original, BiMap<T, F> map, F defaultKey) {
-            this.original = Preconditions.checkNotNull(original, "Original");
-            this.map = Preconditions.checkNotNull(map, "Map");
-            this.defaultKey = defaultKey;
-        }
-
-        @Override
-        public F apply(T from) {
-            final F result = map.get(from);
-            if (result != null || map.containsKey(from)) {
-                return result;
-            } else {
-                return defaultKey;
-            }
-        }
-
-        @Override
-        public Bijection<F, T> inverse() {
-            return original;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(original, map, defaultKey);
-        }
-
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof InverseBiMapDefaultBijection<?, ?>) {
-                final InverseBiMapDefaultBijection<?, ?> other = InverseBiMapDefaultBijection.class.cast(that);
-                return original.equals(other.original) && map.equals(other.map) &&
-                    Objects.equal(defaultKey, other.defaultKey);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return original + ".inverse()";
-        }
-        
-    }
-    
 }

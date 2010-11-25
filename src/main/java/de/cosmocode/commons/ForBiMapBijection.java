@@ -31,9 +31,16 @@ import com.google.common.collect.BiMap;
 final class ForBiMapBijection<F, T> implements Bijection<F, T> {
     
     private final BiMap<F, T> map;
+    private final Bijection<T, F> inverse;
     
     public ForBiMapBijection(BiMap<F, T> map) {
         this.map = Preconditions.checkNotNull(map, "Map");
+        this.inverse = new ForBiMapBijection<T, F>(map.inverse(), this);
+    }
+    
+    private ForBiMapBijection(BiMap<F, T> map, Bijection<T, F> inverse) {
+        this.map = Preconditions.checkNotNull(map, "Map");
+        this.inverse = Preconditions.checkNotNull(inverse, "Inverse");
     }
 
     @Override
@@ -45,7 +52,7 @@ final class ForBiMapBijection<F, T> implements Bijection<F, T> {
 
     @Override
     public Bijection<T, F> inverse() {
-        return new InverseBiMapBijection<T, F>(this, map.inverse());
+        return inverse;
     }
     
     @Override
@@ -70,58 +77,4 @@ final class ForBiMapBijection<F, T> implements Bijection<F, T> {
         return "Bijections.forBiMap(" + map + ")";
     }
 
-    /**
-     * Inverse implementation of {@link ForBiMapBijection}.
-     *
-     * @since 1.8
-     * @author Willi Schoenborn
-     * @param <T> source type
-     * @param <F> target type
-     */
-    private static final class InverseBiMapBijection<T, F> implements Bijection<T, F> {
-        
-        private final Bijection<F, T> original;
-        private final BiMap<T, F> map;
-        
-        public InverseBiMapBijection(Bijection<F, T> original, BiMap<T, F> map) {
-            this.original = Preconditions.checkNotNull(original, "Original");
-            this.map = Preconditions.checkNotNull(map, "Map");
-        }
-
-        @Override
-        public F apply(T from) {
-            final F result = map.get(from);
-            Preconditions.checkArgument(result != null || map.containsKey(from), "Value '%s' not present in map", from);
-            return result;
-        }
-        
-        @Override
-        public Bijection<F, T> inverse() {
-            return original;
-        }
-        
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(original, map);
-        }
-        
-        @Override
-        public boolean equals(Object that) {
-            if (this == that) {
-                return true;
-            } else if (that instanceof InverseBiMapBijection<?, ?>) {
-                final InverseBiMapBijection<?, ?> other = InverseBiMapBijection.class.cast(that);
-                return original.equals(other.original) && map.equals(other.map);
-            } else {
-                return false;
-            }
-        }
-        
-        @Override
-        public String toString() {
-            return original + ".inverse()";
-        }
-        
-    }
-    
 }
