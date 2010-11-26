@@ -91,6 +91,4 @@ final class CallbackCollection<E> extends ForwardingCollection<E> {
         return retained;
     }
     
-    
-    
 }
