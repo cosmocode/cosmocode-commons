@@ -51,20 +51,6 @@ final class RandomOrdering<T> extends Ordering<T> implements Function<Entry<T, T
     private final Random random = new Random();
     
     private final ConcurrentMap<Entry<T, T>, Integer> values = new MapMaker().makeComputingMap(this);
-    
-    @Override
-    public Integer apply(Entry<T, T> entry) {
-        final Entry<T, T> reverseEntry = Maps.immutableEntry(
-            entry.getValue(), entry.getKey()
-        );
-            
-        // whenever this function is being called neither (x,y) nor (y,x) has been compared yet
-        final Integer value = choose();
-        final Integer reverse = invert(value);
-        // sgn(compare(x, y)) == -sgn(compare(y, x))
-        values.put(reverseEntry, reverse);
-        return value;
-    }
 
     @Override
     public int compare(T left, T right) {
@@ -77,12 +63,25 @@ final class RandomOrdering<T> extends Ordering<T> implements Function<Entry<T, T
         }
     }
     
-    private Integer choose() {
-        return random.nextInt(2) == 0 ? LEFT_IS_GREATER : RIGHT_IS_GREATER;
-    }
-    
-    private Integer invert(Integer value) {
-        return value == LEFT_IS_GREATER ? RIGHT_IS_GREATER : LEFT_IS_GREATER;
+    @Override
+    public Integer apply(Entry<T, T> entry) {
+        // whenever this function is being called neither (x,y) nor (y,x) has been compared yet
+        
+        final Integer value;
+        final Integer inverted;
+        
+        if (random.nextInt(2) == 0) {
+            value = LEFT_IS_GREATER;
+            inverted = RIGHT_IS_GREATER;
+        } else {
+            value = RIGHT_IS_GREATER;
+            inverted = LEFT_IS_GREATER;
+        }
+        
+        // sgn(compare(x, y)) == -sgn(compare(y, x))
+        values.putIfAbsent(Maps.immutableEntry(entry.getValue(), entry.getKey()), inverted);
+        
+        return value;
     }
     
     @Override
