@@ -27,91 +27,11 @@ import com.google.common.collect.ForwardingListIterator;
  * @author Willi Schoenborn
  * @param <E> the generic element type
  */
-public abstract class ForwardingUtilityListIterator<E> extends ForwardingListIterator<E> 
+public abstract class ForwardingUtilityListIterator<E> extends ForwardingUtilityIterator<E> 
     implements UtilityListIterator<E> {
 
     @Override
     protected abstract UtilityListIterator<E> delegate();
-
-    @Override
-    public boolean nextBoolean() throws IllegalArgumentException {
-        return delegate().nextBoolean();
-    }
-
-    @Override
-    public boolean nextBoolean(boolean defaultValue) {
-        return delegate().nextBoolean(defaultValue);
-    }
-
-    @Override
-    public Date nextDate() throws IllegalArgumentException {
-        return delegate().nextDate();
-    }
-
-    @Override
-    public Date nextDate(Date defaultValue) {
-        return delegate().nextDate(defaultValue);
-    }
-
-    @Override
-    public double nextDouble() throws IllegalArgumentException {
-        return delegate().nextDouble();
-    }
-
-    @Override
-    public double nextDouble(double defaultValue) {
-        return delegate().nextDouble(defaultValue);
-    }
-
-    @Override
-    public <T extends Enum<T>> T nextEnum(Class<T> enumType, T defaultValue) {
-        return delegate().nextEnum(enumType, defaultValue);
-    }
-
-    @Override
-    public <T extends Enum<T>> T nextEnum(Class<T> enumType) throws IllegalArgumentException {
-        return delegate().nextEnum(enumType);
-    }
-
-    @Override
-    public UtilityList<Object> nextList() throws IllegalArgumentException {
-        return delegate().nextList();
-    }
-
-    @Override
-    public UtilityList<Object> nextList(UtilityList<Object> defaultValue) {
-        return delegate().nextList(defaultValue);
-    }
-
-    @Override
-    public long nextLong() throws IllegalArgumentException {
-        return delegate().nextLong();
-    }
-
-    @Override
-    public long nextLong(long defaultValue) {
-        return delegate().nextLong(defaultValue);
-    }
-
-    @Override
-    public UtilityMap<Object, Object> nextMap() throws IllegalArgumentException {
-        return delegate().nextMap();
-    }
-
-    @Override
-    public UtilityMap<Object, Object> nextMap(UtilityMap<Object, Object> defaultValue) {
-        return delegate().nextMap(defaultValue);
-    }
-
-    @Override
-    public String nextString() throws IllegalArgumentException {
-        return delegate().nextString();
-    }
-
-    @Override
-    public String nextString(String defaultValue) {
-        return delegate().nextString(defaultValue);
-    }
 
     @Override
     public boolean previousBoolean() throws IllegalArgumentException {
