@@ -26,8 +26,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.google.common.base.Supplier;
-
 import de.cosmocode.commons.base.MoreSuppliers;
 
 /**
@@ -36,7 +34,7 @@ import de.cosmocode.commons.base.MoreSuppliers;
  * using synchronized method calls.
  * 
  * @deprecated use one {@link DateFormat} per {@link Thread}, if you want to reuse them, consider
- *               using {@link MoreSuppliers#memoizePerThread(Supplier)}
+ *               using {@link MoreSuppliers#memoizePerThread(com.google.common.base.Supplier)}
  * @author schoenborn@cosmocode.de
  */
 @Deprecated
