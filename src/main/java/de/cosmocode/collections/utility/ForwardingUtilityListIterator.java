@@ -18,8 +18,6 @@ package de.cosmocode.collections.utility;
 
 import java.util.Date;
 
-import com.google.common.collect.ForwardingListIterator;
-
 /**
  * Implementation of the {@link UtilityListIterator} interface
  * delegating all calls to an underlying {@link UtilityListIterator}.
