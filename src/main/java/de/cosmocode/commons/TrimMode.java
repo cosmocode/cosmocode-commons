@@ -16,8 +16,9 @@
 
 package de.cosmocode.commons;
 
-import org.apache.commons.lang.StringUtils;
+import javax.annotation.Nullable;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
 
 /**
@@ -29,49 +30,48 @@ import com.google.common.base.Function;
 public enum TrimMode implements Function<String, String> {
 
     /**
-     * Removes control characters (char &lt;= 32) from both
+     * Removes whitespaces, as defined by {@link CharMatcher#WHITESPACE}, from both
      * ends of this String, handling {@code null} by returning
      * {@code null}.
-     * 
-     * See {@link StringUtils#trim(String)} for more details.
      */
     NORMAL {
         
         @Override
-        public String trim(String s) {
-            return StringUtils.trim(s);
+        public String apply(@Nullable CharSequence sequence) {
+            return sequence == null ? null : CharMatcher.WHITESPACE.trimFrom(sequence);
         }
         
     }, 
     
     /**
-     * Removes control characters (char &lt;= 32) from both
-     * ends of this String returning an empty String ("") if the String
+     * Removes whitespaces, as defined by {@link CharMatcher#WHITESPACE}, from both
+     * ends of this String, returning an empty String ("") if the String
      * is empty ("") after the trim or if it is {@code null}.
-     * 
-     * See {@link StringUtils#trimToEmpty(String)} for more details.
      */
     EMPTY {
         
         @Override
-        public String trim(String s) {
-            return StringUtils.trimToEmpty(s);
+        public String apply(@Nullable CharSequence sequence) {
+            return sequence == null ? "" : CharMatcher.WHITESPACE.trimFrom(sequence);
         }
         
     },
     
     /**
-     * Removes control characters (char &lt;= 32) from both
-     * ends of this String returning {@code null} if the String is
+     * Removess whitespaces, as defined by {@link CharMatcher#WHITESPACE}, from both
+     * ends of this String, returning {@code null} if the String is
      * empty ("") after the trim or if it is {@code null}.
-     * 
-     * See {@link StringUtils#trimToNull(String)} for more details.
      */
     NULL {
         
         @Override
-        public String trim(String s) {
-            return StringUtils.trimToNull(s);
+        public String apply(@Nullable CharSequence sequence) {
+            if (sequence == null) {
+                return null;
+            } else {
+                final String trimmed = CharMatcher.WHITESPACE.trimFrom(sequence);
+                return trimmed.isEmpty() ? null : trimmed;
+            }
         }
         
     };
@@ -79,10 +79,27 @@ public enum TrimMode implements Function<String, String> {
     /**
      * Trims the given {@link String}.
      * 
-     * @param s the {@link String} being trimmed
-     * @return the trimmed version of s
+     * @deprecated use {@link #apply(String)}
+     * @param string the {@link String} being trimmed
+     * @return the trimmed version of string
      */
-    public abstract String trim(String s);
+    @Deprecated
+    public final String trim(@Nullable String string) {
+        return apply(string);
+    };
+    
+
+    /**
+     * Trims the given {@link CharSequence}.
+     * 
+     * @deprecated use {@link #apply(CharSequence)}
+     * @param sequence the {@link CharSequence} being trimmed
+     * @return the trimmed version of sequence
+     */
+    @Deprecated
+    public final CharSequence trim(@Nullable CharSequence sequence) {
+        return apply(sequence);
+    }
 
     /**
      * Trims the given {@link CharSequence}.
@@ -90,23 +107,19 @@ public enum TrimMode implements Function<String, String> {
      * @param sequence the {@link CharSequence} being trimmed
      * @return the trimmed version of sequence
      */
-    public CharSequence trim(CharSequence sequence) {
-        return trim(sequence == null ? null : sequence.toString());
-    }
-    
+    public abstract String apply(@Nullable CharSequence sequence);
+
     /**
-     * This is a kind of an adapter allowing
-     * it to use a {@link TrimMode} as a {@link Function}.
+     * Trims the given {@link String}.
      * 
-     * <p>
-     *   This method is delegating its work to {@link TrimMode#trim(CharSequence)}.
-     * </p>
-     * 
-     * {@inheritDoc}
+     * @param string the {@link String} being trimmed
+     * @return the trimmed version of sequence
      */
     @Override
-    public String apply(String from) {
-        return trim(from);
+    public String apply(@Nullable String string) {
+        // intermediate variable is required to make sure we delegate to the correct method
+        final CharSequence sequence = string;
+        return apply(sequence);
     }
     
 }

@@ -19,17 +19,17 @@ package de.cosmocode.commons.validation;
 import com.google.common.base.Preconditions;
 
 /**
- * Implementation of {@link Rule#not()}.
+ * Implementation of {@link Rule#negate()}.
  *
  * @since 1.9
  * @author Willi Schoenborn
  * @param <T> generic parameter type
  */
-final class NotRule<T> extends AbstractRule<T> {
+final class NegatedRule<T> extends AbstractRule<T> {
 
     private final Rule<T> rule;
     
-    public NotRule(Rule<T> rule) {
+    public NegatedRule(Rule<T> rule) {
         this.rule = Preconditions.checkNotNull(rule, "Rule");
     }
     
@@ -39,7 +39,7 @@ final class NotRule<T> extends AbstractRule<T> {
     };
     
     @Override
-    public Rule<T> not() {
+    public Rule<T> negate() {
         return rule;
     }
     
@@ -47,8 +47,8 @@ final class NotRule<T> extends AbstractRule<T> {
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (that instanceof NotRule<?>) {
-            final NotRule<?> other = NotRule.class.cast(that);
+        } else if (that instanceof NegatedRule<?>) {
+            final NegatedRule<?> other = NegatedRule.class.cast(that);
             return rule.equals(other.rule);
         } else {
             return false;
@@ -62,7 +62,7 @@ final class NotRule<T> extends AbstractRule<T> {
     
     @Override
     public String toString() {
-        return rule + ".not()";
+        return rule + ".negate()";
     }
 
 }

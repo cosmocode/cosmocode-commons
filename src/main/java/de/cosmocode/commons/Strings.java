@@ -32,10 +32,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 
 import de.cosmocode.commons.validation.Rule;
+import de.cosmocode.commons.validation.Rules;
 
 /**
  * Utility class inspired by {@link StringUtils},
- * providing {@link String} related helper methods.
+ * providing {@link String} and {@link CharSequence} related helper methods.
  *
  * @author Willi Schoenborn
  */
@@ -52,7 +53,33 @@ public final class Strings {
      */
     public static final Ordering<String> CASE_INSENSITIVE = Ordering.from(String.CASE_INSENSITIVE_ORDER).
         nullsLast().onResultOf(TrimMode.NULL);
+
+    /**
+     * TODO document
+     */
+    public static final Rule<CharSequence> EMPTY = Rules.<CharSequence>isNull().or(ZeroLength.INSTANCE);
+
+    /**
+     * TODO document
+     */
+    public static final Rule<CharSequence> BLANK = EMPTY.or(WhitespaceOnly.INSTANCE);
+
+    /**
+     * TODO document
+     */
+    public static final Rule<CharSequence> NOT_EMPTY = EMPTY.negate();
+
+    /**
+     * TODO document
+     */
+    public static final Rule<CharSequence> NOT_BLANK = BLANK.negate();
     
+    /**
+     * The default delimiter use by {@link Strings#join(Collection, JoinWalker)}.
+     * 
+     * @deprecated no need to use it anymore
+     */
+    @Deprecated
     public static final String DEFAULT_DELIMITER = " ";
     
     private static final Object[] EMPTY_ARRAY = {};

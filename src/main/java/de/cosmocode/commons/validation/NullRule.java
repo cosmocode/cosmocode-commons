@@ -14,39 +14,35 @@
  * limitations under the License.
  */
 
-package de.cosmocode.commons.reflect;
-
-import de.cosmocode.commons.validation.AbstractRule;
-import de.cosmocode.commons.validation.Rule;
+package de.cosmocode.commons.validation;
 
 /**
- * Implementation for {@link Reflection#isConcreteClass()}.
+ * Implementation of {@link Rules#isNull()}.
  *
- * @since 2.0
+ * @since 1.20
  * @author Willi Schoenborn
  */
-final class IsConcreteClass extends AbstractRule<Class<?>> {
-
-    public static final Rule<Class<?>> INSTANCE = new IsConcreteClass();
+final class NullRule extends AbstractRule<Object> {
     
-    private final Rule<Class<?>> delegate = 
-            Reflection.isInterface().negate().and(
-            Reflection.isAbstract().negate()).and(
-            Reflection.isEnum().negate()).and(
-            Reflection.isArray().negate());
+    static final Rule<Object> INSTANCE = new NullRule();
     
-    private IsConcreteClass() {
+    private NullRule() {
         
+    }
+
+    @Override
+    public boolean apply(Object input) {
+        return input == null;
     }
     
     @Override
-    public boolean apply(Class<?> input) {
-        return delegate.apply(input);
+    public Rule<Object> negate() {
+        return Rules.isNotNull();
     }
     
     @Override
     public String toString() {
-        return "Reflection.isConcreteClass()";
+        return "Rules.isNull()";
     }
     
 }

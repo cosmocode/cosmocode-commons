@@ -74,6 +74,35 @@ public final class Rules {
         return (Rule<T>) FalseRule.INSTANCE;
     }
     
+    // cast is safe, because we never access the parameter
+    @SuppressWarnings("unchecked")
+    public static <T> Rule<T> isNull() {
+        return (Rule<T>) NullRule.INSTANCE;
+    }
+
+    // cast is safe, because we never access the parameter
+    @SuppressWarnings("unchecked")
+    public static <T> Rule<T> isNotNull() {
+        return (Rule<T>) NotNullRule.INSTANCE;
+    }
+    
+    public static <T> Rule<T> is(T value) {
+        return value == null ? Rules.<T>isNull() : new IsRule<T>(value);
+    }
+    
+    public static <T> Rule<T> isNot(T value) {
+        return value == null ? Rules.<T>isNotNull() : is(value).negate();
+    }
+    
+    public static <T> Rule<T> equalTo(T value) {
+        // TODO implement
+        throw new UnsupportedOperationException();
+    }
+    
+    public static <T> Rule<T> notEqualTo(T value) {
+        return equalTo(value).negate();
+    }
+    
     /**
      * Returns a rule which evaluates to true if the supplied input
      * is less than the given comparable.

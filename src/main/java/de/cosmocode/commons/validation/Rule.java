@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons.validation;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Constraint;
@@ -29,7 +30,8 @@ import com.google.common.collect.Constraint;
  * @author Willi Schoenborn
  * @param <T> the generic parameter type
  */
-public interface Rule<T> extends Constraint<T>, Predicate<T> {
+@Beta
+public interface Rule<T> extends Predicate<T>, Constraint<T> {
 
     /**
      * Returns a {@link Rule} that is a conjunction
@@ -96,7 +98,17 @@ public interface Rule<T> extends Constraint<T>, Predicate<T> {
      * @return the negated version of this rule
      */
     // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>or(Strings.contains("b")).not();
+    // Strings.contains("a").<String>or(Strings.contains("b")).negate();
+    <S extends T> Rule<S> negate();
+    
+    /**
+     * 
+     * @deprecated use {@link #negate()}
+     * @since 
+     * @param <S>
+     * @return
+     */
+    @Deprecated
     <S extends T> Rule<S> not();
     
     /**

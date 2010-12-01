@@ -47,8 +47,8 @@ public final class RulesTest {
         final Rule<String> rule = Rules.of(predicate);
         
         Assert.assertTrue(rule.apply(""));
-        Assert.assertFalse(rule.not().apply(""));
-        Assert.assertTrue(rule.not().not().apply(""));
+        Assert.assertFalse(rule.negate().apply(""));
+        Assert.assertTrue(rule.negate().negate().apply(""));
     }
     
     /**
@@ -67,7 +67,7 @@ public final class RulesTest {
      */
     @Test
     public void between() {
-        final Rule<TimeUnit> between = Rules.between(TimeUnit.NANOSECONDS, TimeUnit.SECONDS).not();
+        final Rule<TimeUnit> between = Rules.between(TimeUnit.NANOSECONDS, TimeUnit.SECONDS).negate();
         Assert.assertFalse(between.apply(TimeUnit.MICROSECONDS));
         Assert.assertTrue(between.apply(TimeUnit.HOURS));
     }

@@ -61,8 +61,13 @@ enum FalseRule implements Rule<Object> {
     }
     
     @Override
-    public <S> Rule<S> not() {
+    public <S> Rule<S> negate() {
         return Rules.alwaysTrue();
+    }
+    
+    @Override
+    public <S> Rule<S> not() {
+        return negate();
     }
     
     @Override

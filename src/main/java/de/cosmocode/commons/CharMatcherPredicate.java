@@ -14,39 +14,35 @@
  * limitations under the License.
  */
 
-package de.cosmocode.commons.reflect;
+package de.cosmocode.commons;
+
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Preconditions;
 
 import de.cosmocode.commons.validation.AbstractRule;
-import de.cosmocode.commons.validation.Rule;
 
 /**
- * Implementation for {@link Reflection#isConcreteClass()}.
+ * Default implementation of {@link CharMatchers#matchAll(CharMatcher)}.
  *
- * @since 2.0
+ * @since 1.20
  * @author Willi Schoenborn
  */
-final class IsConcreteClass extends AbstractRule<Class<?>> {
+final class CharMatcherPredicate extends AbstractRule<CharSequence> {
 
-    public static final Rule<Class<?>> INSTANCE = new IsConcreteClass();
+    private final CharMatcher matcher;
     
-    private final Rule<Class<?>> delegate = 
-            Reflection.isInterface().negate().and(
-            Reflection.isAbstract().negate()).and(
-            Reflection.isEnum().negate()).and(
-            Reflection.isArray().negate());
-    
-    private IsConcreteClass() {
-        
+    CharMatcherPredicate(CharMatcher matcher) {
+        this.matcher = Preconditions.checkNotNull(matcher, "Matcher");
     }
     
     @Override
-    public boolean apply(Class<?> input) {
-        return delegate.apply(input);
+    public boolean apply(CharSequence sequence) {
+        return matcher.matchesAllOf(sequence);
     }
     
     @Override
     public String toString() {
-        return "Reflection.isConcreteClass()";
+        return "CharMatchers.matchAll(" + matcher + ")";
     }
     
 }

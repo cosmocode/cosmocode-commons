@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Constraint;
 
@@ -36,11 +37,8 @@ public abstract class AbstractRule<T> implements Rule<T> {
 
     @Override
     public final T checkElement(T element) {
-        if (apply(element)) {
-            return transform(element);
-        } else {
-            throw new IllegalArgumentException(String.format("%s does not satisfy %s", element, this));
-        }
+        Preconditions.checkArgument(apply(element), "%s does not satisfy %s", element, this);
+        return transform(element);
     }
     
     /**
@@ -107,8 +105,13 @@ public abstract class AbstractRule<T> implements Rule<T> {
     }
 
     @Override
+    public Rule<T> negate() {
+        return new NegatedRule<T>(this);
+    }
+    
+    @Override
     public Rule<T> not() {
-        return new NotRule<T>(this);
+        return negate();
     }
 
     @Override

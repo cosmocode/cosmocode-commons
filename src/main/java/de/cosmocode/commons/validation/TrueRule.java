@@ -61,13 +61,18 @@ enum TrueRule implements Rule<Object> {
     }
     
     @Override
-    public <S> Rule<S> not() {
+    public <S> Rule<S> negate() {
         return Rules.alwaysFalse();
     }
     
     @Override
+    public <S> Rule<S> not() {
+        return negate();
+    }
+    
+    @Override
     public <S> Rule<S> xor(Rule<? super Object> that) {
-        return checkNotNull(that).not();
+        return checkNotNull(that).negate();
     }
     
     @Override
