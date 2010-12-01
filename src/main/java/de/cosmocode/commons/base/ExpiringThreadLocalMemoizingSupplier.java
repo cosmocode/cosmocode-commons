@@ -59,8 +59,7 @@ final class ExpiringThreadLocalMemoizingSupplier<T> implements Supplier<T> {
         // the memoizing supplier of this thread
         final Supplier<T> memoizingSupplier = local.get();
         // the memoized value of the supplier
-        final T value = memoizingSupplier.get();
-        return value;
+        return memoizingSupplier.get();
     }
 
     @Override
