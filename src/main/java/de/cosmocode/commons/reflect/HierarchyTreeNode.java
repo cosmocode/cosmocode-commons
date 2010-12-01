@@ -91,12 +91,18 @@ final class HierarchyTreeNode implements TreeNode<Class<?>> {
 
     @Override
     public boolean hasChild(Class<?> childData) {
-        if (childData == null) return false;
-        if (childData.equals(type.getSuperclass())) return true;
-        for (Class<?> iface : type.getInterfaces()) {
-            if (iface.equals(childData)) return true;
+        if (childData == null) {
+            return false;
+        } else if (childData.equals(type.getSuperclass())) {
+            return true;
+        } else {
+            for (Class<?> iface : type.getInterfaces()) {
+                if (iface.equals(childData)) {
+                    return true;
+                }
+            }
+            return false;
         }
-        return false;
     }
 
     @Override
