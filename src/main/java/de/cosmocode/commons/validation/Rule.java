@@ -93,7 +93,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
     /**
      * Returns a {@link Rule} that is a negation of this rule.
      * 
-     * @since 1.9
+     * @since 1.20
      * @param <S> generic type parameter to prevent verbose generics
      * @return the negated version of this rule
      */
@@ -102,11 +102,12 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
     <S extends T> Rule<S> negate();
     
     /**
+     * Returns a {@link Rule} that is a negation of this rule.
      * 
      * @deprecated use {@link #negate()}
-     * @since 
-     * @param <S>
-     * @return
+     * @since 1.9
+     * @param <S> generic type parameter to prevent verbose generics
+     * @return the negated version of this rule
      */
     @Deprecated
     <S extends T> Rule<S> not();

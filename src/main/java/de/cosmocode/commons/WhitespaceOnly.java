@@ -19,6 +19,14 @@ package de.cosmocode.commons;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Predicate;
 
+/**
+ * A {@link Predicate} for {@link CharSequence}s which evaluates
+ * to true if a given sequence contains only whitespaces
+ * as defined by {@link CharMatcher#WHITESPACE}.
+ *
+ * @since 1.20
+ * @author Willi Schoenborn
+ */
 enum WhitespaceOnly implements Predicate<CharSequence> {
 
     INSTANCE;

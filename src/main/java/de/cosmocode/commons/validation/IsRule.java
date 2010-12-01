@@ -18,6 +18,13 @@ package de.cosmocode.commons.validation;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * A {@link Rule} which checks for identity.
+ *
+ * @since 1.20
+ * @author Willi Schoenborn
+ * @param <T> the generic parameter type
+ */
 final class IsRule<T> extends AbstractRule<T> {
 
     private final T value;

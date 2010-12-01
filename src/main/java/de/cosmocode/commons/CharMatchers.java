@@ -24,13 +24,28 @@ import com.google.common.base.Predicate;
 
 import de.cosmocode.commons.validation.Rule;
 
+/**
+ * Static utility class for {@link CharMatcher}s.
+ *
+ * @since 1.20
+ * @author Willi Schoenborn
+ */
 public final class CharMatchers {
 
     private CharMatchers() {
         
     }
     
-    public static final Rule<CharSequence> matchAll(@Nonnull CharMatcher matcher) {
+    /**
+     * Creates a {@link Rule} which evaluates to true if the given char matcher matches
+     * all of the supplied char sequence.
+     *
+     * @since 1.20
+     * @param matcher the underlying matcher
+     * @return a rule backed by the given matcher
+     * @throws NullPointerException if matcher is null
+     */
+    public static Rule<CharSequence> matchAll(@Nonnull CharMatcher matcher) {
         return new CharMatcherPredicate(matcher);
     }
     

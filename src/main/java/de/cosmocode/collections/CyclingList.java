@@ -1,3 +1,19 @@
+/**
+ * Copyright 2010 CosmoCode GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.cosmocode.collections;
 
 import java.util.Collection;
@@ -28,6 +44,10 @@ final class CyclingList<E> extends ForwardingList<E> {
         return list;
     }
     
+    private int indexIfNotEmpty(int index) {
+        return index < 0 ? indexIfNotEmpty(size() + index) : index % size();
+    }
+    
     private int readIndex(int index) {
         final int size = size();
         if (size == 0) {
@@ -43,14 +63,26 @@ final class CyclingList<E> extends ForwardingList<E> {
         return isEmpty() ? 0 : readIndex(index);
     }
     
+    private int addIndex(int index) {
+        if (index == size()) {
+            return index;
+        } else {
+            return readIndex(index);
+        }
+    }
+    
     @Override
     public void add(int index, E element) {
-        super.add(writeIndex(index), element);
+        super.add(index == size() ? index : writeIndex(index), element);
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> elements) {
-        return elements.isEmpty() ? false : super.addAll(writeIndex(index), elements);
+        if (elements.isEmpty()) {
+            return false;
+        } else {
+            return super.addAll(addIndex(index), elements);
+        }
     }
 
     @Override
@@ -73,15 +105,16 @@ final class CyclingList<E> extends ForwardingList<E> {
         return super.set(writeIndex(index), element);
     }
 
+    private int subListIndex(int index) {
+        return isEmpty() || index <= size() ? index < 0 ? size() + index : index : indexIfNotEmpty(index);
+    }
+    
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        final int start = writeIndex(fromIndex);
-        final int end = writeIndex(toIndex);
-        if (start > end) {
-            return super.subList(end, start);
-        } else {
-            return super.subList(start, end);
-        }
+        final int realFromIndex = subListIndex(fromIndex);
+        final int realToIndex = subListIndex(toIndex);
+        Preconditions.checkPositionIndexes(realFromIndex, realToIndex, size());
+        return super.subList(realFromIndex, realToIndex);
     }
     
 }

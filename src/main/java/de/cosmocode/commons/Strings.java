@@ -55,22 +55,22 @@ public final class Strings {
         nullsLast().onResultOf(TrimMode.NULL);
 
     /**
-     * TODO document
+     * A {@link Rule} which evaluates to true for null or zero-length {@link CharSequence}s.
      */
     public static final Rule<CharSequence> EMPTY = Rules.<CharSequence>isNull().or(ZeroLength.INSTANCE);
 
     /**
-     * TODO document
+     * A {@link Rule} which evaluates to true for null, zero-length or whitespace-only {@link CharSequence}s.
      */
     public static final Rule<CharSequence> BLANK = EMPTY.or(WhitespaceOnly.INSTANCE);
 
     /**
-     * TODO document
+     * A negated version of {@link #EMPTY}.
      */
     public static final Rule<CharSequence> NOT_EMPTY = EMPTY.negate();
 
     /**
-     * TODO document
+     * A negated version {@link #BLANK}.
      */
     public static final Rule<CharSequence> NOT_BLANK = BLANK.negate();
     

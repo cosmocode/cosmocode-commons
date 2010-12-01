@@ -51,7 +51,7 @@ public final class Rules {
     }
     
     /**
-     * Rule based alternative to {@link Predicates#alwaysTrue()}.
+     * Rule-based alternative to {@link Predicates#alwaysTrue()}.
      * 
      * @since 1.13
      * @param <T> generic parameter type
@@ -63,7 +63,7 @@ public final class Rules {
     }
 
     /**
-     * Rule based alternative to {@link Predicates#alwaysFalse()}.
+     * Rule-based alternative to {@link Predicates#alwaysFalse()}.
      * 
      * @since 1.13
      * @param <T> generic parameter type
@@ -74,33 +74,80 @@ public final class Rules {
         return (Rule<T>) FalseRule.INSTANCE;
     }
     
+    /**
+     * Rule-based alternative to {@link Predicates#isNull()}.
+     *
+     * @since 1.20
+     * @param <T> generic parameter type
+     * @return a rule which evaluates to true if the given parameter is null
+     */
     // cast is safe, because we never access the parameter
     @SuppressWarnings("unchecked")
     public static <T> Rule<T> isNull() {
         return (Rule<T>) NullRule.INSTANCE;
     }
 
+    /**
+     * Rule-based alternative to {@link Predicates#notNull()}.
+     *
+     * @since 1.20
+     * @param <T> generic parameter type
+     * @return a rule which evaluates to true if the given parameter is not null
+     */
     // cast is safe, because we never access the parameter
     @SuppressWarnings("unchecked")
     public static <T> Rule<T> isNotNull() {
         return (Rule<T>) NotNullRule.INSTANCE;
     }
     
+    /**
+     * Returs a rule which evaluates to true if the given parameter is
+     * identical ({@code ==}) to value.
+     *
+     * @since 1.20
+     * @param <T> generic parameter type
+     * @param value the value to check agains
+     * @return an identity checking rule
+     */
     public static <T> Rule<T> is(T value) {
         return value == null ? Rules.<T>isNull() : new IsRule<T>(value);
     }
-    
+
+    /**
+     * Returs a rule which evaluates to true if the given parameter is not
+     * identical ({@code !=}) to value.
+     *
+     * @since 1.20
+     * @param <T> generic parameter type
+     * @param value the value to check agains
+     * @return an non-identity checking rule
+     */
     public static <T> Rule<T> isNot(T value) {
         return value == null ? Rules.<T>isNotNull() : is(value).negate();
     }
     
-    public static <T> Rule<T> equalTo(T value) {
-        // TODO implement
-        throw new UnsupportedOperationException();
+    /**
+     * A Rule-based alternative to {@link Predicates#equalTo(Object)}.
+     *
+     * @since 1.20
+     * @param <T> generic parameter type
+     * @param target the value to check agains
+     * @return an equality checking rule
+     */
+    public static <T> Rule<T> equalTo(T target) {
+        return of(Predicates.equalTo(target));
     }
     
-    public static <T> Rule<T> notEqualTo(T value) {
-        return equalTo(value).negate();
+    /**
+     * A Rule-based alternative to the negated version of {@link Predicates#equalTo(Object)}.
+     *
+     * @since 1.20
+     * @param <T> generic parameter type
+     * @param target the value to check agains
+     * @return an non-equality checking rule
+     */
+    public static <T> Rule<T> notEqualTo(T target) {
+        return equalTo(target).negate();
     }
     
     /**
