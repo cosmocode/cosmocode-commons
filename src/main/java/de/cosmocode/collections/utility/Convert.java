@@ -60,6 +60,7 @@ public final class Convert {
         return new IllegalArgumentException(message);
     }
     
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_BOOLEAN_RETURN_NULL")
     private static Boolean doIntoBoolean(Object value) {
         if (value == null) return null;
         if (value instanceof Boolean) return Boolean.class.cast(value);
