@@ -19,8 +19,6 @@ package de.cosmocode.commons;
 import javax.annotation.Nonnull;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 
 import de.cosmocode.commons.validation.Rule;
 
