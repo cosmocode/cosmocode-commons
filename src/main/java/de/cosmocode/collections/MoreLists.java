@@ -80,6 +80,8 @@ public final class MoreLists {
      *   {@code MoreLists.cycle(Arrays.asList("a", "b", "c", "d", "e")).get(-9)} will return "b".<br />
      *   {@code MoreLists.cycle(Arrays.asList("a", "b", "c", "d", "e")).subList(1, -1) will return ["b", "c", "d"]}
      * </p>
+     * 
+     * This makes sure, no index passed to the list ever raises an {@link IndexOutOfBoundsException}.
      *
      * @since 1.20
      * @param <E> the generic element type
