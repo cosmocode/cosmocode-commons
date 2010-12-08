@@ -23,6 +23,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
 import de.cosmocode.commons.validation.Rule;
+import de.cosmocode.commons.validation.Rules;
 
 /**
  * Utility class providing handy methods
@@ -119,15 +120,40 @@ public final class Dates {
      * and before the specified end date.
      * 
      * @since 1.6
-     * @see Date#after(Date)
+     * @see Date#before(Date)
      * @see Date#after(Date)
      * @param start the minimum date
      * @param end the maximum date
      * @return a predicate which returns true for all date after the specified start and before the end
      * @throws NullPointerException if start or end is null
      */
-    public static Predicate<Date> between(Date start, Date end) {
+    public static Rule<Date> between(Date start, Date end) {
         return after(start).and(before(end));
+    }
+    
+    /**
+     * <p>
+     * Creates a {@link Rule} which evaluates to true
+     * when passed in a date which is after the specified start date (inclusive)
+     * and before the specified end date (inclusive).
+     * </p>
+     * <p>
+     * This means that a date which is equal to the start or the end date is considered
+     * as between the start and end date by the created rule and apply(date) returns true then.
+     * </p>
+     * 
+     * @since 1.20
+     * @see Date#before(Date)
+     * @see Date#after(Date)
+     * @see Rules#equalTo(Object)
+     * @param start the minimum date (inclusive)
+     * @param end the maximum date (inclusive)
+     * @return a predicate which returns true for all date equal to or after the specified start 
+     *         and equal to or before the end
+     * @throws NullPointerException if start or end is null
+     */
+    public static Rule<Date> betweenInclusive(Date start, Date end) {
+        return between(start, end).or(Rules.equalTo(start)).or(Rules.equalTo(end));
     }
     
 }
