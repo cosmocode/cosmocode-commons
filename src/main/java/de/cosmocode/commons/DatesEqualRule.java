@@ -42,6 +42,23 @@ final class DatesEqualRule extends AbstractRule<Date> {
     }
 
     @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        } else if (that instanceof DatesEqualRule) {
+            final DatesEqualRule other = DatesEqualRule.class.cast(that);
+            return other.value.equals(this.value);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode() ^ 763523534;
+    }
+
+    @Override
     public String toString() {
         return "Dates.equalTo(" + value + ")";
     }
