@@ -48,7 +48,7 @@ import com.google.gag.enumeration.Stop;
  * </p>
  * <p>
  * Implementations may or may not be able to handle flipped time periods
- * (that means that the start and end of a period is in reverse: end is before start).
+ * ("flipped" here means that the start and end of a period is in reverse: end is before start).
  * Each implementation states whether it can handle flipped periods or not.
  * </p>
  *
@@ -162,11 +162,6 @@ public enum OverlapMode {
                 return true;
             }
 
-            // r1 is the sum of the first period
-            // r2 is the sum of the second period
-            final long r1 = s1 + e1;
-            final long r2 = s2 + e2;
-
             // all points of the first and second period are put into an array and sorted ascending
             final long[] a = {s1, e1, s2, e2};
             Arrays.sort(a);
@@ -182,7 +177,7 @@ public enum OverlapMode {
              *
              * This is like a VERY simple hash.
              */
-            return !(a[0] + a[1] == r1 || a[0] + a[1] == r2);
+            return !(a[0] + a[1] == s1 + e1 || a[0] + a[1] == s2 + e2);
         }
         
     },
