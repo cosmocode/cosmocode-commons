@@ -244,4 +244,18 @@ public enum OverlapMode {
         return isOverlapping(s1.getTime(), e1.getTime(), s2.getTime(), e2.getTime());
     }
 
+    /**
+     * Checks whether period a and period b overlap. The result depends on the enum.
+     *
+     * @param a the first TimePeriod
+     * @param b the second TimePeriod
+     * @return true if the two periods overlap, false otherwise
+     * @throws NullPointerException if either TimePeriod is null
+     */
+    public boolean isOverlapping(final TimePeriod a, final TimePeriod b) {
+        Preconditions.checkNotNull(a, "a");
+        Preconditions.checkNotNull(b, "b");
+        return isOverlapping(a.getStart(), a.getEnd(), b.getStart(), b.getEnd());
+    }
+
 }
