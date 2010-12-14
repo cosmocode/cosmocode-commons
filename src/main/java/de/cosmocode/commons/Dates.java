@@ -25,6 +25,8 @@ import com.google.common.base.Predicate;
 import de.cosmocode.commons.validation.Rule;
 import de.cosmocode.commons.validation.Rules;
 
+import javax.annotation.Nullable;
+
 /**
  * Utility class providing handy methods
  * regarding {@link Date} and {@link Calendar}.
@@ -82,6 +84,24 @@ public final class Dates {
         final Calendar calendar = Calendar.getInstance();
         calendar.add(field, amount);
         return calendar.getTime();
+    }
+
+    /**
+     * Special equalTo for Dates that takes the oddities of Timestamp into account.
+     * This means that if this method is passed a Timestamp or the resulting Rule is applied to a Timestamp
+     * then apply will return true if either one (input or given Date) returns true on equals.
+     * It does not affect otherwise normal behaviour.
+     *
+     * @since 1.20
+     * @see Rules#equalTo(Object)
+     * @see java.sql.Timestamp
+     * @param other the other date to compare to
+     * @return a rule which returns true if both Dates denote the same time
+     */
+    public static Rule<Date> equalTo(@Nullable Date other) {
+        return (other == null)
+            ? Rules.<Date>isNull()
+            : new DatesEqualRule(other);
     }
 
     /**
@@ -145,7 +165,8 @@ public final class Dates {
      * @since 1.20
      * @see Date#before(Date)
      * @see Date#after(Date)
-     * @see Rules#equalTo(Object)
+     * @see Dates#between(Date, Date)
+     * @see Dates#equalTo(Date)
      * @param start the minimum date (inclusive)
      * @param end the maximum date (inclusive)
      * @return a predicate which returns true for all date equal to or after the specified start 
@@ -153,7 +174,7 @@ public final class Dates {
      * @throws NullPointerException if start or end is null
      */
     public static Rule<Date> betweenInclusive(Date start, Date end) {
-        return between(start, end).or(Rules.equalTo(start)).or(Rules.equalTo(end));
+        return between(start, end).or(equalTo(start)).or(equalTo(end));
     }
     
 }

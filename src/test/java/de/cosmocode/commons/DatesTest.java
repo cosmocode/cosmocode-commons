@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -38,6 +39,101 @@ public class DatesTest {
         final Date now = new Date();
         final Date future = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
         Assert.assertEquals(true, now.before(future));
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)}.
+     */
+    @Test
+    public void equalTo() {
+        final Date now = new Date();
+        final Date other = new Date(now.getTime());
+
+        final boolean expected = true;
+        final boolean actual = Dates.equalTo(now).apply(other);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)} with a timestamp as input, applied to a Timestamp.
+     */
+    @Test
+    public void equalToTimestamps() {
+        final Timestamp now = new Timestamp(System.currentTimeMillis());
+        final Timestamp other = new Timestamp(now.getTime());
+
+        final boolean expected = true;
+        final boolean actual = Dates.equalTo(now).apply(other);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)} with a timestamp as input, applied to a Date.
+     */
+    @Test
+    public void equalToTimestampAppliedToDate() {
+        final Timestamp now = new Timestamp(System.currentTimeMillis());
+        final Date other = new Date(now.getTime());
+
+        final boolean expected = true;
+        final boolean actual = Dates.equalTo(now).apply(other);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)} with a Date as input, applied to a Timestamp.
+     */
+    @Test
+    public void equalToDateAppliedToTimestamp() {
+        final Date now = new Date();
+        final Timestamp other = new Timestamp(now.getTime());
+
+        final boolean expected = true;
+        final boolean actual = Dates.equalTo(now).apply(other);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)} with a Date, applied to another Date that is not equal.
+     */
+    @Test
+    public void equalToAppliedToNotEqual() {
+        final Date now = new Date();
+        final Date other = new Date(now.getTime() + 1);
+
+        final boolean expected = false;
+        final boolean actual = Dates.equalTo(now).apply(other);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)} with a normal input and applied to null.
+     */
+    @Test
+    public void equalToAppliedToNull() {
+        final boolean expected = false;
+        final boolean actual = Dates.equalTo(new Date()).apply(null);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)} with a null input and applied to a normal value.
+     */
+    @Test
+    public void equalToNullAppliedToNow() {
+        final boolean expected = false;
+        final boolean actual = Dates.equalTo(null).apply(new Date());
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#equalTo(Date)} with a null input and applied to null.
+     */
+    @Test
+    public void equalToNullAppliedNull() {
+        final boolean expected = true;
+        final boolean actual = Dates.equalTo(null).apply(null);
+        Assert.assertEquals(expected, actual);
     }
 
     /**
@@ -100,6 +196,7 @@ public class DatesTest {
     /**
      * Tests {@link Dates#before(Date)} with a date after today.
      */
+    @Test
     public void beforeWithDateAfter() {
         final Calendar calendar = Calendar.getInstance();
         Calendars.toBeginningOfTheDay(calendar);
@@ -184,6 +281,7 @@ public class DatesTest {
     /**
      * Tests {@link Dates#after(Date)} with a date after the other.
      */
+    @Test
     public void afterWithDateAfter() {
         final Calendar calendar = Calendar.getInstance();
         Calendars.toBeginningOfTheDay(calendar);
@@ -343,6 +441,48 @@ public class DatesTest {
         
         final boolean expected = true;
         final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(tomorrowToo);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#betweenInclusive(Date, Date)} with sql timestamps, applied with a normal date.
+     * Although Timestamps should not be seen as instances of Dates they are often used this way.
+     * The betweenInclusive method should not break then.
+     */
+    @Test
+    public void betweenInclusiveTimestamps() {
+        final Calendar calendar = Calendar.getInstance();
+        Calendars.toBeginningOfTheDay(calendar);
+
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        final Timestamp yesterday = new Timestamp(calendar.getTimeInMillis());
+        final Date yesterdayToo = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, 2);
+        final Timestamp tomorrow = new Timestamp(calendar.getTimeInMillis());
+
+        final boolean expected = true;
+        final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(yesterdayToo);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#betweenInclusive(Date, Date)} with normal dates, applied with a sql timestamp.
+     * Although Timestamps should not be seen as instances of Dates they are often used this way.
+     * The betweenInclusive method should not break then.
+     */
+    @Test
+    public void betweenInclusiveAppliedWithTimestamp() {
+        final Calendar calendar = Calendar.getInstance();
+        Calendars.toBeginningOfTheDay(calendar);
+
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        final Date yesterday = calendar.getTime();
+        final Timestamp yesterdayToo = new Timestamp(calendar.getTimeInMillis());
+        calendar.add(Calendar.DAY_OF_MONTH, 2);
+        final Date tomorrow = calendar.getTime();
+
+        final boolean expected = true;
+        final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(yesterdayToo);
         Assert.assertEquals(expected, actual);
     }
 
