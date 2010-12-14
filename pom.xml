@@ -8,7 +8,7 @@
   <name>CosmoCode Commons</name>
   <groupId>de.cosmocode</groupId>
   <artifactId>cosmocode-commons</artifactId>
-  <version>1.20.0</version>
+  <version>1.21-SNAPSHOT</version>
   <packaging>jar</packaging>
   <scm>
     <developerConnection>scm:git:git@github.com:cosmocode/${project.artifactId}.git</developerConnection>
