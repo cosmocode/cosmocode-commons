@@ -489,6 +489,7 @@ public abstract class AbstractOverlapModeTest implements UnitProvider<OverlapMod
      */
     @Test
     public void performanceTestLongs() {
+        LOG.debug("Performing an estimated, not exact performance test for OverlapMode.{} with long values", unit());
         final int loopCount = 1000000;
         final long start = System.nanoTime();
         for (int i = 0; i < loopCount; i++) {
@@ -507,6 +508,7 @@ public abstract class AbstractOverlapModeTest implements UnitProvider<OverlapMod
      */
     @Test
     public void performanceTestDates() {
+        LOG.debug("Performing an estimated, not exact performance test for OverlapMode.{} with Date values", unit());
         final int loopCount = 1000000;
         final long start = System.nanoTime();
         for (int i = 0; i < loopCount; i++) {
