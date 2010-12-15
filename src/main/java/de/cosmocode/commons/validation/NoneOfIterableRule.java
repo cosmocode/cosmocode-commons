@@ -56,7 +56,7 @@ final class NoneOfIterableRule<E> extends AbstractRule<Iterable<E>> {
 
     @Override
     public String toString() {
-        return "Rules.noneOf(" + singleApplicableRule.toString() + ")";
+        return "Rules.none(" + singleApplicableRule.toString() + ")";
     }
 
 }

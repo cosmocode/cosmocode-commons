@@ -56,7 +56,7 @@ final class AnyOfIterableRule<E> extends AbstractRule<Iterable<E>> {
 
     @Override
     public String toString() {
-        return "Rules.anyOf(" + singleApplicableRule.toString() + ")";
+        return "Rules.any(" + singleApplicableRule.toString() + ")";
     }
 
 }

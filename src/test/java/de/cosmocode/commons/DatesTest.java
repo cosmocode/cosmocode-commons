@@ -22,6 +22,7 @@ import java.util.Date;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,6 +31,22 @@ import org.junit.Test;
  * @author Oliver Lorenz
  */
 public class DatesTest {
+
+    private Date yesterday;
+    private Date today;
+    private Date tomorrow;
+
+    @Before
+    public void setUpTestDates() {
+        final Calendar calendar = Calendar.getInstance();
+        Calendars.toBeginningOfTheDay(calendar);
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        yesterday = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        today = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        tomorrow = calendar.getTime();
+    }
 
     /**
      * Simple test for {@link Dates#nowPlus(int, int)}.
@@ -141,14 +158,6 @@ public class DatesTest {
      */
     @Test
     public void before() {
-        final Calendar calendar = Calendar.getInstance();
-        Calendars.toBeginningOfTheDay(calendar);
-        
-        final Date today = calendar.getTime();
-        
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        final Date yesterday = calendar.getTime();
-        
         final boolean expected = true;
         final boolean actual = Dates.before(today).apply(yesterday);
         Assert.assertEquals(expected, actual);
@@ -186,10 +195,10 @@ public class DatesTest {
     @Test
     public void beforeOneMilliSecondAfter() {
         final Date now = new Date();
-        final Date oneMilliSecondAgo = new Date(now.getTime() + 1);
+        final Date oneMilliSecondAfter = new Date(now.getTime() + 1);
         
         final boolean expected = false;
-        final boolean actual = Dates.before(now).apply(oneMilliSecondAgo);
+        final boolean actual = Dates.before(now).apply(oneMilliSecondAfter);
         Assert.assertEquals(expected, actual);
     }
     
@@ -198,14 +207,6 @@ public class DatesTest {
      */
     @Test
     public void beforeWithDateAfter() {
-        final Calendar calendar = Calendar.getInstance();
-        Calendars.toBeginningOfTheDay(calendar);
-        
-        final Date today = calendar.getTime();
-        
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        final Date tomorrow = calendar.getTime();
-        
         final boolean expected = false;
         final boolean actual = Dates.before(today).apply(tomorrow);
         Assert.assertEquals(expected, actual);
@@ -226,14 +227,6 @@ public class DatesTest {
      */
     @Test
     public void afterWithDateBefore() {
-        final Calendar calendar = Calendar.getInstance();
-        Calendars.toBeginningOfTheDay(calendar);
-        
-        final Date today = calendar.getTime();
-        
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        final Date yesterday = calendar.getTime();
-        
         final boolean expected = false;
         final boolean actual = Dates.after(today).apply(yesterday);
         Assert.assertEquals(expected, actual);
@@ -271,10 +264,10 @@ public class DatesTest {
     @Test
     public void afterOneMilliSecondAfter() {
         final Date now = new Date();
-        final Date oneMilliSecondAgo = new Date(now.getTime() + 1);
+        final Date oneMilliSecondAfter = new Date(now.getTime() + 1);
         
         final boolean expected = true;
-        final boolean actual = Dates.after(now).apply(oneMilliSecondAgo);
+        final boolean actual = Dates.after(now).apply(oneMilliSecondAfter);
         Assert.assertEquals(expected, actual);
     }
     
@@ -283,14 +276,6 @@ public class DatesTest {
      */
     @Test
     public void afterWithDateAfter() {
-        final Calendar calendar = Calendar.getInstance();
-        Calendars.toBeginningOfTheDay(calendar);
-        
-        final Date today = calendar.getTime();
-        
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        final Date tomorrow = calendar.getTime();
-        
         final boolean expected = true;
         final boolean actual = Dates.after(today).apply(tomorrow);
         Assert.assertEquals(expected, actual);
@@ -309,12 +294,8 @@ public class DatesTest {
      */
     @Test
     public void between() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date now = new Date();
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
         final boolean expected = true;
-        final boolean actual = Dates.between(yesterday, tomorrow).apply(now);
+        final boolean actual = Dates.between(yesterday, tomorrow).apply(today);
         Assert.assertEquals(expected, actual);
     }
     
@@ -323,12 +304,8 @@ public class DatesTest {
      */
     @Test
     public void betweenBefore() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date now = new Date();
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
         final boolean expected = false;
-        final boolean actual = Dates.between(now, tomorrow).apply(yesterday);
+        final boolean actual = Dates.between(today, tomorrow).apply(yesterday);
         Assert.assertEquals(expected, actual);
     }
     
@@ -337,12 +314,8 @@ public class DatesTest {
      */
     @Test
     public void betweenAfter() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date now = new Date();
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
         final boolean expected = false;
-        final boolean actual = Dates.between(yesterday, now).apply(tomorrow);
+        final boolean actual = Dates.between(yesterday, today).apply(tomorrow);
         Assert.assertEquals(expected, actual);
     }
     
@@ -351,10 +324,8 @@ public class DatesTest {
      */
     @Test
     public void betweenAtStart() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
         final Date yesterdayToo = new Date(yesterday.getTime());
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
+
         final boolean expected = false;
         final boolean actual = Dates.between(yesterday, tomorrow).apply(yesterdayToo);
         Assert.assertEquals(expected, actual);
@@ -365,8 +336,6 @@ public class DatesTest {
      */
     @Test
     public void betweenAtEnd() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
         final Date tomorrowToo = new Date(tomorrow.getTime());
         
         final boolean expected = false;
@@ -379,12 +348,8 @@ public class DatesTest {
      */
     @Test
     public void betweenInclusive() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date now = new Date();
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
         final boolean expected = true;
-        final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(now);
+        final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(today);
         Assert.assertEquals(expected, actual);
     }
     
@@ -393,12 +358,8 @@ public class DatesTest {
      */
     @Test
     public void betweenInclusiveBefore() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date now = new Date();
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
         final boolean expected = false;
-        final boolean actual = Dates.betweenInclusive(now, tomorrow).apply(yesterday);
+        final boolean actual = Dates.betweenInclusive(today, tomorrow).apply(yesterday);
         Assert.assertEquals(expected, actual);
     }
     
@@ -407,12 +368,8 @@ public class DatesTest {
      */
     @Test
     public void betweenInclusiveAfter() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date now = new Date();
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
         final boolean expected = false;
-        final boolean actual = Dates.betweenInclusive(yesterday, now).apply(tomorrow);
+        final boolean actual = Dates.betweenInclusive(yesterday, today).apply(tomorrow);
         Assert.assertEquals(expected, actual);
     }
     
@@ -421,10 +378,8 @@ public class DatesTest {
      */
     @Test
     public void betweenInclusiveAtStart() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
         final Date yesterdayToo = new Date(yesterday.getTime());
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
-        
+
         final boolean expected = true;
         final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(yesterdayToo);
         Assert.assertEquals(expected, actual);
@@ -435,8 +390,6 @@ public class DatesTest {
      */
     @Test
     public void betweenInclusiveAtEnd() {
-        final Date yesterday = Dates.nowPlus(Calendar.DAY_OF_MONTH, -1);
-        final Date tomorrow = Dates.nowPlus(Calendar.DAY_OF_MONTH, 1);
         final Date tomorrowToo = new Date(tomorrow.getTime());
         
         final boolean expected = true;
@@ -451,17 +404,12 @@ public class DatesTest {
      */
     @Test
     public void betweenInclusiveTimestamps() {
-        final Calendar calendar = Calendar.getInstance();
-        Calendars.toBeginningOfTheDay(calendar);
-
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        final Timestamp yesterday = new Timestamp(calendar.getTimeInMillis());
-        final Date yesterdayToo = calendar.getTime();
-        calendar.add(Calendar.DAY_OF_MONTH, 2);
-        final Timestamp tomorrow = new Timestamp(calendar.getTimeInMillis());
+        final Timestamp yesterdayTimestamp = new Timestamp(yesterday.getTime());
+        final Date yesterdayToo = new Date(yesterday.getTime());
+        final Timestamp tomorrowTimestamp = new Timestamp(tomorrow.getTime());
 
         final boolean expected = true;
-        final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(yesterdayToo);
+        final boolean actual = Dates.betweenInclusive(yesterdayTimestamp, tomorrowTimestamp).apply(yesterdayToo);
         Assert.assertEquals(expected, actual);
     }
 
@@ -472,17 +420,10 @@ public class DatesTest {
      */
     @Test
     public void betweenInclusiveAppliedWithTimestamp() {
-        final Calendar calendar = Calendar.getInstance();
-        Calendars.toBeginningOfTheDay(calendar);
-
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        final Date yesterday = calendar.getTime();
-        final Timestamp yesterdayToo = new Timestamp(calendar.getTimeInMillis());
-        calendar.add(Calendar.DAY_OF_MONTH, 2);
-        final Date tomorrow = calendar.getTime();
+        final Timestamp yesterdayTimestamp = new Timestamp(yesterday.getTime());
 
         final boolean expected = true;
-        final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(yesterdayToo);
+        final boolean actual = Dates.betweenInclusive(yesterday, tomorrow).apply(yesterdayTimestamp);
         Assert.assertEquals(expected, actual);
     }
 

@@ -253,7 +253,7 @@ public final class Rules {
      * @throws NullPointerException if singleApplicableRule is null
      */
     @Beta
-    public static <E> Rule<? extends Iterable<E>> all(final Rule<E> singleApplicableRule) {
+    public static <E> Rule<Iterable<E>> all(final Rule<E> singleApplicableRule) {
         return new AllOfIterableRule<E>(singleApplicableRule);
     }
 
@@ -268,7 +268,7 @@ public final class Rules {
      * @throws NullPointerException if singleApplicableRule is null
      */
     @Beta
-    public static <E> Rule<? extends Iterable<E>> any(final Rule<E> singleApplicableRule) {
+    public static <E> Rule<Iterable<E>> any(final Rule<E> singleApplicableRule) {
         return new AnyOfIterableRule<E>(singleApplicableRule);
     }
 
@@ -283,7 +283,7 @@ public final class Rules {
      * @throws NullPointerException if singleApplicableRule is null
      */
     @Beta
-    public static <E> Rule<? extends Iterable<E>> none(final Rule<E> singleApplicableRule) {
+    public static <E> Rule<Iterable<E>> none(final Rule<E> singleApplicableRule) {
         return new NoneOfIterableRule<E>(singleApplicableRule);
     }
     

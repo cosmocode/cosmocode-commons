@@ -58,7 +58,7 @@ final class AllOfIterableRule<E> extends AbstractRule<Iterable<E>> {
 
     @Override
     public String toString() {
-        return "Rules.allOf(" + singleApplicableRule.toString() + ")";
+        return "Rules.all(" + singleApplicableRule.toString() + ")";
     }
 
 }
