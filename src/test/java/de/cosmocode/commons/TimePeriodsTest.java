@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -119,6 +120,16 @@ public class TimePeriodsTest {
     }
 
     /**
+     * Tests {@link TimePeriods#contains(java.util.Date)} with a null input.
+     */
+    @Test
+    public void containsNull() {
+        final boolean expected = false;
+        final boolean actual = TimePeriods.containsInclusive(today).apply(null);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
      * Tests {@link TimePeriods#containsInclusive(java.util.Date)}.
      */
     @Test
@@ -169,6 +180,31 @@ public class TimePeriodsTest {
 
         final boolean expected = true;
         final boolean actual = TimePeriods.containsInclusive(tomorrowToo).apply(Dates.timePeriod(yesterday, tomorrow));
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link TimePeriods#containsInclusive(java.util.Date)} with a null input.
+     */
+    @Test
+    public void containsInclusiveNull() {
+        final boolean expected = false;
+        final boolean actual = TimePeriods.containsInclusive(today).apply(null);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link TimePeriods#containsInclusive(java.util.Date)} applied with a sql timestamp.
+     * Although Timestamps should not be seen as instances of Dates they are often used this way.
+     * The containsInclusive method should not break then.
+     */
+    @Test
+    public void containsInclusiveAppliedWithTimestamp() {
+        final Timestamp yesterdayTimestamp = new Timestamp(yesterday.getTime());
+        final TimePeriod period = Dates.timePeriod(yesterday, today);
+
+        final boolean expected = true;
+        final boolean actual = TimePeriods.containsInclusive(yesterdayTimestamp).apply(period);
         Assert.assertEquals(expected, actual);
     }
 
@@ -228,6 +264,18 @@ public class TimePeriodsTest {
     }
 
     /**
+     * Tests {@link TimePeriods#overlaps(TimePeriod, OverlapMode)} with null.
+     */
+    @Test
+    public void overlapsNull() {
+        final TimePeriod first = Dates.timePeriod(yesterday, today);
+
+        final boolean expected = false;
+        final boolean actual = TimePeriods.overlaps(first, OverlapMode.NORMAL).apply(null);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
      * Tests {@link TimePeriods#overlaps(TimePeriod, OverlapMode)} with a list (together with Rules.any).
      */
     @Test
@@ -238,6 +286,31 @@ public class TimePeriodsTest {
         final boolean actual = Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)).apply(periods);
         Assert.assertEquals(expected, actual);
         LOG.debug("toString() of overlap on list: {}", Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)));
+    }
+
+    /**
+     * Tests {@link TimePeriods#overlaps(TimePeriod, OverlapMode)} with a list (together with Rules.any), null as input.
+     */
+    @Test
+    public void overlapsListNull() {
+        final TimePeriod first = Dates.timePeriod(today, tomorrow);
+
+        final boolean expected = false;
+        final boolean actual = Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)).apply(null);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link TimePeriods#overlaps(TimePeriod, OverlapMode)} with a list (together with Rules.any).
+     */
+    @Test
+    public void overlapsNotList() {
+        final TimePeriod first = Dates.timePeriod(
+            Dates.nowPlus(Calendar.DAY_OF_MONTH, -30), Dates.nowPlus(Calendar.DAY_OF_MONTH, -25));
+
+        final boolean expected = false;
+        final boolean actual = Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)).apply(periods);
+        Assert.assertEquals(expected, actual);
     }
 
 }

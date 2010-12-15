@@ -20,6 +20,8 @@ import java.util.Date;
 
 import de.cosmocode.commons.validation.AbstractRule;
 
+import javax.annotation.Nullable;
+
 /**
  * Before date predicate implementation.
  *
@@ -36,8 +38,8 @@ final class DateBeforeRule extends AbstractRule<Date> {
     }
     
     @Override
-    public boolean apply(Date input) {
-        return input.before(when);
+    public boolean apply(@Nullable Date input) {
+        return input != null && input.before(when);
     };
     
     @Override

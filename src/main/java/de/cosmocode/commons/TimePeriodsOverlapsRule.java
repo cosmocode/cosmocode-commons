@@ -36,7 +36,7 @@ final class TimePeriodsOverlapsRule extends AbstractRule<TimePeriod> {
 
     @Override
     public boolean apply(@Nullable TimePeriod input) {
-        return overlapMode.isOverlapping(otherTimePeriod, input);
+        return input != null && overlapMode.isOverlapping(otherTimePeriod, input);
     }
 
     @Override

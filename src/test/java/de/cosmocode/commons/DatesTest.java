@@ -212,6 +212,16 @@ public class DatesTest {
         final boolean actual = Dates.before(today).apply(tomorrow);
         Assert.assertEquals(expected, actual);
     }
+
+    /**
+     * Tests {@link Dates#before(Date)} with a null applied value (which should be valid).
+     */
+    @Test
+    public void beforeWithNullInput() {
+        final boolean expected = false;
+        final boolean actual = Dates.before(today).apply(null);
+        Assert.assertEquals(expected, actual);
+    }
     
     /**
      * Tests {@link Dates#before(Date)} with a null input.
@@ -279,6 +289,16 @@ public class DatesTest {
     public void afterWithDateAfter() {
         final boolean expected = true;
         final boolean actual = Dates.after(today).apply(tomorrow);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link Dates#after(Date)} with a null applied value (which should be valid).
+     */
+    @Test
+    public void afterWithNullInput() {
+        final boolean expected = false;
+        final boolean actual = Dates.after(today).apply(null);
         Assert.assertEquals(expected, actual);
     }
     
