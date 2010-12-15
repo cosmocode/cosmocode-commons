@@ -214,4 +214,30 @@ public class TimePeriodsTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Tests {@link TimePeriods#overlaps(TimePeriod, OverlapMode)}.
+     */
+    @Test
+    public void overlaps() {
+        final TimePeriod first = Dates.timePeriod(yesterday, today);
+        final TimePeriod second = Dates.timePeriod(today, tomorrow);
+
+        final boolean expected = true;
+        final boolean actual = TimePeriods.overlaps(first, OverlapMode.NORMAL).apply(second);
+        Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests {@link TimePeriods#overlaps(TimePeriod, OverlapMode)} with a list (together with Rules.any).
+     */
+    @Test
+    public void overlapsList() {
+        final TimePeriod first = Dates.timePeriod(today, tomorrow);
+
+        final boolean expected = true;
+        final boolean actual = Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)).apply(periods);
+        Assert.assertEquals(expected, actual);
+        LOG.debug("toString() of overlap on list: {}", Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)));
+    }
+
 }

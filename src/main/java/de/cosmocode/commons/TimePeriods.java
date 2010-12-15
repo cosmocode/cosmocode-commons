@@ -109,4 +109,20 @@ public final class TimePeriods {
         return contains(when).or(Dates.equalTo(when).compose(START_DATE)).or(Dates.equalTo(when).compose(END_DATE));
     }
 
+    /**
+     * <p>
+     * Creates a {@link Rule} which evaluates to true
+     * if the passed in TimePeriod overlaps with the given other TimePeriod.
+     * </p>
+     *
+     * @see OverlapMode#isOverlapping(TimePeriod, TimePeriod)
+     * @param otherTimePeriod the other TimePeriod to check against for overlap
+     * @param overlapMode the OverlapMode to use for overlap checking
+     * @return a rule that returns true for all TimePeriods that overlap with the given TimePeriod
+     *         in the given OverlapMode
+     */
+    public static Rule<TimePeriod> overlaps(final TimePeriod otherTimePeriod, final OverlapMode overlapMode) {
+        return new TimePeriodsOverlapsRule(otherTimePeriod, overlapMode);
+    }
+
 }
