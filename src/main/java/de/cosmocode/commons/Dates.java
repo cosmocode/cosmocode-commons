@@ -186,7 +186,7 @@ public final class Dates {
      * @return a new TimePeriod that spans the time between start and end
      */
     @Beta
-    public static TimePeriod immutablePeriodOf(final Date start, final Date end) {
+    public static TimePeriod timePeriod(final Date start, final Date end) {
         return new ImmutableDateTimePeriod(start, end);
     }
 
