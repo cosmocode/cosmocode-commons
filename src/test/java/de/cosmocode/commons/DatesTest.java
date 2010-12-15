@@ -28,6 +28,7 @@ import org.junit.Test;
 /**
  * Tests the static methods from {@link Dates}.
  *
+ * @since 1.20
  * @author Oliver Lorenz
  */
 public class DatesTest {

@@ -31,6 +31,9 @@ import java.util.List;
 
 /**
  * Tests the static classes in the {@link TimePeriods} helper class.
+ *
+ * @since 1.21
+ * @author Oliver Lorenz
  */
 public class TimePeriodsTest {
 

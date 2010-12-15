@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
  * regarding {@link Date} and {@link Calendar}.
  *
  * @author Willi Schoenborn
+ * @author Oliver Lorenz
  */
 public final class Dates {
 
@@ -179,8 +180,9 @@ public final class Dates {
     }
 
     /**
-     * Returns an immutable {@link TimePeriod}, created from the given start and end.
+     * Returns an immutable {@link TimePeriod}, created from the given start and end date.
      *
+     * @since 1.21
      * @param start the start date of the period
      * @param end the end date of the period
      * @return a new TimePeriod that spans the time between start and end

@@ -26,6 +26,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Immutable implementation of {@link TimePeriod} using {@link Date}s.
+ *
+ * @since 1.21
+ * @author Oliver Lorenz
  */
 @Immutable
 @ThreadSafe
