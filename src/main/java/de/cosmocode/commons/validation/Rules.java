@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons.validation;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
@@ -239,6 +240,51 @@ public final class Rules {
      */
     public static <C extends Comparable<E>, E> Rule<C> between(E lower, E upper) {
         return gt(lower).and(lt(upper));
+    }
+
+    /**
+     * Returns a rule which evaluates to true if all elements in the supplied iterable input
+     * satisfy the given rule.
+     *
+     * @since 1.21
+     * @param singleApplicableRule single rule that is applied to all sub elements
+     * @param <E> type of element in Iterable
+     * @return a rule that verifes that all elements in an iterable satisfy a given rule
+     * @throws NullPointerException if singleApplicableRule is null
+     */
+    @Beta
+    public static <E> Rule<? extends Iterable<E>> all(final Rule<E> singleApplicableRule) {
+        return new AllOfIterableRule<E>(singleApplicableRule);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if any element in the supplied iterable input
+     * satisfies the given rule.
+     *
+     * @since 1.21
+     * @param singleApplicableRule single rule that is applied to all sub elements
+     * @param <E> type of element in Iterable
+     * @return a rule that verifes that any element in an iterable satisfies a given rule
+     * @throws NullPointerException if singleApplicableRule is null
+     */
+    @Beta
+    public static <E> Rule<? extends Iterable<E>> any(final Rule<E> singleApplicableRule) {
+        return new AnyOfIterableRule<E>(singleApplicableRule);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if NO elements in the supplied iterable input
+     * satisfy the given rule.
+     *
+     * @since 1.21
+     * @param singleApplicableRule single rule that is applied to all sub elements
+     * @param <E> type of element in Iterable
+     * @return a rule that verifes that no element in an iterable satisfies a given rule
+     * @throws NullPointerException if singleApplicableRule is null
+     */
+    @Beta
+    public static <E> Rule<? extends Iterable<E>> none(final Rule<E> singleApplicableRule) {
+        return new NoneOfIterableRule<E>(singleApplicableRule);
     }
     
 }
