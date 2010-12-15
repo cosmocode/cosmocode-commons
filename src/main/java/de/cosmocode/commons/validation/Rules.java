@@ -249,7 +249,7 @@ public final class Rules {
      * @since 1.21
      * @param singleApplicableRule single rule that is applied to all sub elements
      * @param <E> type of element in Iterable
-     * @return a rule that verifes that all elements in an iterable satisfy a given rule
+     * @return a rule that verifies that all elements in an iterable satisfy a given rule
      * @throws NullPointerException if singleApplicableRule is null
      */
     @Beta
@@ -264,7 +264,7 @@ public final class Rules {
      * @since 1.21
      * @param singleApplicableRule single rule that is applied to all sub elements
      * @param <E> type of element in Iterable
-     * @return a rule that verifes that any element in an iterable satisfies a given rule
+     * @return a rule that verifies that any element in an iterable satisfies a given rule
      * @throws NullPointerException if singleApplicableRule is null
      */
     @Beta
@@ -279,7 +279,7 @@ public final class Rules {
      * @since 1.21
      * @param singleApplicableRule single rule that is applied to all sub elements
      * @param <E> type of element in Iterable
-     * @return a rule that verifes that no element in an iterable satisfies a given rule
+     * @return a rule that verifies that no element in an iterable satisfies a given rule
      * @throws NullPointerException if singleApplicableRule is null
      */
     @Beta
