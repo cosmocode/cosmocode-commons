@@ -252,6 +252,7 @@ public enum OverlapMode {
         Preconditions.checkNotNull(a, "a");
         Preconditions.checkNotNull(b, "b");
 
+        // get minimum precision
         final TimeUnit precision;
         if (a.getPrecision().compareTo(b.getPrecision()) > 0) {
             precision = b.getPrecision();

@@ -81,6 +81,7 @@ public final class TimePeriods {
      * The same applies to the end.
      * </p>
      *
+     * @since 1.21
      * @see Dates#before(java.util.Date)
      * @see Dates#after(java.util.Date)
      * @param when the date that should be inside any checked time period
@@ -98,6 +99,7 @@ public final class TimePeriods {
      * and the end date must be after or equal to the given date.
      * </p>
      *
+     * @since 1.21
      * @see TimePeriods#contains(java.util.Date)
      * @see Dates#before(java.util.Date)
      * @see Dates#after(java.util.Date)
@@ -115,6 +117,7 @@ public final class TimePeriods {
      * if the passed in TimePeriod overlaps with the given other TimePeriod.
      * </p>
      *
+     * @since 1.21
      * @see OverlapMode#isOverlapping(TimePeriod, TimePeriod)
      * @param otherTimePeriod the other TimePeriod to check against for overlap
      * @param overlapMode the OverlapMode to use for overlap checking
