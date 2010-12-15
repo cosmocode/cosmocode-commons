@@ -28,11 +28,11 @@ import java.util.Date;
  * @since 1.20
  * @author Oliver Lorenz
  */
-final class DatesEqualRule extends AbstractRule<Date> {
+final class DateEqualsRule extends AbstractRule<Date> {
 
     private final Date value;
 
-    DatesEqualRule(Date value) {
+    DateEqualsRule(Date value) {
         this.value = Preconditions.checkNotNull(value, "Value");
     }
 
@@ -45,8 +45,8 @@ final class DatesEqualRule extends AbstractRule<Date> {
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (that instanceof DatesEqualRule) {
-            final DatesEqualRule other = DatesEqualRule.class.cast(that);
+        } else if (that instanceof DateEqualsRule) {
+            final DateEqualsRule other = DateEqualsRule.class.cast(that);
             return other.value.equals(this.value);
         } else {
             return false;

@@ -101,7 +101,7 @@ public final class Dates {
     public static Rule<Date> equalTo(@Nullable Date other) {
         return (other == null)
             ? Rules.<Date>isNull()
-            : new DatesEqualRule(other);
+            : new DateEqualsRule(other);
     }
 
     /**
@@ -176,5 +176,5 @@ public final class Dates {
     public static Rule<Date> betweenInclusive(Date start, Date end) {
         return between(start, end).or(equalTo(start)).or(equalTo(end));
     }
-    
+
 }
