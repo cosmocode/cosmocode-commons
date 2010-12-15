@@ -206,7 +206,7 @@ public enum OverlapMode {
     };
 
     /**
-     * <p> Checks whether period 1 and period 2 overlap. The result depends on the enum.
+     * <p> Checks whether period 1 and period 2 overlap. The result depends on the enum value.
      * </p>
      * <p> Period 1 is represented by s1 (start time) and e1 (end time).
      * Period 2 is represented by s2 (start time) and e2 (end time).
@@ -220,7 +220,7 @@ public enum OverlapMode {
     public abstract boolean isOverlapping(long s1, long e1, long s2, long e2);
 
     /**
-     * <p> Checks whether period 1 and period 2 overlap. The result depends on the enum.
+     * <p> Checks whether period 1 and period 2 overlap. The result depends on the enum value.
      * </p>
      * <p> Period 1 is represented by s1 (start time) and e1 (end time).
      * Period 2 is represented by s2 (start time) and e2 (end time).
@@ -241,11 +241,11 @@ public enum OverlapMode {
     }
 
     /**
-     * Checks whether period a and period b overlap. The result depends on the enum.
+     * Checks whether two time periods overlap. The result depends on the enum value.
      *
      * @param a the first TimePeriod
      * @param b the second TimePeriod
-     * @return true if the two periods overlap, false otherwise
+     * @return true if the two time periods overlap, false otherwise
      * @throws NullPointerException if either a or b is null
      */
     public boolean isOverlapping(final TimePeriod a, final TimePeriod b) {
