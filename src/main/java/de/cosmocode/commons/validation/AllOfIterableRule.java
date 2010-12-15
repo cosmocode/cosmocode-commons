@@ -17,6 +17,7 @@
 package de.cosmocode.commons.validation;
 
 import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,7 +37,7 @@ final class AllOfIterableRule<E> extends AbstractRule<Iterable<E>> {
     private final Rule<E> singleApplicableRule;
 
     AllOfIterableRule(@Nonnull final Rule<E> singleApplicableRule) {
-        this.singleApplicableRule = singleApplicableRule;
+        this.singleApplicableRule = Preconditions.checkNotNull(singleApplicableRule, "singleApplicableRule");
         this.inversedSingleApplicableRule = singleApplicableRule.negate();
     }
 
