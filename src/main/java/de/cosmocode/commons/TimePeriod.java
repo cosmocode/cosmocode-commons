@@ -47,11 +47,20 @@ public interface TimePeriod {
     long getEnd(TimeUnit unit);
 
     /**
+     * <p>
      * Returns the precision of this TimePeriod.
      * The precision defines the minimum TimeUnit in which the difference between start and end can be 1.
+     * </p>
+     * <p>
      * For example if a TimePeriod stores its start and end in days (like a calendar),
      * then the minimum precision is TimeUnit.DAYS.
      * Another example: A TimePeriod using {@link java.util.Date}s has a precision of TimeUnit.MILLISECOND.
+     * </p>
+     * <p>
+     * If an implementation has a minimum precision above DAYS (for example years),
+     * then it should return TimeUnit.DAYS, since this can cover all measurable time periods
+     * (even the age of the universe).
+     * </p>
      *
      * @return a TimeUnit that indicates the minimum precision between start and end
      */
