@@ -18,28 +18,43 @@ package de.cosmocode.commons;
 
 import com.google.common.annotations.Beta;
 
-import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Interface for a time period.
  * This is not in any respect final. Neither the methods nor this interface.
- * Maybe this interface will vanish altogether.
- *
- * This is why this interface is package private at the moment.
+ * Maybe this interface will vanish altogether later.
  */
 @Beta
-interface TimePeriod {
+public interface TimePeriod {
 
     /**
      * Returns the start of the time period.
-     * @return the start of the time period
+     *
+     * @param unit the unit in which the start time is returned
+     * @return the start of the time period, measured in the given TimeUnit
+     * @throws NullPointerException if unit is null
      */
-    Date getStart();
+    long getStart(TimeUnit unit);
 
     /**
      * Returns the end of the time period.
-     * @return the end of the time period
+     *
+     * @param unit the unit in which the end time is returned
+     * @return the end of the time period, measured in the given TimeUnit
+     * @throws NullPointerException if unit is null
      */
-    Date getEnd();
+    long getEnd(TimeUnit unit);
+
+    /**
+     * Returns the precision of this TimePeriod.
+     * The precision defines the minimum TimeUnit in which the difference between start and end can be 1.
+     * For example if a TimePeriod stores its start and end in days (like a calendar),
+     * then the minimum precision is TimeUnit.DAYS.
+     * Another example: A TimePeriod using {@link java.util.Date}s has a precision of TimeUnit.MILLISECOND.
+     *
+     * @return a TimeUnit that indicates the minimum precision between start and end
+     */
+    TimeUnit getPrecision();
 
 }

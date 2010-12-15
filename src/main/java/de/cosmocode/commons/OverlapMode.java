@@ -18,6 +18,7 @@ package de.cosmocode.commons;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
 import com.google.gag.annotation.enforceable.CantTouchThis;
@@ -245,12 +246,22 @@ public enum OverlapMode {
      * @param a the first TimePeriod
      * @param b the second TimePeriod
      * @return true if the two periods overlap, false otherwise
-     * @throws NullPointerException if either TimePeriod is null
+     * @throws NullPointerException if either a or b is null
      */
     public boolean isOverlapping(final TimePeriod a, final TimePeriod b) {
         Preconditions.checkNotNull(a, "a");
         Preconditions.checkNotNull(b, "b");
-        return isOverlapping(a.getStart(), a.getEnd(), b.getStart(), b.getEnd());
+
+        final TimeUnit precision;
+        if (a.getPrecision().compareTo(b.getPrecision()) > 0) {
+            precision = b.getPrecision();
+        } else {
+            precision = a.getPrecision();
+        }
+
+        return isOverlapping(
+            a.getStart(precision), a.getEnd(precision),
+            b.getStart(precision), b.getEnd(precision));
     }
 
 }
