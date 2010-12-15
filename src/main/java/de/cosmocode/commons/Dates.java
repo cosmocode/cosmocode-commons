@@ -19,6 +19,7 @@ package de.cosmocode.commons;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
@@ -175,6 +176,18 @@ public final class Dates {
      */
     public static Rule<Date> betweenInclusive(Date start, Date end) {
         return between(start, end).or(equalTo(start)).or(equalTo(end));
+    }
+
+    /**
+     * Returns an immutable {@link TimePeriod}, created from the given start and end.
+     *
+     * @param start the start date of the period
+     * @param end the end date of the period
+     * @return a new TimePeriod that spans the time between start and end
+     */
+    @Beta
+    public static TimePeriod immutablePeriodOf(final Date start, final Date end) {
+        return new ImmutableDateTimePeriod(start, end);
     }
 
 }
