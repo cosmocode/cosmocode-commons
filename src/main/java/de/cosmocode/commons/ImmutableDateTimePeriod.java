@@ -39,8 +39,9 @@ final class ImmutableDateTimePeriod implements TimePeriod {
     private final Date end;
 
     public ImmutableDateTimePeriod(final Date start, final Date end) {
-        this.start = Preconditions.checkNotNull(start, "Start");
-        this.end = Preconditions.checkNotNull(end, "End");
+        // create new Date objects from given parameters to prevent later modifications
+        this.start = new Date(Preconditions.checkNotNull(start, "Start").getTime());
+        this.end = new Date(Preconditions.checkNotNull(end, "End").getTime());
     }
 
     @Override
