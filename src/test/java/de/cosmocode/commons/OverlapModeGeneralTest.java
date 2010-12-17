@@ -17,6 +17,7 @@ public class OverlapModeGeneralTest {
 
     private final OverlapMode mode = OverlapMode.NORMAL;
 
+    private Date yearFive;
     private Date yesterday;
     private Date today;
     private Date tomorrow;
@@ -35,6 +36,12 @@ public class OverlapModeGeneralTest {
         tomorrow = calendar.getTime();
         calendar.add(Calendar.MONTH, 1);
         nextMonth = calendar.getTime();
+
+        // special
+        calendar.set(Calendar.YEAR, 5);
+        calendar.set(Calendar.MONTH, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        yearFive = calendar.getTime();
     }
 
     @Test
@@ -75,6 +82,17 @@ public class OverlapModeGeneralTest {
         final boolean expected = true;
         final boolean actual = mode.isOverlapping(a, b);
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void timePeriodsOverlapYearFive() {
+        // first period: year 2 to year 200
+        final TimePeriod a = new DayPrecisionTimePeriod(2L * 365L, 200L * 365L);
+        final TimePeriod b = Dates.timePeriod(yearFive, today);
+
+        final boolean expexted = true;
+        final boolean actual = mode.isOverlapping(a, b);
+        Assert.assertEquals(expexted, actual);
     }
 
 }
