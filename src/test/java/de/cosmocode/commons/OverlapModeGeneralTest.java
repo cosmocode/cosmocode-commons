@@ -106,9 +106,20 @@ public final class OverlapModeGeneralTest {
         final TimePeriod a = new DayPrecisionTimePeriod(2L * 365L, 200L * 365L);
         final TimePeriod b = Dates.timePeriod(yearFifty, today);
 
-        final boolean expexted = true;
+        final boolean expected = true;
         final boolean actual = mode.isOverlapping(a, b);
-        Assert.assertEquals(expexted, actual);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void timePeriodsOverlapYearFiveReversed() {
+        // first period: year 2 to year 200
+        final TimePeriod a = Dates.timePeriod(yearFifty, today);
+        final TimePeriod b = new DayPrecisionTimePeriod(2L * 365L, 200L * 365L);
+
+        final boolean expected = true;
+        final boolean actual = mode.isOverlapping(a, b);
+        Assert.assertEquals(expected, actual);
     }
 
 }
