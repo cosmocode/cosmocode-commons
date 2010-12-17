@@ -248,7 +248,7 @@ public enum OverlapMode {
      * @return true if the two time periods overlap, false otherwise
      * @throws NullPointerException if either a or b is null
      */
-    public boolean isOverlapping(final TimePeriod a, final TimePeriod b) {
+    public final boolean isOverlapping(final TimePeriod a, final TimePeriod b) {
         Preconditions.checkNotNull(a, "a");
         Preconditions.checkNotNull(b, "b");
 
@@ -260,11 +260,13 @@ public enum OverlapMode {
             precision = a.getPrecision();
         }
 
-        // TODO account for the reference in TimePeriod
+        // offset for TimePeriod b
+        final long referenceDifference = b.getReference().getTime() - a.getReference().getTime();
+        final long offsetB = precision.convert(referenceDifference, TimeUnit.MILLISECONDS);
 
         return isOverlapping(
             a.getStart(precision), a.getEnd(precision),
-            b.getStart(precision), b.getEnd(precision));
+            offsetB + b.getStart(precision), offsetB + b.getEnd(precision));
     }
 
 }
