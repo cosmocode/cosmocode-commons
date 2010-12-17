@@ -1,3 +1,19 @@
+/**
+ * Copyright 2010 CosmoCode GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.cosmocode.commons;
 
 import org.junit.Assert;
@@ -13,11 +29,11 @@ import java.util.Date;
  * @since 1.21
  * @author Oliver Lorenz
  */
-public class OverlapModeGeneralTest {
+public final class OverlapModeGeneralTest {
 
     private final OverlapMode mode = OverlapMode.NORMAL;
 
-    private Date yearFive;
+    private Date yearFifty;
     private Date yesterday;
     private Date today;
     private Date tomorrow;
@@ -38,10 +54,10 @@ public class OverlapModeGeneralTest {
         nextMonth = calendar.getTime();
 
         // special
-        calendar.set(Calendar.YEAR, 5);
+        calendar.set(Calendar.YEAR, 50);
         calendar.set(Calendar.MONTH, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        yearFive = calendar.getTime();
+        yearFifty = calendar.getTime();
     }
 
     @Test
@@ -88,7 +104,7 @@ public class OverlapModeGeneralTest {
     public void timePeriodsOverlapYearFive() {
         // first period: year 2 to year 200
         final TimePeriod a = new DayPrecisionTimePeriod(2L * 365L, 200L * 365L);
-        final TimePeriod b = Dates.timePeriod(yearFive, today);
+        final TimePeriod b = Dates.timePeriod(yearFifty, today);
 
         final boolean expexted = true;
         final boolean actual = mode.isOverlapping(a, b);

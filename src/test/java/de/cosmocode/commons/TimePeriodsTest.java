@@ -36,7 +36,7 @@ import java.util.List;
  * @since 1.21
  * @author Oliver Lorenz
  */
-public class TimePeriodsTest {
+public final class TimePeriodsTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(TimePeriodsTest.class);
 
