@@ -18,6 +18,7 @@ package de.cosmocode.commons;
 
 import com.google.common.annotations.Beta;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +28,15 @@ import java.util.concurrent.TimeUnit;
  */
 @Beta
 public interface TimePeriod {
+
+    /**
+     * Returns the reference point in time, from which start and end are counted.
+     * It is given as a Date to allow for high precision based on another defined scale.
+     * Date based implementations would return "new Date(0)".
+     *
+     * @return the reference point in time from which start and end are counted from
+     */
+    Date getReference();
 
     /**
      * Returns the start of the time period.

@@ -45,6 +45,11 @@ final class ImmutableDateTimePeriod implements TimePeriod {
     }
 
     @Override
+    public Date getReference() {
+        return new Date(0);
+    }
+
+    @Override
     public long getStart(TimeUnit unit) {
         return unit.convert(start.getTime(), TimeUnit.MILLISECONDS);
     }

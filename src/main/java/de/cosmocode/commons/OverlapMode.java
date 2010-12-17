@@ -260,6 +260,8 @@ public enum OverlapMode {
             precision = a.getPrecision();
         }
 
+        // TODO account for the reference in TimePeriod
+
         return isOverlapping(
             a.getStart(precision), a.getEnd(precision),
             b.getStart(precision), b.getEnd(precision));
