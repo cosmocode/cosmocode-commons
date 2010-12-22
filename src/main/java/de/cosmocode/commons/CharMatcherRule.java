@@ -27,11 +27,11 @@ import de.cosmocode.commons.validation.AbstractRule;
  * @since 1.20
  * @author Willi Schoenborn
  */
-final class CharMatcherPredicate extends AbstractRule<CharSequence> {
+final class CharMatcherRule extends AbstractRule<CharSequence> {
 
     private final CharMatcher matcher;
     
-    CharMatcherPredicate(CharMatcher matcher) {
+    CharMatcherRule(CharMatcher matcher) {
         this.matcher = Preconditions.checkNotNull(matcher, "Matcher");
     }
     

@@ -44,7 +44,7 @@ public final class CharMatchers {
      * @throws NullPointerException if matcher is null
      */
     public static Rule<CharSequence> matchAll(@Nonnull CharMatcher matcher) {
-        return new CharMatcherPredicate(matcher);
+        return new CharMatcherRule(matcher);
     }
     
 }
