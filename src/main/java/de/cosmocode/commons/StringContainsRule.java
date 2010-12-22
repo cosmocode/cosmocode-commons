@@ -37,7 +37,7 @@ final class StringContainsRule extends AbstractRule<String> {
 
     @Override
     public boolean apply(String input) {
-        return input.contains(s);
+        return input == null ? false : input.contains(s);
     }
     
     @Override

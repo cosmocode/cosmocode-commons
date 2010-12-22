@@ -37,7 +37,7 @@ final class StringContainedInRule extends AbstractRule<CharSequence> {
     
     @Override
     public boolean apply(CharSequence input) {
-        return s.contains(input);
+        return input == null ? false : s.contains(input);
     }
     
     @Override
