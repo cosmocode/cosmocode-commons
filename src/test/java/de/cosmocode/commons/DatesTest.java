@@ -95,8 +95,8 @@ public class DatesTest {
      */
     @Test
     public void equalToTimestampAppliedToDate() {
-        final Timestamp now = new Timestamp(System.currentTimeMillis());
-        final Date other = new Date(now.getTime());
+        final Date now = new Date();
+        final Timestamp other = new Timestamp(now.getTime());
 
         final boolean expected = true;
         final boolean actual = MoreObjects.asymmetricEqualTo(now).apply(other);
