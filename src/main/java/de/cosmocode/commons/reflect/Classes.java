@@ -19,9 +19,11 @@ package de.cosmocode.commons.reflect;
 /**
  * Static utility class for {@link Class}es.
  *
+ * @deprecated use {@link Reflection}
  * @since 1.6
  * @author Willi Schoenborn
  */
+@Deprecated
 public final class Classes {
     
     private Classes() {
