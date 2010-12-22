@@ -90,7 +90,7 @@ public abstract class AbstractRuleTest<T> implements UnitProvider<Rule<T>> {
     public void applyValid() {
         final Rule<T> unit = unit();
         for (T valid : validInputs()) {
-            Assert.assertTrue(unit.apply(valid));
+            Assert.assertTrue("Excepted " + valid + " to satisfy " + unit, unit.apply(valid));
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class AbstractRuleTest<T> implements UnitProvider<Rule<T>> {
     public void applyInvalid() {
         final Rule<T> unit = unit();
         for (T invalid : invalidInputs()) {
-            Assert.assertFalse(unit.apply(invalid));
+            Assert.assertFalse("Excepted " + invalid + " not to satisfy " + unit, unit.apply(invalid));
         }
     }
     
