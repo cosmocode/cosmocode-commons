@@ -54,7 +54,7 @@ public final class Procedures {
                 for (Procedure<? super T> procedure : rest) {
                     procedure.apply(input);
                 }
-            };
+            }
             
         };
     }
@@ -78,7 +78,6 @@ public final class Procedures {
                     procedure.apply(input);
                 }
             }
-
             
         };
     }
@@ -100,7 +99,7 @@ public final class Procedures {
             public Void apply(T from) {
                 procedure.apply(from);
                 return null;
-            };
+            }
             
         };
     }

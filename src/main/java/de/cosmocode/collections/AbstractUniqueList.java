@@ -39,7 +39,7 @@ public abstract class AbstractUniqueList<E> extends RealAbstractList<E> implemen
         @Override
         public boolean apply(E input) {
             return contains(input);
-        };
+        }
         
     };
     
@@ -50,7 +50,7 @@ public abstract class AbstractUniqueList<E> extends RealAbstractList<E> implemen
         if (contains(e)) return false;
         add(size(), e);
         return true;
-    };
+    }
     
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {

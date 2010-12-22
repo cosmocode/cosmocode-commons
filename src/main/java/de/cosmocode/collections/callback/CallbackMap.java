@@ -68,7 +68,7 @@ final class CallbackMap<K, V> extends ForwardingMap<K, V> {
         final V old = super.put(key, value);
         callback.poke();
         return old;
-    };
+    }
     
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {

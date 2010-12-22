@@ -48,7 +48,7 @@ final class CallbackListIterator<E> extends ForwardingListIterator<E> {
     public void add(E element) {
         super.add(element);
         callback.poke();
-    };
+    }
     
     @Override
     public void remove() {
@@ -60,6 +60,6 @@ final class CallbackListIterator<E> extends ForwardingListIterator<E> {
     public void set(E element) {
         super.set(element);
         callback.poke();
-    };
+    }
     
 }

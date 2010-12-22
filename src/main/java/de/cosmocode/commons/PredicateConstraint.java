@@ -38,7 +38,7 @@ final class PredicateConstraint<T> implements Constraint<T> {
     @Override
     public T checkElement(T element) {
         return Conditions.checkArgument(predicate, element);
-    };
+    }
     
     @Override
     public boolean equals(Object that) {

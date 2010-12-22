@@ -31,7 +31,7 @@ enum GetName implements Bijection<Class<?>, String> {
     @Override
     public String apply(Class<?> type) {
         return type.getName();
-    };
+    }
     
     @Override
     public Bijection<String, Class<?>> inverse() {

@@ -36,12 +36,12 @@ class DefaultUtilityList<E> extends AbstractUtilityList<E> implements UtilityLis
     @Override
     public void add(int index, E element) {
         list.add(index, element);
-    };
+    }
     
     @Override
     public E set(int index, E element) {
         return list.set(index, element);
-    };
+    }
     
     @Override
     public E remove(int index) {

@@ -51,7 +51,7 @@ public abstract class ForwardingTreeNode<E> extends ForwardingObject implements 
     @Override
     public boolean hasChild(E childData) {
         return delegate().hasChild(childData);
-    };
+    }
 
     @Override
     public List<TreeNode<E>> addChildren(E... children) {

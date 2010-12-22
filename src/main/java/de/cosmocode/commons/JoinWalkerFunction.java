@@ -40,7 +40,7 @@ final class JoinWalkerFunction<F> extends AbstractFunction<F, String> {
     @Override 
     public String apply(F from) {
         return walker.walk(from);
-    };
+    }
 
     @Override
     public boolean equals(Object that) {

@@ -40,7 +40,7 @@ final class DateBeforeRule extends AbstractRule<Date> {
     @Override
     public boolean apply(@Nullable Date input) {
         return input != null && input.before(when);
-    };
+    }
     
     @Override
     public boolean equals(Object that) {

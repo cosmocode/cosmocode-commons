@@ -28,6 +28,6 @@ public abstract class RemoveEventListener<T> implements EventListener<T> {
     @Override
     public void added(T element) {
         
-    };
+    }
 
 }

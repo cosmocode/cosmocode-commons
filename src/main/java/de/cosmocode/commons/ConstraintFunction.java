@@ -38,8 +38,8 @@ final class ConstraintFunction<T> implements Function<T, T> {
     @Override
     public T apply(T from) {
         return constraint.checkElement(from);
-    };
-    
+    }
+   
     @Override
     public boolean equals(Object that) {
         if (this == that) {

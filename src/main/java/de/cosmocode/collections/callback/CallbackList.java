@@ -52,14 +52,14 @@ final class CallbackList<E> extends ForwardingList<E> {
         final boolean added = super.add(element);
         callback.poke();
         return added;
-    };
+    }
     
     @Override
     public void add(int index, E element) {
         super.add(index, element);
         callback.poke();
-    };
-    
+    }
+   
     @Override
     public boolean addAll(Collection<? extends E> c) {
         final boolean added = super.addAll(c);
@@ -128,7 +128,7 @@ final class CallbackList<E> extends ForwardingList<E> {
         final E value = super.set(index, element);
         callback.poke();
         return value;
-    };
+    }
     
     @Override
     public List<E> subList(int fromIndex, int toIndex) {

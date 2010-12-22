@@ -51,7 +51,7 @@ final class CallbackSet<E> extends ForwardingSet<E> {
         final boolean added = super.add(element);
         callback.poke();
         return added;
-    };
+    }
     
     @Override
     public boolean addAll(Collection<? extends E> c) {

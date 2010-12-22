@@ -86,7 +86,7 @@ public enum TrimMode implements Function<String, String> {
     @Deprecated
     public final String trim(@Nullable String string) {
         return apply(string);
-    };
+    }
     
 
     /**

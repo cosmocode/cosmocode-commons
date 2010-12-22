@@ -145,7 +145,7 @@ public class DuplicatesNode<E> extends AbstractTreeNode<E> implements TreeNode<E
         final DuplicatesNode<E> newNode = new DuplicatesNode<E>(this, childData);
         children.add(newNode);
         return newNode;
-    };
+    }
     
     @Override
     public void insertChildAt(int index, TreeNode<E> child) throws IndexOutOfBoundsException {

@@ -38,7 +38,7 @@ final class FactoryCallable<T> implements Callable<T> {
     @Override
     public T call() throws Exception {
         return factory.create();
-    };
+    }
     
     @Override
     public boolean equals(Object that) {

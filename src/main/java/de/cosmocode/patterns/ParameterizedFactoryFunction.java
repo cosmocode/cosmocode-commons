@@ -38,7 +38,7 @@ final class ParameterizedFactoryFunction<P, T> implements Function<P, T> {
     @Override
     public T apply(P from) {
         return factory.create(from);
-    };
+    }
     
     @Override
     public boolean equals(Object that) {

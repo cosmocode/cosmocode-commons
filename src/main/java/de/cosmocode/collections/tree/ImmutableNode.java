@@ -128,7 +128,7 @@ public final class ImmutableNode<E> implements TreeNode<E> {
 
         // we found nothing
         return false;
-    };
+    }
 
     @Override
     public boolean isLeaf() {
@@ -226,7 +226,7 @@ public final class ImmutableNode<E> implements TreeNode<E> {
     @Override
     public TreeNode<E> addChild(E childData) {
         throw new UnsupportedOperationException("not allowed by ImmutableNode");
-    };
+    }
 
     /**
      * {@inheritDoc}
@@ -386,7 +386,7 @@ public final class ImmutableNode<E> implements TreeNode<E> {
             childBuilder.setData(childData);
             this.addChildNode(childBuilder);
             return childBuilder;
-        };
+        }
 
         @Override
         public void addChildNode(TreeNode<E> child) {
@@ -406,7 +406,7 @@ public final class ImmutableNode<E> implements TreeNode<E> {
             } catch (PropertyVetoException e) {
                 throw new IllegalStateException("Got an illegal PropertyVetoException", e);
             }
-        };
+        }
 
         @Override
         public void addVetoableChangeListener(VetoableChangeListener listener) {
