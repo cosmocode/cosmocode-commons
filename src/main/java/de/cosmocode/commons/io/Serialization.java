@@ -134,9 +134,8 @@ public final class Serialization {
         Preconditions.checkNotNull(in, "In");
         final ObjectInputStream stream = new ObjectInputStream(in);
         final Object object = stream.readObject();
-        final T t = type.cast(object);
         LOG.trace("Restored {} from {}", object, stream);
-        return t;
+        return type.cast(object);
     }
 
 }
