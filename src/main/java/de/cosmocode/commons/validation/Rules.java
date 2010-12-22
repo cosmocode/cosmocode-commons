@@ -19,11 +19,8 @@ package de.cosmocode.commons.validation;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.annotations.Beta;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 
 /**
  * Utility class for {@link Rule}s.

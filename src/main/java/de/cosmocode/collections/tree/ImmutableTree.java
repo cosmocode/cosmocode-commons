@@ -26,7 +26,7 @@ import com.google.common.base.Preconditions;
  * @author Oliver Lorenz
  * @param <E> a generic type that indicates the data stored in the {@link ImmutableNode}s
  */
-public class ImmutableTree<E> extends AbstractTree<E> implements Tree<E> {
+public class ImmutableTree<E> extends AbstractTree<E> {
     
     private final ImmutableNode<E> rootNode;
     

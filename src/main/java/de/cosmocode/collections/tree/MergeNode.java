@@ -46,8 +46,7 @@ import com.google.common.collect.Maps;
  * @author Oliver Lorenz
  * @author Willi Schoenborn
  */
-public class MergeNode<T> extends AbstractTreeNode<T>
-    implements TreeNode<T>, Serializable, VetoableChangeListener {
+public class MergeNode<T> extends AbstractTreeNode<T> implements Serializable, VetoableChangeListener {
     
     private static final long serialVersionUID = 1498524990314635637L;
     

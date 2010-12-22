@@ -48,8 +48,7 @@ import com.google.common.collect.Lists;
  * @author Oliver Lorenz
  * @author Willi Schoenborn
  */
-public class UniqueNode<E> extends AbstractTreeNode<E> 
-    implements TreeNode<E>, Serializable, VetoableChangeListener {
+public class UniqueNode<E> extends AbstractTreeNode<E> implements Serializable, VetoableChangeListener {
 
     public static final String ERR_ADD_DUPLICATE = "The given node already exists in this tree";
     

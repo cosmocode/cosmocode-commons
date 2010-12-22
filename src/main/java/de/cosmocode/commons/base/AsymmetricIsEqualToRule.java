@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
 import com.google.common.base.Preconditions;
 
 import de.cosmocode.commons.validation.AbstractRule;
-import de.cosmocode.commons.validation.Rule;
 import de.cosmocode.commons.validation.Rules;
 
 /**

@@ -19,6 +19,8 @@ package de.cosmocode.commons;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -26,8 +28,6 @@ import com.google.common.base.Predicate;
 import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.Rule;
 import de.cosmocode.commons.validation.Rules;
-
-import javax.annotation.Nullable;
 
 /**
  * Utility class providing handy methods

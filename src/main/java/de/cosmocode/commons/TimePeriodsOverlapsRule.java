@@ -16,10 +16,11 @@
 
 package de.cosmocode.commons;
 
-import com.google.common.base.Preconditions;
-import de.cosmocode.commons.validation.AbstractRule;
-
 import javax.annotation.Nullable;
+
+import com.google.common.base.Preconditions;
+
+import de.cosmocode.commons.validation.AbstractRule;
 
 /**
  * Implementation of {@link TimePeriods#overlaps(TimePeriod, OverlapMode)}.

@@ -16,10 +16,10 @@
 
 package de.cosmocode.commons;
 
-import com.google.common.annotations.Beta;
-
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.annotations.Beta;
 
 /**
  * Interface for a time period.

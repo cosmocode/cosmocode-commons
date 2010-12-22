@@ -16,15 +16,16 @@
 
 package de.cosmocode.commons;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nullable;
+
 import com.google.common.annotations.Beta;
 import com.google.common.base.Function;
 
 import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.Rule;
-
-import javax.annotation.Nullable;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Helper class for {@link TimePeriod}s.

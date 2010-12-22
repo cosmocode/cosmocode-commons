@@ -25,7 +25,7 @@ import java.util.ListIterator;
  * @author Willi Schoenborn
  * @param <E> the generic element type
  */
-class DefaultUtilityListIterator<E> extends AbstractUtilityListIterator<E> implements UtilityListIterator<E> {
+class DefaultUtilityListIterator<E> extends AbstractUtilityListIterator<E> {
 
     private final ListIterator<E> listIterator;
     

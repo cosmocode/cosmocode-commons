@@ -25,7 +25,7 @@ import java.util.List;
  * @author Willi Schoenborn
  * @param <E> the generic element type
  */
-class DefaultUtilityList<E> extends AbstractUtilityList<E> implements UtilityList<E> {
+class DefaultUtilityList<E> extends AbstractUtilityList<E> {
 
     private final List<E> list;
 

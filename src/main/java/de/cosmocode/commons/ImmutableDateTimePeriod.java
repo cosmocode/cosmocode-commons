@@ -16,13 +16,14 @@
 
 package de.cosmocode.commons;
 
-import com.google.common.annotations.Beta;
-import com.google.common.base.Preconditions;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+
+import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
 
 /**
  * Immutable implementation of {@link TimePeriod} using {@link Date}s.

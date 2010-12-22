@@ -16,8 +16,6 @@
 
 package de.cosmocode.commons.validation;
 
-import java.util.NoSuchElementException;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -93,7 +91,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @since 1.21
      * @param iterable the iterable to search in
      * @return the found element
-     * @throws NoSuchElementException if no element in iterable matches the given predicate
+     * @throws java.util.NoSuchElementException if no element in iterable matches the given predicate
      */
     @Beta
     T find(@Nonnull Iterable<? extends T> iterable);

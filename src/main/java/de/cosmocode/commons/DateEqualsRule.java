@@ -16,13 +16,14 @@
 
 package de.cosmocode.commons;
 
+import java.util.Date;
+
+import javax.annotation.Nullable;
+
 import com.google.common.base.Preconditions;
 
 import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.AbstractRule;
-
-import javax.annotation.Nullable;
-import java.util.Date;
 
 /**
  * Implementation of {@link Dates#equalTo(java.util.Date)}.

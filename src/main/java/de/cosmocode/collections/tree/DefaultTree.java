@@ -31,7 +31,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author Oliver Lorenz
  */
-public final class DefaultTree<E> extends AbstractTree<E> implements Tree<E>, Serializable {
+public final class DefaultTree<E> extends AbstractTree<E> implements Serializable {
     
     public static final String ERR_DELEGATED_NULL = "delegated must not be null";
     

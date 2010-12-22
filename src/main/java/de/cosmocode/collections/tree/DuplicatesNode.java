@@ -43,7 +43,7 @@ import com.google.common.collect.Lists;
  * @author Oliver Lorenz
  * @author Willi Schoenborn
  */
-public class DuplicatesNode<E> extends AbstractTreeNode<E> implements TreeNode<E>, Serializable {
+public class DuplicatesNode<E> extends AbstractTreeNode<E> implements Serializable {
     
     private static final long serialVersionUID = 3205686938101651970L;
      

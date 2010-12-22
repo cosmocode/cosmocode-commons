@@ -18,9 +18,9 @@ package de.cosmocode.commons;
 
 import java.util.Date;
 
-import de.cosmocode.commons.validation.AbstractRule;
-
 import javax.annotation.Nullable;
+
+import de.cosmocode.commons.validation.AbstractRule;
 
 /**
  * After date predicate implementation.

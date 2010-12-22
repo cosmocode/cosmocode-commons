@@ -16,11 +16,11 @@
 
 package de.cosmocode.commons;
 
-import com.google.common.annotations.Beta;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.annotations.Beta;
 
 /**
  * {@link TimePeriod} that measures the start and end in days from year 0, January 1st.

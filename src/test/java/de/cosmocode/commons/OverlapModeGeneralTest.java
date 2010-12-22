@@ -16,12 +16,12 @@
 
 package de.cosmocode.commons;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Tests the public functions of overlap mode that are independent of the specific mode.

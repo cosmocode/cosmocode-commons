@@ -32,7 +32,7 @@ import com.google.common.base.Preconditions;
  * @param <K> the type of keys maintained by this map
  * @param <V> the type of mapped values
  */
-public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, UtilityMap<K, V> {
+public abstract class AbstractUtilityMap<K, V> extends AbstractMap<K, V> implements UtilityMap<K, V> {
 
     private V checkAndGet(K key, String type) {
         Preconditions.checkArgument(containsKey(key), "No key named '%s' present for expected %s value", key, type);

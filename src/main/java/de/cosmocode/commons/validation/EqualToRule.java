@@ -18,7 +18,6 @@ package de.cosmocode.commons.validation;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**

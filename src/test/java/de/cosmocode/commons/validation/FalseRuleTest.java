@@ -16,8 +16,6 @@
 
 package de.cosmocode.commons.validation;
 
-import java.util.Collections;
-
 import com.google.common.collect.Lists;
 
 /**

@@ -16,8 +16,6 @@
 
 package de.cosmocode.commons.validation;
 
-import java.util.Iterator;
-
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
