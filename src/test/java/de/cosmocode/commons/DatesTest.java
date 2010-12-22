@@ -25,6 +25,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.cosmocode.commons.base.MoreObjects;
+
 /**
  * Tests the static methods from {@link Dates}.
  *
@@ -37,6 +39,9 @@ public class DatesTest {
     private Date today;
     private Date tomorrow;
 
+    /**
+     * Runs before each test.
+     */
     @Before
     public void setUpTestDates() {
         final Calendar calendar = Calendar.getInstance();
@@ -68,7 +73,7 @@ public class DatesTest {
         final Date other = new Date(now.getTime());
 
         final boolean expected = true;
-        final boolean actual = Dates.equalTo(now).apply(other);
+        final boolean actual = MoreObjects.asymmetricEqualTo(now).apply(other);
         Assert.assertEquals(expected, actual);
     }
 
@@ -81,7 +86,7 @@ public class DatesTest {
         final Timestamp other = new Timestamp(now.getTime());
 
         final boolean expected = true;
-        final boolean actual = Dates.equalTo(now).apply(other);
+        final boolean actual = MoreObjects.asymmetricEqualTo(now).apply(other);
         Assert.assertEquals(expected, actual);
     }
 
@@ -94,7 +99,7 @@ public class DatesTest {
         final Date other = new Date(now.getTime());
 
         final boolean expected = true;
-        final boolean actual = Dates.equalTo(now).apply(other);
+        final boolean actual = MoreObjects.asymmetricEqualTo(now).apply(other);
         Assert.assertEquals(expected, actual);
     }
 
@@ -107,7 +112,7 @@ public class DatesTest {
         final Timestamp other = new Timestamp(now.getTime());
 
         final boolean expected = true;
-        final boolean actual = Dates.equalTo(now).apply(other);
+        final boolean actual = MoreObjects.asymmetricEqualTo(now).apply(other);
         Assert.assertEquals(expected, actual);
     }
 
@@ -120,7 +125,7 @@ public class DatesTest {
         final Date other = new Date(now.getTime() + 1);
 
         final boolean expected = false;
-        final boolean actual = Dates.equalTo(now).apply(other);
+        final boolean actual = MoreObjects.asymmetricEqualTo(now).apply(other);
         Assert.assertEquals(expected, actual);
     }
 
@@ -130,7 +135,7 @@ public class DatesTest {
     @Test
     public void equalToAppliedToNull() {
         final boolean expected = false;
-        final boolean actual = Dates.equalTo(new Date()).apply(null);
+        final boolean actual = MoreObjects.asymmetricEqualTo(new Date()).apply(null);
         Assert.assertEquals(expected, actual);
     }
 
@@ -140,7 +145,7 @@ public class DatesTest {
     @Test
     public void equalToNullAppliedToNow() {
         final boolean expected = false;
-        final boolean actual = Dates.equalTo(null).apply(new Date());
+        final boolean actual = MoreObjects.asymmetricEqualTo(null).apply(new Date());
         Assert.assertEquals(expected, actual);
     }
 
@@ -150,7 +155,7 @@ public class DatesTest {
     @Test
     public void equalToNullAppliedNull() {
         final boolean expected = true;
-        final boolean actual = Dates.equalTo(null).apply(null);
+        final boolean actual = MoreObjects.asymmetricEqualTo(null).apply(null);
         Assert.assertEquals(expected, actual);
     }
 
