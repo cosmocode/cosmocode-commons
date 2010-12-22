@@ -19,23 +19,23 @@ package de.cosmocode.commons;
 import com.google.common.base.Function;
 
 /**
- * Implementation for {@link Strings#toLowerCase()}.
+ * Implementation for {@link Strings#toUpperCase()}.
  *
  * @since 1.9
  * @author Willi Schoenborn
  */
-enum StringLowerCaseFunction implements Function<String, String> {
-    
-    INSTANCE;
+enum UpperCaseFunction implements Function<String, String> {
 
+    INSTANCE;
+    
     @Override
     public String apply(String from) {
-        return from == null ? null : from.toLowerCase();
+        return from == null ? null : from.toUpperCase();
     }
     
     @Override
     public String toString() {
-        return "Strings.toLowerCase()";
+        return "Strings.toUpperCase()";
     }
     
 }

@@ -115,7 +115,7 @@ public final class Strings {
      * @return a function covnerting strings to lowercase
      */
     public static Function<String, String> toLowerCase() {
-        return StringLowerCaseFunction.INSTANCE;
+        return LowerCaseFunction.INSTANCE;
     }
     
     
@@ -133,7 +133,7 @@ public final class Strings {
      * @throws NullPointerException if locale is null
      */
     public static Function<String, String> toLowerCase(@Nonnull Locale locale) {
-        return new StringLocaleAwareLowerCaseFunction(locale);
+        return new LocaleAwareLowerCaseFunction(locale);
     }
 
     /**
@@ -148,7 +148,7 @@ public final class Strings {
      * @return a function covnerting strings to uppercase
      */
     public static Function<String, String> toUpperCase() {
-        return StringUpperCaseFunction.INSTANCE;
+        return UpperCaseFunction.INSTANCE;
     }
     
     /**
@@ -165,7 +165,7 @@ public final class Strings {
      * @throws NullPointerException if locale is null
      */
     public static Function<String, String> toUpperCase(@Nonnull Locale locale) {
-        return new StringLocaleAwareUpperCaseFunction(locale);
+        return new LocaleAwareUpperCaseFunction(locale);
     }
     
     /**
