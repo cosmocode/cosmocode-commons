@@ -18,6 +18,8 @@ package de.cosmocode.commons;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Function;
+
+import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.Rule;
 
 import javax.annotation.Nullable;
@@ -108,7 +110,9 @@ public final class TimePeriods {
      * @return a rule that returns true for all TimePeriods that contain the given Date (including start and end)
      */
     public static Rule<TimePeriod> containsInclusive(final Date when) {
-        return contains(when).or(Dates.equalTo(when).compose(START_DATE)).or(Dates.equalTo(when).compose(END_DATE));
+        return MoreObjects.asymmetricEqualTo(when).compose(START_DATE).
+            or(MoreObjects.asymmetricEqualTo(when).compose(END_DATE)).
+            or(contains(when));
     }
 
     /**
