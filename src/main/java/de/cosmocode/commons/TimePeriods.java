@@ -111,9 +111,9 @@ public final class TimePeriods {
      * @return a rule that returns true for all TimePeriods that contain the given Date (including start and end)
      */
     public static Rule<TimePeriod> containsInclusive(final Date when) {
-        return MoreObjects.asymmetricEqualTo(when).compose(START_DATE).
-            or(MoreObjects.asymmetricEqualTo(when).compose(END_DATE)).
-            or(contains(when));
+        return contains(when).or(
+            MoreObjects.asymmetricEqualTo(when).compose(START_DATE)).or(
+            MoreObjects.asymmetricEqualTo(when).compose(END_DATE));
     }
 
     /**
