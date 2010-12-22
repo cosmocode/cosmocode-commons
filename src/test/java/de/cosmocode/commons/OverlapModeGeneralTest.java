@@ -39,6 +39,9 @@ public final class OverlapModeGeneralTest {
     private Date tomorrow;
     private Date nextMonth;
 
+    /**
+     * Runs before each test.
+     */
     @Before
     public void setupPeriods() {
         final Calendar calendar = Calendar.getInstance();
@@ -60,6 +63,9 @@ public final class OverlapModeGeneralTest {
         yearFifty = calendar.getTime();
     }
 
+    /**
+     * Tests {@link OverlapMode#isOverlapping(TimePeriod, TimePeriod)}.
+     */
     @Test
     public void timePeriodsOverlap() {
         final TimePeriod a = Dates.timePeriod(today, tomorrow);
@@ -70,6 +76,9 @@ public final class OverlapModeGeneralTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Tests {@link OverlapMode#isOverlapping(TimePeriod, TimePeriod)}.
+     */
     @Test
     public void timePeriodsOverlapImmutableDateAndDayPrecision() {
         final TimePeriod a = Dates.timePeriod(yesterday, tomorrow);
@@ -80,6 +89,9 @@ public final class OverlapModeGeneralTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Tests {@link OverlapMode#isOverlapping(TimePeriod, TimePeriod)}.
+     */
     @Test
     public void timePeriodsNotOverlappingImmutableDateAndDayPrecision() {
         final TimePeriod a = Dates.timePeriod(yesterday, today);
@@ -90,6 +102,9 @@ public final class OverlapModeGeneralTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Tests {@link OverlapMode#isOverlapping(TimePeriod, TimePeriod)}.
+     */
     @Test
     public void timePeriodsOverlapDayPrecisionAndImmutableDate() {
         final TimePeriod a = new DayPrecisionTimePeriod(today, nextMonth);
@@ -100,6 +115,9 @@ public final class OverlapModeGeneralTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Tests {@link OverlapMode#isOverlapping(TimePeriod, TimePeriod)}.
+     */
     @Test
     public void timePeriodsOverlapYearFive() {
         // first period: year 2 to year 200
@@ -111,6 +129,9 @@ public final class OverlapModeGeneralTest {
         Assert.assertEquals(expected, actual);
     }
 
+    /**
+     * Tests {@link OverlapMode#isOverlapping(TimePeriod, TimePeriod)}.
+     */
     @Test
     public void timePeriodsOverlapYearFiveReversed() {
         // first period: year 2 to year 200
