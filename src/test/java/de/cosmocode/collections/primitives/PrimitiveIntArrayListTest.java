@@ -74,7 +74,7 @@ public final class PrimitiveIntArrayListTest implements TestCollectionGenerator<
 
     @Override
     public SampleElements<Integer> samples() {
-        return new SampleElements<Integer>(Integer.MIN_VALUE, (int) -1, (int) 0, (int) 1, Integer.MAX_VALUE);
+        return new SampleElements<Integer>(Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE);
     }
     
 }
