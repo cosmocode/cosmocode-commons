@@ -17,6 +17,8 @@
 package de.cosmocode.commons;
 
 import com.google.common.base.Preconditions;
+
+import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.AbstractRule;
 
 import javax.annotation.Nullable;
@@ -25,9 +27,11 @@ import java.util.Date;
 /**
  * Implementation of {@link Dates#equalTo(java.util.Date)}.
  *
+ * @deprecated use {@link MoreObjects#asymmetricEqualTo(Object)}
  * @since 1.20
  * @author Oliver Lorenz
  */
+@Deprecated
 final class DateEqualsRule extends AbstractRule<Date> {
 
     private final Date value;

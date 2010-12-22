@@ -23,6 +23,7 @@ import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
+import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.Rule;
 import de.cosmocode.commons.validation.Rules;
 
@@ -94,12 +95,14 @@ public final class Dates {
      * then apply will return true if either one (input or given Date) returns true on equals.
      * It does not affect otherwise normal behaviour.
      *
+     * @deprecated use {@link MoreObjects#asymmetricEqualTo(Object)}
      * @since 1.20
      * @see Rules#equalTo(Object)
      * @see java.sql.Timestamp
      * @param other the other date to compare to
      * @return a rule which returns true if both Dates denote the same time
      */
+    @Deprecated
     public static Rule<Date> equalTo(@Nullable Date other) {
         return (other == null)
             ? Rules.<Date>isNull()
