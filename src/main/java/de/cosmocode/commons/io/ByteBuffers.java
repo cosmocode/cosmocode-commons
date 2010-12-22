@@ -20,8 +20,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Static utility class for {@link ByteBuffer}s.
  *
@@ -41,7 +39,6 @@ public final class ByteBuffers {
      * @throws NullPointerException if buffer is null
      */
     public static InputStream asInputStream(final ByteBuffer buffer) {
-        Preconditions.checkNotNull(buffer, "Buffer");
         return new ByteBufferInputStream(buffer);
     }
 
@@ -53,7 +50,6 @@ public final class ByteBuffers {
      * @throws NullPointerException if buffer is null
      */
     public static OutputStream asOutputStream(final ByteBuffer buffer) {
-        Preconditions.checkNotNull(buffer, "Buffer");
         return new ByteBufferOutputStream(buffer);
     }
     
