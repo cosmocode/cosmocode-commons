@@ -30,11 +30,11 @@ import de.cosmocode.commons.validation.Rules;
  * @author Willi Schoenborn
  * @param <T> generic parameter type
  */
-final class AsymmetricIsEqualToRule<T> extends AbstractRule<T> {
+final class AsymmetricEqualToRule<T> extends AbstractRule<T> {
 
     private final T target;
     
-    AsymmetricIsEqualToRule(T target) {
+    AsymmetricEqualToRule(T target) {
         this.target = Preconditions.checkNotNull(target, "Target");
     }
     

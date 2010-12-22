@@ -49,7 +49,7 @@ public final class MoreObjects {
      * @return an asymmetric equal to rule
      */
     public static <T> Rule<T> asymmetricEqualTo(@Nullable T target) {
-        return target == null ? Rules.<T>isNull() : new AsymmetricIsEqualToRule<T>(target);
+        return target == null ? Rules.<T>isNull() : new AsymmetricEqualToRule<T>(target);
     }
     
 }
