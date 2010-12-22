@@ -33,7 +33,7 @@ public final class ComposedRule<T, S> extends AbstractRule<S> {
     private final Rule<T> rule;
     private final Function<? super S, ? extends T> function;
     
-    public ComposedRule(Rule<T> rule, Function<? super S, ? extends T> function) {
+    ComposedRule(Rule<T> rule, Function<? super S, ? extends T> function) {
         this.rule = Preconditions.checkNotNull(rule, "Rule");
         this.function = Preconditions.checkNotNull(function, "Function");
     }

@@ -16,33 +16,39 @@
 
 package de.cosmocode.commons.validation;
 
+import com.google.common.collect.Lists;
+
 /**
- * Implementation of {@link Rules#isNotNull()}.
+ * Tests {@link SameAsRule}.
  *
- * @since 1.20
+ * @since 1.21
  * @author Willi Schoenborn
  */
-final class NotNullRule extends AbstractRule<Object> {
+public final class SameAsRuleTest extends AbstractRuleTest<String> {
+
+    @Override
+    public Rule<String> unit() {
+        return Rules.sameAs("value");
+    }
     
-    static final Rule<Object> INSTANCE = new NotNullRule();
+    @Override
+    protected Iterable<String> validInputs() {
+        return Lists.newArrayList("value");
+    }
     
-    private NotNullRule() {
-        
+    @Override
+    protected Iterable<String> invalidInputs() {
+        return Lists.newArrayList("any", "string", "but", "that", "special", "one");
     }
 
     @Override
-    public boolean apply(Object input) {
-        return input != null;
+    protected boolean satisfiedByNull() {
+        return false;
     }
     
     @Override
-    public Rule<Object> negate() {
-        return Rules.isNull();
-    }
-    
-    @Override
-    public String toString() {
-        return "Rules.isNotNull()";
+    protected String defaultValueForFind() {
+        return "default";
     }
     
 }

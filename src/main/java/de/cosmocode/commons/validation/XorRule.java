@@ -31,7 +31,7 @@ final class XorRule<T> extends AbstractRule<T> {
     private final Rule<? super T> left;
     private final Rule<? super T> right;
     
-    public XorRule(Rule<? super T> left, Rule<? super T> right) {
+    XorRule(Rule<? super T> left, Rule<? super T> right) {
         this.left = Preconditions.checkNotNull(left, "Left");
         this.right = Preconditions.checkNotNull(right, "Right");
     }

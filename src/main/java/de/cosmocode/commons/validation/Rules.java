@@ -16,9 +16,14 @@
 
 package de.cosmocode.commons.validation;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 /**
  * Utility class for {@link Rule}s.
@@ -41,7 +46,7 @@ public final class Rules {
      * @return a rule backed by the given predicate
      * @throws NullPointerException if predicate is null
      */
-    public static <T> Rule<T> of(Predicate<? super T> predicate) {
+    public static <T> Rule<T> of(@Nonnull Predicate<? super T> predicate) {
         if (predicate instanceof Rule<?>) {
             @SuppressWarnings("unchecked")
             final Rule<T> rule = (Rule<T>) predicate;
@@ -110,8 +115,8 @@ public final class Rules {
      * @param value the value to check agains
      * @return an identity checking rule
      */
-    public static <T> Rule<T> is(T value) {
-        return value == null ? Rules.<T>isNull() : new IsRule<T>(value);
+    public static <T> Rule<T> sameAs(@Nullable T value) {
+        return value == null ? Rules.<T>isNull() : new SameAsRule<T>(value);
     }
 
     /**
@@ -123,8 +128,8 @@ public final class Rules {
      * @param value the value to check agains
      * @return an non-identity checking rule
      */
-    public static <T> Rule<T> isNot(T value) {
-        return value == null ? Rules.<T>isNotNull() : is(value).negate();
+    public static <T> Rule<T> notSameAs(@Nullable T value) {
+        return sameAs(value).negate();
     }
     
     /**
@@ -135,8 +140,8 @@ public final class Rules {
      * @param target the value to check agains
      * @return an equality checking rule
      */
-    public static <T> Rule<T> equalTo(T target) {
-        return of(Predicates.equalTo(target));
+    public static <T> Rule<T> equalTo(@Nullable T target) {
+        return target == null ? Rules.<T>isNull() : new EqualToRule<T>(target);
     }
     
     /**
@@ -153,7 +158,7 @@ public final class Rules {
     
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is less than the given comparable.
+     * compared to value returns less than 0.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
@@ -162,13 +167,30 @@ public final class Rules {
      * @return a lt rule comparing input and value
      * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<E>, E> Rule<C> lt(E value) {
-        return new LtRule<C, E>(value);
+    public static <C extends Comparable<E>, E> Rule<C> lessThan(@Nonnull E value) {
+        return new LessThanRule<C, E>(value);
+    }
+    
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is less than the given comparable.
+     * 
+     * @deprecated use {@link #lessThan(Object)}
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a lt rule comparing input and value
+     * @throws NullPointerException if value is null
+     */
+    @Deprecated
+    public static <C extends Comparable<E>, E> Rule<C> lt(@Nonnull E value) {
+        return lessThan(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is less than or equals to the given value.
+     * compared to value returns 0 or less.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
@@ -177,13 +199,30 @@ public final class Rules {
      * @return a le rule comparing input and value
      * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<E>, E> Rule<C> le(E value) {
-        return new LeRule<C, E>(value);
+    public static <C extends Comparable<E>, E> Rule<C> lessThanOrEqualTo(@Nonnull E value) {
+        return new LessOrEqualToRule<C, E>(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is equals to the given value.
+     * is less than or equals to the given value.
+     * 
+     * @deprecated use {@link #lessThanOrEqualTo(Object)}
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a le rule comparing input and value
+     * @throws NullPointerException if value is null
+     */
+    @Deprecated
+    public static <C extends Comparable<E>, E> Rule<C> le(@Nonnull E value) {
+        return lessThanOrEqualTo(value);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * compared to value returns 0.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
@@ -192,13 +231,30 @@ public final class Rules {
      * @return a eq rule comparing input and value
      * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<E>, E> Rule<C> eq(E value) {
-        return new EqRule<C, E>(value);
+    public static <C extends Comparable<E>, E> Rule<C> comparesTo(@Nonnull E value) {
+        return new ComparesToRule<C, E>(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is greater than or equals to the given value.
+     * is equals to the given value.
+     * 
+     * @deprecated use {@link #comparesTo(Object)}
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a eq rule comparing input and value
+     * @throws NullPointerException if value is null
+     */
+    @Deprecated
+    public static <C extends Comparable<E>, E> Rule<C> eq(@Nonnull E value) {
+        return comparesTo(value);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * compared to value return 0 or more.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
@@ -207,13 +263,30 @@ public final class Rules {
      * @return a ge rule comparing input and value
      * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<E>, E> Rule<C> ge(E value) {
-        return new GeRule<C, E>(value);
+    public static <C extends Comparable<E>, E> Rule<C> greaterThanOrEqualTo(@Nonnull E value) {
+        return new GreaterOrEqualToRule<C, E>(value);
     }
 
     /**
      * Returns a rule which evaluates to true if the supplied input
-     * is greater than the given value.
+     * is greater than or equals to the given value.
+     * 
+     * @deprecated use {@link #greaterThanOrEqualTo(Object)}
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a ge rule comparing input and value
+     * @throws NullPointerException if value is null
+     */
+    @Deprecated
+    public static <C extends Comparable<E>, E> Rule<C> ge(@Nonnull E value) {
+        return greaterThanOrEqualTo(value);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * compared to value returns more than 0.
      * 
      * @since 1.9
      * @param <C> the generic parameter type
@@ -222,8 +295,25 @@ public final class Rules {
      * @return a gt rule comparing input and value
      * @throws NullPointerException if value is null
      */
-    public static <C extends Comparable<E>, E> Rule<C> gt(E value) {
-        return new GtRule<C, E>(value);
+    public static <C extends Comparable<E>, E> Rule<C> greaterThan(@Nonnull E value) {
+        return new GreaterThanRule<C, E>(value);
+    }
+
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is greater than the given value.
+     * 
+     * @deprecated use {@link #greaterThan(Object)}
+     * @since 1.9
+     * @param <C> the generic parameter type
+     * @param <E> generic parameter type
+     * @param value the value
+     * @return a gt rule comparing input and value
+     * @throws NullPointerException if value is null
+     */
+    @Deprecated
+    public static <C extends Comparable<E>, E> Rule<C> gt(@Nonnull E value) {
+        return greaterThan(value);
     }
 
     /**
@@ -238,53 +328,24 @@ public final class Rules {
      * @return a between rule comparing input with lower and upper
      * @throws NullPointerException if lower or upper is null
      */
-    public static <C extends Comparable<E>, E> Rule<C> between(E lower, E upper) {
-        return gt(lower).and(lt(upper));
-    }
-
-    /**
-     * Returns a rule which evaluates to true if all elements in the supplied iterable input
-     * satisfy the given rule.
-     *
-     * @since 1.21
-     * @param singleApplicableRule single rule that is applied to all sub elements
-     * @param <E> type of element in Iterable
-     * @return a rule that verifies that all elements in an iterable satisfy a given rule
-     * @throws NullPointerException if singleApplicableRule is null
-     */
-    @Beta
-    public static <E> Rule<Iterable<E>> all(final Rule<E> singleApplicableRule) {
-        return new AllOfIterableRule<E>(singleApplicableRule);
-    }
-
-    /**
-     * Returns a rule which evaluates to true if any element in the supplied iterable input
-     * satisfies the given rule.
-     *
-     * @since 1.21
-     * @param singleApplicableRule single rule that is applied to all sub elements
-     * @param <E> type of element in Iterable
-     * @return a rule that verifies that any element in an iterable satisfies a given rule
-     * @throws NullPointerException if singleApplicableRule is null
-     */
-    @Beta
-    public static <E> Rule<Iterable<E>> any(final Rule<E> singleApplicableRule) {
-        return new AnyOfIterableRule<E>(singleApplicableRule);
-    }
-
-    /**
-     * Returns a rule which evaluates to true if NO elements in the supplied iterable input
-     * satisfy the given rule.
-     *
-     * @since 1.21
-     * @param singleApplicableRule single rule that is applied to all sub elements
-     * @param <E> type of element in Iterable
-     * @return a rule that verifies that no element in an iterable satisfies a given rule
-     * @throws NullPointerException if singleApplicableRule is null
-     */
-    @Beta
-    public static <E> Rule<Iterable<E>> none(final Rule<E> singleApplicableRule) {
-        return new NoneOfIterableRule<E>(singleApplicableRule);
+    public static <C extends Comparable<E>, E> Rule<C> between(@Nonnull E lower, @Nonnull E upper) {
+        return greaterThan(lower).and(lessThan(upper));
     }
     
+    /**
+     * Returns a rule which evaluates to true if the supplied input
+     * is greater than or equal to lower and less than or equal to upper.
+     *
+     * @since 1.21
+     * @param <C> the generic parameter type
+     * @param <E> generic parameter type
+     * @param lower the lower bound
+     * @param upper the upper bound
+     * @return a between rule comparing input with lower and upper
+     * @throws NullPointerException if lower or upper is null
+     */
+    public static <C extends Comparable<E>, E> Rule<C> betweenOrEqualTo(@Nonnull E lower, @Nonnull E upper) {
+        return greaterThanOrEqualTo(lower).and(lessThanOrEqualTo(upper));
+    }
+
 }

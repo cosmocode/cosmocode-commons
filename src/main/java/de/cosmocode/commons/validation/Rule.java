@@ -16,10 +16,16 @@
 
 package de.cosmocode.commons.validation;
 
+import java.util.NoSuchElementException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.annotations.Beta;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Constraint;
+import com.google.common.collect.Iterables;
 
 /**
  * An extension to the {@link Constraint} and {@link Predicate}
@@ -32,7 +38,90 @@ import com.google.common.collect.Constraint;
  */
 @Beta
 public interface Rule<T> extends Predicate<T>, Constraint<T> {
+    
+    @Override
+    boolean apply(@Nullable T input);
+    
+    @Override
+    T checkElement(@Nullable T element);
+    
+    /**
+     * Returns true if every element in inputs satisfies this rule. If iterable is empty, true is returned.
+     *
+     * @since 1.21
+     * @param inputs all inputs
+     * @return true if every element satisfies this rule, false otherwise
+     */
+    @Beta
+    boolean all(@Nonnull Iterable<? extends T> inputs);
 
+    /**
+     * Returns true if one or more elements in inputs satisfies this rule.
+     *
+     * @since 1.21
+     * @param inputs all inputs
+     * @return true if any element satisfies this rule, false otherwise
+     */
+    @Beta
+    boolean any(@Nonnull Iterable<? extends T> inputs);
+
+    /**
+     * Returns true if no element in inputs satisfies this rule. If iterable is empty, true is returned.
+     *
+     * @since 1.21
+     * @param inputs all inputs
+     * @return true if none element satisfies this input
+     */
+    @Beta
+    boolean none(@Nonnull Iterable<? extends T> inputs);
+
+    /**
+     * Returns the elements of unfiltered that satisfy this rule.
+     * The resulting iterable's iterator does not support remove().
+     *
+     * @since 1.21
+     * @param unfiltered the backing unfiltered iterable
+     * @return a filtered live view of unfiltered
+     */
+    @Beta
+    Iterable<T> filter(@Nonnull Iterable<T> unfiltered);
+
+    /**
+     * Returns the first element in iterable that satisfies this rule.
+     * {@link Iterables#find(Iterable, Predicate)}
+     *
+     * @since 1.21
+     * @param iterable the iterable to search in
+     * @return the found element
+     * @throws NoSuchElementException if no element in iterable matches the given predicate
+     */
+    @Beta
+    T find(@Nonnull Iterable<? extends T> iterable);
+
+    /**
+     * Returns the first element in iterable that satisfies the given predicate, or defaultValue if none found.
+     * {@link Iterables#find(Iterable, Predicate, Object)}
+     *
+     * @since 1.21
+     * @param iterable the iterable to search in
+     * @param defaultValue the return value if no element is found 
+     * @return the found element or defaultValue if no element was found 
+     */
+    @Beta
+    T find(@Nonnull Iterable<T> iterable, @Nullable T defaultValue);
+    
+    /**
+     * Removes, from an iterable, every element that satisfies the provided predicate.
+     * {@link Iterables#removeIf(Iterable, Predicate)}
+     *
+     * @since 1.21
+     * @param removeFrom the iterable to (potentially) remove elements from
+     * @return true if any elements were removed from the iterable
+     * @throws UnsupportedOperationException if the iterable does not support remove()
+     */
+    @Beta
+    boolean removeIf(@Nonnull Iterable<? extends T> removeFrom);
+    
     /**
      * Returns a {@link Rule} that is a conjunction
      * of this rule and the given rule.
@@ -43,9 +132,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @return a conjuction rule
      * @throws NullPointerException if that is null
      */
-    // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>and(Strings.contains("b"));
-    <S extends T> Rule<S> and(Rule<? super T> that);
+    <S extends T> Rule<S> and(@Nonnull Rule<? super T> that);
 
     /**
      * Returns a {@link Rule} that is a conjunction
@@ -57,9 +144,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @return a conjuction rule
      * @throws NullPointerException if that is null
      */
-    // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>and(Strings.contains("b"));
-    <S extends T> Rule<S> and(Predicate<? super T> that);
+    <S extends T> Rule<S> and(@Nonnull Predicate<? super T> that);
 
     /**
      * Returns a {@link Rule} that is a disjunction
@@ -71,9 +156,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @return a disjunction rule
      * @throws NullPointerException if that is null
      */
-    // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>or(Strings.contains("b"));
-    <S extends T> Rule<S> or(Rule<? super T> that);
+    <S extends T> Rule<S> or(@Nonnull Rule<? super T> that);
 
 
     /**
@@ -86,9 +169,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @return a disjunction rule
      * @throws NullPointerException if that is null
      */
-    // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>or(Strings.contains("b"));
-    <S extends T> Rule<S> or(Predicate<? super T> that);
+    <S extends T> Rule<S> or(@Nonnull Predicate<? super T> that);
     
     /**
      * Returns a {@link Rule} that is a negation of this rule.
@@ -97,8 +178,6 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @param <S> generic type parameter to prevent verbose generics
      * @return the negated version of this rule
      */
-    // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>or(Strings.contains("b")).negate();
     <S extends T> Rule<S> negate();
     
     /**
@@ -122,9 +201,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @return a xor rule
      * @throws NullPointerException if that is null
      */
-    // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>xor(Strings.contains("b"));
-    <S extends T> Rule<S> xor(Rule<? super T> that);
+    <S extends T> Rule<S> xor(@Nonnull Rule<? super T> that);
 
     /**
      * Returns a xor {@link Rule} of this rule and the given predicate.
@@ -135,9 +212,7 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @return a xor rule
      * @throws NullPointerException if that is null
      */
-    // type parameter <S> lets us avoid the extra <String> in statements like:
-    // Strings.contains("a").<String>xor(Strings.contains("b"));
-    <S extends T> Rule<S> xor(Predicate<? super T> that);
+    <S extends T> Rule<S> xor(@Nonnull Predicate<? super T> that);
     
     /**
      * Composes this rule into another rule using the specified
@@ -149,6 +224,6 @@ public interface Rule<T> extends Predicate<T>, Constraint<T> {
      * @return a composed rule of this rule the given function
      * @throws NullPointerException if function is null
      */
-    <S> Rule<S> compose(Function<? super S, ? extends T> function);
+    <S> Rule<S> compose(@Nonnull Function<? super S, ? extends T> function);
     
 }

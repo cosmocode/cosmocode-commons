@@ -19,60 +19,46 @@ package de.cosmocode.commons.validation;
 import com.google.common.base.Preconditions;
 
 /**
- * Implementation of {@link Rule#negate()}.
+ * Implementation of {@link Rules#eq(Comparable)}.
  *
  * @since 1.9
  * @author Willi Schoenborn
- * @param <T> generic parameter type
+ * @param <C> comparable generic parameter type
+ * @param <E> generic parameter type
  */
-final class NegatedRule<T> extends AbstractRule<T> {
+final class ComparesToRule<C extends Comparable<E>, E> extends AbstractRule<C> {
 
-    private final Rule<T> rule;
+    private final E value;
     
-    NegatedRule(Rule<T> rule) {
-        this.rule = Preconditions.checkNotNull(rule, "Rule");
+    ComparesToRule(E value) {
+        this.value = Preconditions.checkNotNull(value, "Value");
     }
-    
+
     @Override
-    public boolean apply(T input) {
-        return !rule.apply(input);
+    public boolean apply(C input) {
+        return input == null ? false : input.compareTo(value) == 0;
     }
-    
-    @Override
-    public boolean all(Iterable<? extends T> inputs) {
-        return rule.none(inputs);
-    }
-    
-    @Override
-    public boolean none(Iterable<? extends T> inputs) {
-        return rule.all(inputs);
-    }
-    
-    @Override
-    public Rule<T> negate() {
-        return rule;
-    }
-    
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (that instanceof NegatedRule<?>) {
-            final NegatedRule<?> other = NegatedRule.class.cast(that);
-            return rule.equals(other.rule);
+        } else if (that instanceof ComparesToRule<?, ?>) {
+            final ComparesToRule<?, ?> other = ComparesToRule.class.cast(that);
+            return value.equals(other.value);
         } else {
             return false;
         }
     }
-    
+
     @Override
     public int hashCode() {
-        return -rule.hashCode();
+        return value.hashCode() ^ -895454554;
     }
-    
+
     @Override
     public String toString() {
-        return rule + ".negate()";
+        return "Rules.comparesTo(" + value + ")";
     }
 
 }

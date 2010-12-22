@@ -16,31 +16,41 @@
 
 package de.cosmocode.commons.validation;
 
-import com.google.common.base.Preconditions;
+import java.util.Arrays;
+
+import com.google.common.collect.Lists;
 
 /**
- * A {@link Rule} which checks for identity.
+ * Tests {@link GreaterThanRule}.
  *
- * @since 1.20
+ * @since 1.21
  * @author Willi Schoenborn
- * @param <T> the generic parameter type
  */
-final class IsRule<T> extends AbstractRule<T> {
+public final class GreaterThanRuleTest extends AbstractRuleTest<String> {
 
-    private final T value;
+    @Override
+    public Rule<String> unit() {
+        return Rules.greaterThan("b");
+    }
     
-    IsRule(T value) {
-        this.value = Preconditions.checkNotNull(value, "Value");
-    }
-
     @Override
-    public boolean apply(T input) {
-        return input == value;
+    protected Iterable<String> validInputs() {
+        return Lists.newArrayList("c", "d", "e");
     }
-
+    
     @Override
-    public String toString() {
-        return "Rules.is(" + value + ")";
+    protected Iterable<String> invalidInputs() {
+        return Lists.newArrayList("b", "a", "Z", null);
+    }
+    
+    @Override
+    protected boolean satisfiedByNull() {
+        return false;
+    }
+    
+    @Override
+    protected String defaultValueForFind() {
+        return "z";
     }
     
 }

@@ -43,6 +43,41 @@ abstract class ForwardingRule<T> extends ForwardingObject implements Rule<T> {
     }
     
     @Override
+    public boolean all(Iterable<? extends T> inputs) {
+        return delegate().all(inputs);
+    }
+
+    @Override
+    public boolean any(Iterable<? extends T> inputs) {
+        return delegate().any(inputs);
+    }
+
+    @Override
+    public boolean none(Iterable<? extends T> inputs) {
+        return delegate().none(inputs);
+    }
+
+    @Override
+    public Iterable<T> filter(Iterable<T> unfiltered) {
+        return delegate().filter(unfiltered);
+    }
+
+    @Override
+    public T find(Iterable<? extends T> iterable) {
+        return delegate().find(iterable);
+    }
+
+    @Override
+    public T find(Iterable<T> iterable, T defaultValue) {
+        return delegate().find(iterable, defaultValue);
+    }
+
+    @Override
+    public boolean removeIf(Iterable<? extends T> removeFrom) {
+        return delegate().removeIf(removeFrom);
+    }
+
+    @Override
     public <S extends T> Rule<S> and(Rule<? super T> that) {
         return delegate().and(that);
     }
@@ -77,9 +112,29 @@ abstract class ForwardingRule<T> extends ForwardingObject implements Rule<T> {
         return delegate().negate();
     }
 
+    /**
+     * {@inheritDoc}
+     * @deprecated use {@link #negate()}
+     */
+    @Deprecated
+    @Override
+    public <S extends T> Rule<S> not() {
+        return delegate().not();
+    }
+
     @Override
     public <S> Rule<S> compose(Function<? super S, ? extends T> function) {
         return delegate().compose(function);
+    }
+    
+    @Override
+    public boolean equals(Object that) {
+        return delegate().equals(that);
+    }
+    
+    @Override
+    public int hashCode() {
+        return delegate().hashCode();
     }
     
 }

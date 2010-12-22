@@ -16,19 +16,19 @@
 
 package de.cosmocode.commons;
 
-import com.google.common.collect.Lists;
-import de.cosmocode.commons.validation.Rule;
-import de.cosmocode.commons.validation.Rules;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 /**
  * Tests the static classes in the {@link TimePeriods} helper class.
@@ -45,6 +45,11 @@ public final class TimePeriodsTest {
     private Date tomorrow;
     private List<TimePeriod> periods;
 
+    /**
+     * Runs before each test.
+     *
+     * @since 1.21
+     */
     @Before
     public void setUpTestDates() {
         final Calendar calendar = Calendar.getInstance();
@@ -209,21 +214,12 @@ public final class TimePeriodsTest {
     }
 
     /**
-     * Tests the toString() of the long, combined list rule.
-     */
-    @Test
-    public void containsInclusiveListToString() {
-        final Rule<Iterable<TimePeriod>> containsYesterday = Rules.any(TimePeriods.containsInclusive(yesterday));
-        LOG.debug("toString() of Rules.any(TimePeriods.containsInclusive(yesterday)): {}", containsYesterday);
-    }
-
-    /**
      * Tests a combined rule that is true if any TimePeriod in the list contains a given date.
      */
     @Test
     public void containsInclusiveList() {
         final boolean expected = true;
-        final boolean actual = Rules.any(TimePeriods.containsInclusive(yesterday)).apply(periods);
+        final boolean actual = TimePeriods.containsInclusive(yesterday).any(periods);
         Assert.assertEquals(expected, actual);
     }
 
@@ -235,7 +231,7 @@ public final class TimePeriodsTest {
         final Date threeDaysAgo = Dates.nowPlus(Calendar.DAY_OF_MONTH, -3);
 
         final boolean expected = true;
-        final boolean actual = Rules.any(TimePeriods.containsInclusive(threeDaysAgo)).apply(periods);
+        final boolean actual = TimePeriods.containsInclusive(threeDaysAgo).any(periods);
         Assert.assertEquals(expected, actual);
     }
 
@@ -246,7 +242,7 @@ public final class TimePeriodsTest {
     @Test
     public void containsInclusiveListFarFuture() {
         final boolean expected = false;
-        final boolean actual = Rules.any(TimePeriods.containsInclusive(Dates.nowPlus(Calendar.YEAR, 1))).apply(periods);
+        final boolean actual = TimePeriods.containsInclusive(Dates.nowPlus(Calendar.YEAR, 1)).any(periods);
         Assert.assertEquals(expected, actual);
     }
 
@@ -283,21 +279,9 @@ public final class TimePeriodsTest {
         final TimePeriod first = Dates.timePeriod(today, tomorrow);
 
         final boolean expected = true;
-        final boolean actual = Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)).apply(periods);
+        final boolean actual = TimePeriods.overlaps(first, OverlapMode.NORMAL).any(periods);
         Assert.assertEquals(expected, actual);
-        LOG.debug("toString() of overlap on list: {}", Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)));
-    }
-
-    /**
-     * Tests {@link TimePeriods#overlaps(TimePeriod, OverlapMode)} with a list (together with Rules.any), null as input.
-     */
-    @Test
-    public void overlapsListNull() {
-        final TimePeriod first = Dates.timePeriod(today, tomorrow);
-
-        final boolean expected = false;
-        final boolean actual = Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)).apply(null);
-        Assert.assertEquals(expected, actual);
+        LOG.debug("toString() of overlap on list: {}", TimePeriods.overlaps(first, OverlapMode.NORMAL));
     }
 
     /**
@@ -309,7 +293,7 @@ public final class TimePeriodsTest {
             Dates.nowPlus(Calendar.DAY_OF_MONTH, -30), Dates.nowPlus(Calendar.DAY_OF_MONTH, -25));
 
         final boolean expected = false;
-        final boolean actual = Rules.any(TimePeriods.overlaps(first, OverlapMode.NORMAL)).apply(periods);
+        final boolean actual = TimePeriods.overlaps(first, OverlapMode.NORMAL).any(periods);
         Assert.assertEquals(expected, actual);
     }
 

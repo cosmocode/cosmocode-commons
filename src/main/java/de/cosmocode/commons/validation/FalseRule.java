@@ -16,9 +16,13 @@
 
 package de.cosmocode.commons.validation;
 
+import java.util.Collections;
+import java.util.NoSuchElementException;
+
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 /**
  * Rule implementation which always evaluates to {@code false}.
@@ -38,6 +42,48 @@ enum FalseRule implements Rule<Object> {
     @Override
     public Object checkElement(Object element) {
         throw new IllegalArgumentException(element + " does not satisfy " + this);
+    }
+    
+    @Override
+    public boolean all(Iterable<? extends Object> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return Iterables.isEmpty(inputs);
+    }
+    
+    @Override
+    public boolean any(Iterable<? extends Object> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return false;
+    }
+    
+    @Override
+    public boolean none(Iterable<? extends Object> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return true;
+    }
+    
+    @Override
+    public Iterable<Object> filter(Iterable<Object> unfiltered) {
+        Preconditions.checkNotNull(unfiltered, "Unfiltered");
+        return Collections.emptySet();
+    }
+    
+    @Override
+    public Object find(Iterable<? extends Object> iterable) {
+        Preconditions.checkNotNull(iterable, "Iterable");
+        throw new NoSuchElementException();
+    }
+    
+    @Override
+    public Object find(Iterable<Object> iterable, Object defaultValue) {
+        Preconditions.checkNotNull(iterable, "Iterable");
+        return defaultValue;
+    }
+    
+    @Override
+    public boolean removeIf(Iterable<? extends Object> removeFrom) {
+        Preconditions.checkNotNull(removeFrom, "RemoveFrom");
+        return false;
     }
 
     @Override

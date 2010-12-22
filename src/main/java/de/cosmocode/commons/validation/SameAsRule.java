@@ -19,46 +19,46 @@ package de.cosmocode.commons.validation;
 import com.google.common.base.Preconditions;
 
 /**
- * Implementation of {@link Rules#lt(Comparable)}.
+ * A {@link Rule} which checks for identity.
  *
- * @since 1.9
+ * @since 1.20
  * @author Willi Schoenborn
- * @param <C> comparable generic parameter type
- * @param <E> generic parameter type
+ * @param <T> the generic parameter type
  */
-final class LtRule<C extends Comparable<E>, E> extends AbstractRule<C> {
+final class SameAsRule<T> extends AbstractRule<T> {
 
-    private final E value;
+    private final T value;
     
-    public LtRule(E value) {
+    SameAsRule(T value) {
         this.value = Preconditions.checkNotNull(value, "Value");
     }
 
     @Override
-    public boolean apply(C input) {
-        return input.compareTo(value) < 0;
+    public boolean apply(T input) {
+        return input == value;
     }
 
     @Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (that instanceof LtRule<?, ?>) {
-            final LtRule<?, ?> other = LtRule.class.cast(that);
-            return value.equals(other.value);
+        } else if (that instanceof SameAsRule<?>) {
+            final SameAsRule<?> other = SameAsRule.class.cast(that);
+            // this rule is identity based
+            return value == other.value;
         } else {
             return false;
         }
     }
-
+    
     @Override
     public int hashCode() {
-        return value.hashCode() ^ 985365749;
+        return value.hashCode() ^ -875423434;
     }
-
+    
     @Override
     public String toString() {
-        return "Rules.lt(" + value + ")";
+        return "Rules.sameAs(" + value + ")";
     }
-
+    
 }

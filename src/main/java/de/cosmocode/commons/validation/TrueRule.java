@@ -16,9 +16,12 @@
 
 package de.cosmocode.commons.validation;
 
+import java.util.Iterator;
+
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 /**
  * Rule implementation which always evaluates to {@code true}.
@@ -38,6 +41,47 @@ enum TrueRule implements Rule<Object> {
     @Override
     public Object checkElement(Object element) {
         return element;
+    }
+    
+    @Override
+    public boolean all(Iterable<? extends Object> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return true;
+    }
+    
+    @Override
+    public boolean any(Iterable<? extends Object> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return inputs.iterator().hasNext();
+    }
+    
+    @Override
+    public boolean none(Iterable<? extends Object> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return Iterables.isEmpty(inputs);
+    }
+    
+    @Override
+    public Iterable<Object> filter(Iterable<Object> unfiltered) {
+        return Preconditions.checkNotNull(unfiltered, "Unfiltered");
+    }
+
+    @Override
+    public Object find(Iterable<? extends Object> iterable) {
+        Preconditions.checkNotNull(iterable, "Iterable");
+        return iterable.iterator().next();
+    }
+    
+    @Override
+    public Object find(Iterable<Object> iterable, Object defaultValue) {
+        Preconditions.checkNotNull(iterable, "Iterable");
+        return Iterables.getFirst(iterable, defaultValue);
+    }
+    
+    @Override
+    public boolean removeIf(Iterable<? extends Object> removeFrom) {
+        Preconditions.checkNotNull(removeFrom, "RemoveFrom");
+        return Iterables.removeIf(removeFrom, this);
     }
     
     @Override

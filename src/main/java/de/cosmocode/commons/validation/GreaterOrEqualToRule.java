@@ -19,32 +19,32 @@ package de.cosmocode.commons.validation;
 import com.google.common.base.Preconditions;
 
 /**
- * Implementation of {@link Rules#le(Comparable)}.
+ * Implementation of {@link Rules#ge(Comparable)}.
  *
  * @since 1.9
  * @author Willi Schoenborn
  * @param <C> comparable generic parameter type
  * @param <E> generic parameter type
  */
-final class LeRule<C extends Comparable<E>, E> extends AbstractRule<C> {
+final class GreaterOrEqualToRule<C extends Comparable<E>, E> extends AbstractRule<C> {
 
     private final E value;
     
-    public LeRule(E value) {
+    GreaterOrEqualToRule(E value) {
         this.value = Preconditions.checkNotNull(value, "Value");
     }
 
     @Override
     public boolean apply(C input) {
-        return input.compareTo(value) <= 0;
+        return input == null ? false : input.compareTo(value) >= 0;
     }
 
     @Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (that instanceof LeRule<?, ?>) {
-            final LeRule<?, ?> other = LeRule.class.cast(that);
+        } else if (that instanceof GreaterOrEqualToRule<?, ?>) {
+            final GreaterOrEqualToRule<?, ?> other = GreaterOrEqualToRule.class.cast(that);
             return value.equals(other.value);
         } else {
             return false;
@@ -53,12 +53,12 @@ final class LeRule<C extends Comparable<E>, E> extends AbstractRule<C> {
 
     @Override
     public int hashCode() {
-        return value.hashCode() ^ 981245872;
+        return value.hashCode() ^ -454782457;
     }
 
     @Override
     public String toString() {
-        return "Rules.le(" + value + ")";
+        return "Rules.greaterThanOrEqualTo(" + value + ")";
     }
 
 }

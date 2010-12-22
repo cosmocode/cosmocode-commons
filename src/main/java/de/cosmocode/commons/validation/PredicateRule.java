@@ -30,7 +30,7 @@ final class PredicateRule<T> extends AbstractRule<T> {
     
     private final Predicate<? super T> predicate;
     
-    public PredicateRule(Predicate<? super T> predicate) {
+    PredicateRule(Predicate<? super T> predicate) {
         this.predicate = Preconditions.checkNotNull(predicate, "Predicate");
     }
 
@@ -53,12 +53,12 @@ final class PredicateRule<T> extends AbstractRule<T> {
     
     @Override
     public int hashCode() {
-        return predicate.hashCode();
+        return predicate.hashCode() ^ -865723423;
     }
     
     @Override
     public String toString() {
-        return "Rules.asRule(" + predicate + ")";
+        return "Rules.of(" + predicate + ")";
     }
     
 }

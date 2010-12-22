@@ -31,7 +31,7 @@ final class AndRule<T> extends AbstractRule<T> {
     private final Rule<? super T> left;
     private final Rule<? super T> right;
     
-    public AndRule(Rule<? super T> left, Rule<? super T> right) {
+    AndRule(Rule<? super T> left, Rule<? super T> right) {
         this.left = Preconditions.checkNotNull(left, "Left");
         this.right = Preconditions.checkNotNull(right, "Right");
     }

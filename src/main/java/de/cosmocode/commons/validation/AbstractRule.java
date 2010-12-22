@@ -23,6 +23,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Constraint;
+import com.google.common.collect.Iterables;
 
 /**
  * Abstract {@link Rule} implementation.
@@ -56,11 +57,52 @@ public abstract class AbstractRule<T> implements Rule<T> {
     protected T transform(T element) {
         return element;
     }
+    
+    @Override
+    public boolean all(Iterable<? extends T> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return Iterables.all(inputs, this);
+    }
+    
+    @Override
+    public boolean any(Iterable<? extends T> inputs) {
+        Preconditions.checkNotNull(inputs, "Inputs");
+        return Iterables.any(inputs, this);
+    }
+    
+    @Override
+    public boolean none(Iterable<? extends T> inputs) {
+        return !any(inputs);
+    }
+    
+    @Override
+    public Iterable<T> filter(Iterable<T> unfiltered) {
+        Preconditions.checkNotNull(unfiltered, "Unfiltered");
+        return Iterables.filter(unfiltered, this);
+    }
+    
+    @Override
+    public T find(Iterable<? extends T> iterable) {
+        Preconditions.checkNotNull(iterable, "Iterable");
+        return Iterables.find(iterable, this);
+    }
+    
+    @Override
+    public T find(Iterable<T> iterable, T defaultValue) {
+        Preconditions.checkNotNull(iterable, "Iterable");
+        return Iterables.find(iterable, this, defaultValue);
+    }
+    
+    @Override
+    public boolean removeIf(Iterable<? extends T> removeFrom) {
+        Preconditions.checkNotNull(removeFrom, "RemoveFrom");
+        return Iterables.removeIf(removeFrom, this);
+    }
 
     @Override
     public <S extends T> Rule<S> and(Rule<? super T> that) {
         if (equals(that)) {
-            LOG.info("{}.and({}) has been optimized", this, that);
+            LOG.debug("{}.and({}) has been optimized", this, that);
             return Rules.<S>of(this);
         } else {
             return new AndRule<S>(this, that);
@@ -75,7 +117,7 @@ public abstract class AbstractRule<T> implements Rule<T> {
     @Override
     public <S extends T> Rule<S> or(Rule<? super T> that) {
         if (equals(that)) {
-            LOG.info("{}.or({}) has been optimized", this, that);
+            LOG.debug("{}.or({}) has been optimized", this, that);
             return Rules.<S>of(this);
         } else {
             return new OrRule<S>(this, that);
@@ -90,9 +132,7 @@ public abstract class AbstractRule<T> implements Rule<T> {
     @Override
     public <S extends T> Rule<S> xor(Rule<? super T> that) {
         if (equals(that)) {
-            LOG.warn("{}.xor({}) evaluates to {}", new Object[] {
-                this, that, Rules.alwaysFalse()
-            });
+            LOG.debug("{}.xor({}) has been optimized", this, that);
             return Rules.<S>alwaysFalse();
         } else {
             return new XorRule<S>(this, that);
@@ -109,6 +149,11 @@ public abstract class AbstractRule<T> implements Rule<T> {
         return new NegatedRule<T>(this);
     }
     
+    /**
+     * {@inheritDoc}
+     * @deprecated use {@link #negate()}
+     */
+    @Deprecated
     @Override
     public Rule<T> not() {
         return negate();

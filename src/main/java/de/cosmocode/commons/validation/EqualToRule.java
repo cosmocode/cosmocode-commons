@@ -16,36 +16,38 @@
 
 package de.cosmocode.commons.validation;
 
+import javax.annotation.Nullable;
+
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
- * Implementation of {@link Rules#gt(Comparable)}.
+ * Implementation of {@link Rules#equalTo(Object)}.
  *
- * @since 1.9
+ * @since 1.21
  * @author Willi Schoenborn
- * @param <C> comparable generic parameter type
- * @param <E> generic parameter type
+ * @param <T> generic parameter type
  */
-final class GtRule<C extends Comparable<E>, E> extends AbstractRule<C> {
+public final class EqualToRule<T> extends AbstractRule<T> {
 
-    private final E value;
+    private final T target;
     
-    public GtRule(E value) {
-        this.value = Preconditions.checkNotNull(value, "Value");
+    EqualToRule(T target) {
+        this.target = Preconditions.checkNotNull(target, "Target");
     }
-
+    
     @Override
-    public boolean apply(C input) {
-        return input.compareTo(value) > 0;
+    public boolean apply(@Nullable T input) {
+        return target.equals(input);
     }
 
     @Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;
-        } else if (that instanceof GtRule<?, ?>) {
-            final GtRule<?, ?> other = GtRule.class.cast(that);
-            return value.equals(other.value);
+        } else if (that instanceof EqualToRule<?>) {
+            final EqualToRule<?> other = EqualToRule.class.cast(that);
+            return target.equals(other.target);
         } else {
             return false;
         }
@@ -53,12 +55,12 @@ final class GtRule<C extends Comparable<E>, E> extends AbstractRule<C> {
 
     @Override
     public int hashCode() {
-        return value.hashCode() ^ -987455623;
+        return target.hashCode() ^ 858345845;
     }
-
+    
     @Override
     public String toString() {
-        return "Rules.gt(" + value + ")";
+        return "Rules.equalTo(" + target + ")";
     }
 
 }
