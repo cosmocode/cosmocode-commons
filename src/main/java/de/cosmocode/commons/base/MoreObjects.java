@@ -44,11 +44,12 @@ public final class MoreObjects {
      * broken equals implementations like {@link Date} and {@link Timestamp}. 
      *
      * @since 1.21
+     * @param <T> generic parameter type
      * @param target the target object
      * @return an asymmetric equal to rule
      */
-    public static Rule<Object> asymmetricEqualTo(@Nullable Object target) {
-        return target == null ? Rules.isNull() : new AsymmetricIsEqualToRule(target);
+    public static <T> Rule<T> asymmetricEqualTo(@Nullable T target) {
+        return target == null ? Rules.<T>isNull() : new AsymmetricIsEqualToRule<T>(target);
     }
     
 }

@@ -28,17 +28,18 @@ import de.cosmocode.commons.validation.Rules;
  *
  * @since 1.21
  * @author Willi Schoenborn
+ * @param <T> generic parameter type
  */
-final class AsymmetricIsEqualToRule extends AbstractRule<Object> {
+final class AsymmetricIsEqualToRule<T> extends AbstractRule<T> {
 
-    private final Object target;
+    private final T target;
     
-    AsymmetricIsEqualToRule(Object target) {
+    AsymmetricIsEqualToRule(T target) {
         this.target = Preconditions.checkNotNull(target, "Target");
     }
     
     @Override
-    public boolean apply(@Nullable Object input) {
+    public boolean apply(@Nullable T input) {
         if (input == null) {
             return false;
         } else {
