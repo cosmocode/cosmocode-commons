@@ -84,12 +84,14 @@ enum TrueRule implements Rule<Object> {
     
     @Override
     public <S> Rule<S> and(Rule<? super Object> that) {
-        return Rules.of(checkNotNull(that));
+        Preconditions.checkNotNull(that, "That");
+        return Rules.of(that);
     }
     
     @Override
     public <S> Rule<S> and(Predicate<? super Object> that) {
-        return Rules.of(checkNotNull(that));
+        Preconditions.checkNotNull(that, "That");
+        return Rules.of(that);
     }
     
     @Override
@@ -114,21 +116,19 @@ enum TrueRule implements Rule<Object> {
     
     @Override
     public <S> Rule<S> xor(Rule<? super Object> that) {
-        return checkNotNull(that).negate();
+        Preconditions.checkNotNull(that, "That");
+        return that.negate();
     }
     
     @Override
     public <S> Rule<S> xor(Predicate<? super Object> that) {
-        return xor(Rules.of(checkNotNull(that)));
+        Preconditions.checkNotNull(that, "That");
+        return xor(Rules.of(that));
     }
     
     @Override
     public <S> Rule<S> compose(Function<? super S, ? extends Object> function) {
         return new ComposedRule<Object, S>(this, function);
-    }
-    
-    private <O> O checkNotNull(O that) {
-        return Preconditions.checkNotNull(that, "That");
     }
     
     @Override
