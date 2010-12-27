@@ -179,7 +179,7 @@ public final class Dates {
      * @throws NullPointerException if start or end is null
      */
     public static Rule<Date> betweenInclusive(Date start, Date end) {
-        return between(start, end).or(equalTo(start)).or(equalTo(end));
+        return between(start, end).or(MoreObjects.asymmetricEqualTo(start)).or(MoreObjects.asymmetricEqualTo(end));
     }
 
     /**
