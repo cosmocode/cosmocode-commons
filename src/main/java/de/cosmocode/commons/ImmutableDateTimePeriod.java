@@ -16,14 +16,13 @@
 
 package de.cosmocode.commons;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-
-import com.google.common.annotations.Beta;
-import com.google.common.base.Preconditions;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Immutable implementation of {@link TimePeriod} using {@link Date}s.
@@ -34,35 +33,28 @@ import com.google.common.base.Preconditions;
 @Immutable
 @ThreadSafe
 @Beta
-final class ImmutableDateTimePeriod implements TimePeriod {
+final class ImmutableDateTimePeriod extends AbstractDateTimePeriod {
 
     private final Date start;
     private final Date end;
 
     public ImmutableDateTimePeriod(final Date start, final Date end) {
+        Preconditions.checkNotNull(start, "Start");
+        Preconditions.checkNotNull(end, "End");
+
         // create new Date objects from given parameters to prevent later modifications
-        this.start = new Date(Preconditions.checkNotNull(start, "Start").getTime());
-        this.end = new Date(Preconditions.checkNotNull(end, "End").getTime());
+        this.start = new Date(start.getTime());
+        this.end = new Date(end.getTime());
     }
 
     @Override
-    public Date getReference() {
-        return new Date(0);
+    public Date getStartsAt() {
+        return new Date(start.getTime());
     }
 
     @Override
-    public long getStart(TimeUnit unit) {
-        return unit.convert(start.getTime(), TimeUnit.MILLISECONDS);
-    }
-
-    @Override
-    public long getEnd(TimeUnit unit) {
-        return unit.convert(end.getTime(), TimeUnit.MILLISECONDS);
-    }
-
-    @Override
-    public TimeUnit getPrecision() {
-        return TimeUnit.MILLISECONDS;
+    public Date getEndsAt() {
+        return new Date(end.getTime());
     }
 
     @Override

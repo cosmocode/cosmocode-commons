@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 import com.google.gag.annotation.enforceable.CantTouchThis;
 import com.google.gag.annotation.remark.Magic;
@@ -243,14 +244,18 @@ public enum OverlapMode {
     /**
      * Checks whether two time periods overlap. The result depends on the enum value.
      *
+     * @since 1.21
      * @param a the first TimePeriod
      * @param b the second TimePeriod
      * @return true if the two time periods overlap, false otherwise
      * @throws NullPointerException if either a or b is null
      */
+    @Beta
     public final boolean isOverlapping(final TimePeriod a, final TimePeriod b) {
         Preconditions.checkNotNull(a, "a");
         Preconditions.checkNotNull(b, "b");
+
+        // to consider: optimization for AbstractDateTimePeriod? is instanceof check and cast faster than below logic?
 
         // get minimum precision
         final TimeUnit precision;
