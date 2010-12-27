@@ -49,12 +49,26 @@ final class ImmutableDateTimePeriod extends AbstractDateTimePeriod {
 
     @Override
     public Date getStartsAt() {
+        // returns new Date to preserve immutability of start
         return new Date(start.getTime());
     }
 
     @Override
     public Date getEndsAt() {
+        // returns new Date to preserve immutability of end
         return new Date(end.getTime());
+    }
+
+    @Override
+    public long getStart(TimeUnit unit) {
+        // overridden to avoid the overhead of getStartsAt()
+        return unit.convert(start.getTime(), TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public long getEnd(TimeUnit unit) {
+        // overridden to avoid the overhead of getEndsAt()
+        return unit.convert(end.getTime(), TimeUnit.MILLISECONDS);
     }
 
     @Override
