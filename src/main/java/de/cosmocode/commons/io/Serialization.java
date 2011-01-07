@@ -16,6 +16,8 @@
 
 package de.cosmocode.commons.io;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -85,6 +87,22 @@ public final class Serialization {
         // do not close stream, as it would close out
         LOG.trace("Saved {} to {}", serializable, out);
     }
+
+    /**
+     * Saves the given serializable to a byte array.
+     * 
+     * @since 1.21
+     * @param serializable the object to be saved
+     * @return the serialized object as a byte array
+     * @throws NullPointerException if serializable is null
+     * @throws IOException if saving failed
+     */
+    public static byte[] save(Serializable serializable) throws IOException {
+        Preconditions.checkNotNull(serializable, "Serializable");
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        save(serializable, out);
+        return out.toByteArray();
+    }
     
     /**
      * Restores an object from the specified file.
@@ -138,6 +156,28 @@ public final class Serialization {
         final Object object = stream.readObject();
         LOG.trace("Restored {} from {}", object, stream);
         return type.cast(object);
+    }
+
+    /**
+     * Restores an object from the specified byte array.
+     * 
+     * @since 1.13
+     * @param <T> the generic object type
+     * @param type the class literal of T used for typesafe casting
+     * @param array the source array
+     * @return the read instance of T
+     * @throws NullPointerException if type or array is null
+     * @throws IOException if restoring failed
+     * @throws ClassNotFoundException if the read object is an instance of an unknown class
+     * @throws ClassCastException if the deserialized object is not of type T
+     */
+    public static <T extends Serializable> T restore(Class<T> type, byte[] array) 
+        throws IOException, ClassNotFoundException {
+        
+        Preconditions.checkNotNull(type, "Type");
+        Preconditions.checkNotNull(array, "Array");
+        final ByteArrayInputStream in = new ByteArrayInputStream(array);
+        return restore(type, in);
     }
 
 }
