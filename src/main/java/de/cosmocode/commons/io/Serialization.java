@@ -97,6 +97,7 @@ public final class Serialization {
      * @throws NullPointerException if type or file is null
      * @throws IOException if restoring failed
      * @throws ClassNotFoundException if the read object is an instance of an unknown class
+     * @throws ClassCastException if the deserialized object is not of type T
      */
     public static <T extends Serializable> T restore(Class<T> type, File file) 
         throws IOException, ClassNotFoundException {
@@ -126,6 +127,7 @@ public final class Serialization {
      * @throws NullPointerException if type or in is null
      * @throws IOException if restoring failed
      * @throws ClassNotFoundException if the read object is an instance of an unknown class
+     * @throws ClassCastException if the deserialized object is not of type T
      */
     public static <T extends Serializable> T restore(Class<T> type, InputStream in) 
         throws IOException, ClassNotFoundException {
