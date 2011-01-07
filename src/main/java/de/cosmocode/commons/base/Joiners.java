@@ -30,7 +30,15 @@ public final class Joiners {
 
     public static final Joiner NEW_LINE = Joiner.on('\n');
     
-    public static final Joiner BLANK = Joiner.on(" ");
+    public static final Joiner SPACE = Joiner.on(' ');
+
+    /**
+     * Old name for {@link #SPACE}.
+     * 
+     * @deprecated replaced by {@link #SPACE}
+     */
+    @Deprecated
+    public static final Joiner BLANK = SPACE;
     
     public static final Joiner COMMA = Joiner.on(',');
     
