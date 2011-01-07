@@ -42,6 +42,10 @@ public final class Joiners {
     
     public static final Joiner COMMA = Joiner.on(',');
     
+    public static final Joiner COLON = Joiner.on(':');
+    
+    public static final Joiner SEMICOLON = Joiner.on(';');
+    
     /**
      * This joiner is especially useful when building string representations
      * of {@link Collection}s.
