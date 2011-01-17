@@ -34,7 +34,7 @@ import com.google.common.base.Preconditions;
 @Immutable
 @ThreadSafe
 @Beta
-final class ImmutableDateTimePeriod extends AbstractDateTimePeriod {
+final class ImmutableDateTimePeriod implements TimePeriod {
 
     private final Date start;
     private final Date end;
@@ -49,27 +49,23 @@ final class ImmutableDateTimePeriod extends AbstractDateTimePeriod {
     }
 
     @Override
-    public Date getStartsAt() {
-        // returns new Date to preserve immutability of start
-        return new Date(start.getTime());
+    public Date getReference() {
+        return new Date(0);
     }
 
     @Override
-    public Date getEndsAt() {
-        // returns new Date to preserve immutability of end
-        return new Date(end.getTime());
+    public long getStart() {
+        return start.getTime();
     }
 
     @Override
-    public long getStart(TimeUnit unit) {
-        // overridden to avoid the overhead of getStartsAt()
-        return unit.convert(start.getTime(), TimeUnit.MILLISECONDS);
+    public long getEnd() {
+        return end.getTime();
     }
 
     @Override
-    public long getEnd(TimeUnit unit) {
-        // overridden to avoid the overhead of getEndsAt()
-        return unit.convert(end.getTime(), TimeUnit.MILLISECONDS);
+    public TimeUnit getPrecision() {
+        return TimeUnit.MILLISECONDS;
     }
 
     @Override
@@ -93,10 +89,7 @@ final class ImmutableDateTimePeriod extends AbstractDateTimePeriod {
 
     @Override
     public String toString() {
-        return "ImmutableDateTimePeriod{" +
-                "start=" + start +
-                ", end=" + end +
-                '}';
+        return "ImmutableDateTimePeriod[" + "start=" + start + ", end=" + end + ']';
     }
 
 }

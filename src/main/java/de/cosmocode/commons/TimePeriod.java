@@ -40,39 +40,37 @@ public interface TimePeriod {
 
     /**
      * Returns the start of the time period.
+     * It is measured in {@link #getPrecision()}.
      *
-     * @param unit the unit in which the start time is returned
-     * @return the start of the time period, measured in the given TimeUnit
-     * @throws NullPointerException if unit is null
+     * @return the start of the time period, measured in {@link #getPrecision()}
      */
-    long getStart(TimeUnit unit);
+    long getStart();
 
     /**
      * Returns the end of the time period.
+     * It is measured in {@link #getPrecision()}.
      *
-     * @param unit the unit in which the end time is returned
-     * @return the end of the time period, measured in the given TimeUnit
-     * @throws NullPointerException if unit is null
+     * @return the end of the time period, measured in {@link #getPrecision()}
      */
-    long getEnd(TimeUnit unit);
+    long getEnd();
 
     /**
      * <p>
      * Returns the precision of this TimePeriod.
-     * The precision defines the minimum TimeUnit in which the difference between start and end can be 1.
+     * The precision defines the TimeUnit of {@link #getStart()} and {@link #getEnd()}.
      * </p>
      * <p>
      * For example if a TimePeriod stores its start and end in days (like a calendar),
-     * then the minimum precision is TimeUnit.DAYS.
+     * then the precision is TimeUnit.DAYS.
      * Another example: A TimePeriod using {@link java.util.Date}s has a precision of TimeUnit.MILLISECOND.
      * </p>
      * <p>
-     * If an implementation has a minimum precision above DAYS (for example years),
-     * then it should return TimeUnit.DAYS, since this can cover all measurable time periods
+     * Because TimePeriod only goes up to DAYS, any implementation can only have this as max precision.
+     * This should be no problem, because this can cover all measurable time periods
      * (even the age of the universe).
      * </p>
      *
-     * @return a TimeUnit that indicates the minimum precision between start and end
+     * @return a TimeUnit that indicates the precision of {@link #getStart()} and {@link #getEnd()}
      */
     TimeUnit getPrecision();
 

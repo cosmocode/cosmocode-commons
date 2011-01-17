@@ -54,13 +54,13 @@ final class DayPrecisionTimePeriod implements TimePeriod {
     }
 
     @Override
-    public long getStart(TimeUnit unit) {
-        return unit.convert(start, TimeUnit.DAYS);
+    public long getStart() {
+        return start;
     }
 
     @Override
-    public long getEnd(TimeUnit unit) {
-        return unit.convert(end, TimeUnit.DAYS);
+    public long getEnd() {
+        return end;
     }
 
     @Override

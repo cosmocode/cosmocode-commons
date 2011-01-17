@@ -270,8 +270,10 @@ public enum OverlapMode {
         final long offsetB = precision.convert(referenceDifference, TimeUnit.MILLISECONDS);
 
         return isOverlapping(
-            a.getStart(precision), a.getEnd(precision),
-            offsetB + b.getStart(precision), offsetB + b.getEnd(precision));
+            precision.convert(a.getStart(), a.getPrecision()),
+            precision.convert(a.getEnd(), a.getPrecision()),
+            offsetB + precision.convert(b.getStart(), b.getPrecision()), 
+            offsetB + precision.convert(b.getEnd(), b.getPrecision()));
     }
 
 }

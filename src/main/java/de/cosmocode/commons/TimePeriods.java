@@ -40,7 +40,7 @@ public final class TimePeriods {
 
         @Override
         public Date apply(@Nullable TimePeriod input) {
-            return input == null ? null : new Date(input.getStart(TimeUnit.MILLISECONDS));
+            return input == null ? null : new Date(input.getPrecision().toMillis(input.getStart()));
         }
 
         @Override
@@ -54,7 +54,7 @@ public final class TimePeriods {
 
         @Override
         public Date apply(@Nullable TimePeriod input) {
-            return input == null ? null : new Date(input.getEnd(TimeUnit.MILLISECONDS));
+            return input == null ? null : new Date(input.getPrecision().toMillis(input.getEnd()));
         }
 
         @Override
