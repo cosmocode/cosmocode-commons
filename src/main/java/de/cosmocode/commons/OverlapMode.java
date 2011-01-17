@@ -255,8 +255,6 @@ public enum OverlapMode {
         Preconditions.checkNotNull(a, "a");
         Preconditions.checkNotNull(b, "b");
 
-        // to consider: optimization for AbstractDateTimePeriod? is instanceof check and cast faster than below logic?
-
         // get minimum precision
         final TimeUnit precision;
         if (a.getPrecision().compareTo(b.getPrecision()) > 0) {
