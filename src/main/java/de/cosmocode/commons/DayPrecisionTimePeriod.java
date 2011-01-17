@@ -47,6 +47,7 @@ final class DayPrecisionTimePeriod implements TimePeriod {
     @Override
     public Date getReference() {
         final Calendar calendar = Calendar.getInstance();
+        Calendars.toBeginningOfTheDay(calendar);
         calendar.set(Calendar.YEAR, 0);
         calendar.set(Calendar.MONTH, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -66,6 +67,32 @@ final class DayPrecisionTimePeriod implements TimePeriod {
     @Override
     public TimeUnit getPrecision() {
         return TimeUnit.DAYS;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        } else if (o instanceof DayPrecisionTimePeriod) {
+            final DayPrecisionTimePeriod that = DayPrecisionTimePeriod.class.cast(o);
+            return start == that.start && end == that.end;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (end ^ (end >>> 32));
+        result = prime * result + (int) (start ^ (start >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DayPrecisionTimePeriod [start=" + start + ", end=" + end + "]";
     }
 
 }
