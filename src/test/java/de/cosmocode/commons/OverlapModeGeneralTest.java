@@ -142,5 +142,20 @@ public final class OverlapModeGeneralTest {
         final boolean actual = mode.isOverlapping(a, b);
         Assert.assertEquals(expected, actual);
     }
+    
+    /**
+     * Tests {@link OverlapMode#isOverlapping(TimePeriod, TimePeriod)},
+     * using two TimePeriods that have a huge distance from one another.
+     */
+    @Test
+    public void timePeriodsDontOverlapHugeDistance() {
+        // 1.000.000 BC to 200.000 BC
+        final TimePeriod a = new DayPrecisionTimePeriod(-1000000L * 365L, -200000L * 365L);
+        final TimePeriod b = Dates.timePeriod(yearFifty, nextMonth);
+        
+        final boolean expected = false;
+        final boolean actual = mode.isOverlapping(a, b);
+        Assert.assertEquals(expected, actual);
+    }
 
 }
