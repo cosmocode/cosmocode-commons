@@ -17,7 +17,6 @@
 package de.cosmocode.commons;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
