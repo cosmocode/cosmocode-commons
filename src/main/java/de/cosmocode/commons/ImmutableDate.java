@@ -35,10 +35,6 @@ final class ImmutableDate extends Date {
     
     private static final long serialVersionUID = -5520589706778945997L;
 
-    public ImmutableDate() {
-        super();
-    }
-
     public ImmutableDate(long date) {
         super(date);
     }
