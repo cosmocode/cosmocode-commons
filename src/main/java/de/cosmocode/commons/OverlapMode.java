@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Ordering;
 import com.google.gag.annotation.enforceable.CantTouchThis;
 import com.google.gag.annotation.remark.Magic;
 import com.google.gag.enumeration.MagicType;
@@ -254,24 +255,30 @@ public enum OverlapMode {
     public final boolean isOverlapping(final TimePeriod a, final TimePeriod b) {
         Preconditions.checkNotNull(a, "a");
         Preconditions.checkNotNull(b, "b");
-
-        // get minimum precision
-        final TimeUnit precision;
-        if (a.getPrecision().compareTo(b.getPrecision()) > 0) {
-            precision = b.getPrecision();
-        } else {
-            precision = a.getPrecision();
-        }
+        
+        final TimeUnit aPrecision = a.getPrecision();
+        final TimeUnit bPrecision = b.getPrecision();
 
         // offset for TimePeriod b
         final long referenceDifference = b.getReference().getTime() - a.getReference().getTime();
-        final long offsetB = precision.convert(referenceDifference, TimeUnit.MILLISECONDS);
-
-        return isOverlapping(
-            precision.convert(a.getStart(), a.getPrecision()),
-            precision.convert(a.getEnd(), a.getPrecision()),
-            offsetB + precision.convert(b.getStart(), b.getPrecision()), 
-            offsetB + precision.convert(b.getEnd(), b.getPrecision()));
+        
+        if (referenceDifference == 0L && aPrecision == bPrecision) {
+            // this is an optimization when we compare two periods with the same reference and precision
+            return isOverlapping(a.getStart(), a.getEnd(), b.getStart(), b.getEnd());
+        } else {
+            // get minimum precision
+            final TimeUnit precision = Ordering.natural().min(aPrecision, bPrecision);
+            
+            // get offset for period b in "precision"
+            final long offsetB = precision.convert(referenceDifference, TimeUnit.MILLISECONDS);
+            
+            return isOverlapping(
+                precision.convert(a.getStart(), aPrecision),
+                precision.convert(a.getEnd(), aPrecision),
+                offsetB + precision.convert(b.getStart(), bPrecision),
+                offsetB + precision.convert(b.getEnd(), bPrecision)
+            );
+        }
     }
 
 }
