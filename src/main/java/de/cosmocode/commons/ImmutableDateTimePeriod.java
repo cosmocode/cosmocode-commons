@@ -36,6 +36,8 @@ import com.google.common.base.Preconditions;
 @Beta
 final class ImmutableDateTimePeriod implements TimePeriod {
 
+    private static final Date REFERENCE = new ImmutableDate(0);
+
     private final Date start;
     private final Date end;
 
@@ -50,7 +52,7 @@ final class ImmutableDateTimePeriod implements TimePeriod {
 
     @Override
     public Date getReference() {
-        return new Date(0);
+        return REFERENCE;
     }
 
     @Override

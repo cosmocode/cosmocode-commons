@@ -31,27 +31,35 @@ import com.google.common.annotations.Beta;
 @Beta
 final class DayPrecisionTimePeriod implements TimePeriod {
 
+    private final Date reference;
     private final long start;
     private final long end;
 
     DayPrecisionTimePeriod(long start, long end) {
+        this.reference = new ImmutableDate(getYearZeroTimestamp());
         this.start = start;
         this.end = end;
     }
 
     DayPrecisionTimePeriod(Date start, Date end) {
-        this.start = TimeUnit.DAYS.convert(start.getTime() - getReference().getTime(), TimeUnit.MILLISECONDS);
-        this.end = TimeUnit.DAYS.convert(end.getTime() - getReference().getTime(), TimeUnit.MILLISECONDS);
+        final long referenceTime = getYearZeroTimestamp();
+        this.reference = new ImmutableDate(referenceTime);
+        this.start = TimeUnit.DAYS.convert(start.getTime() - referenceTime, TimeUnit.MILLISECONDS);
+        this.end = TimeUnit.DAYS.convert(end.getTime() - referenceTime, TimeUnit.MILLISECONDS);
     }
 
-    @Override
-    public Date getReference() {
+    private long getYearZeroTimestamp() {
         final Calendar calendar = Calendar.getInstance();
         Calendars.toBeginningOfTheDay(calendar);
         calendar.set(Calendar.YEAR, 0);
         calendar.set(Calendar.MONTH, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        return calendar.getTime();
+        return calendar.getTime().getTime();
+    }
+
+    @Override
+    public Date getReference() {
+        return reference;
     }
 
     @Override
