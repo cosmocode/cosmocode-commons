@@ -127,7 +127,7 @@ public enum OverlapMode {
         
         @Override
         public boolean isOverlapping(long s1, long e1, long s2, long e2) {
-            return !(s2 > e1 || e2 < s1);
+            return e1 >= s2 && e2 >= s1;
         }
         
     },
