@@ -70,20 +70,14 @@ public final class ExpiringThreadLocalMemoizingSupplierTest implements UnitProvi
         final UUID first = unit.get();
         Assert.assertSame(first, unit.get());
         Assert.assertSame(first, unit.get());
-        sleep(duration, durationUnit);
+        sleep(duration + 1, durationUnit);
         Assert.assertNotSame(first, unit.get());
     }
     
     private <T> T execute(ExecutorService executor, final Supplier<T> supplier) {
         try {
-            return executor.submit(new Callable<T>() {
-                
-                @Override
-                public T call() throws Exception {
-                    return supplier.get();
-                }
-                
-            }).get();
+            final Callable<T> callable = MoreSuppliers.callable(supplier);
+            return executor.submit(callable).get();
         } catch (InterruptedException e) {
             throw new AssertionError(e);
         } catch (ExecutionException e) {
@@ -115,7 +109,7 @@ public final class ExpiringThreadLocalMemoizingSupplierTest implements UnitProvi
         Assert.assertNotSame(first, third);
         Assert.assertNotSame(second, third);
 
-        sleep(duration, durationUnit);
+        sleep(duration + 1, durationUnit);
 
         // after expiration, each thread should have a new value
         Assert.assertNotSame(first, execute(firstExecutor, unit));

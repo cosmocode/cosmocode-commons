@@ -16,6 +16,7 @@
 
 package de.cosmocode.commons.base;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Supplier;
@@ -69,6 +70,19 @@ public final class MoreSuppliers {
     public static <T> Supplier<T> memoizePerThreadWithExpiration(Supplier<T> supplier, 
             long duration, TimeUnit unit) {
         return new ExpiringThreadLocalMemoizingSupplier<T>(supplier, duration, unit);
+    }
+    
+    /**
+     * Adapts the given supplier to the {@link Callable} interface.
+     *
+     * @since 1.21
+     * @param <T> the generic value type
+     * @param supplier the backing supplier
+     * @return a {@link Callable} which delegats to the given supplier
+     * @throws NullPointerException if supplier is null
+     */
+    public static <T> Callable<T> callable(Supplier<T> supplier) {
+        return new SupplierCallable<T>(supplier);
     }
     
 }
