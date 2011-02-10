@@ -38,7 +38,7 @@ import de.cosmocode.junit.UnitProvider;
  */
 public final class ExpiringThreadLocalMemoizingSupplierTest implements UnitProvider<Supplier<UUID>> {
 
-    private final long duration = 25;
+    private final long duration = 100;
     private final TimeUnit durationUnit = TimeUnit.MILLISECONDS;
     
     @Override
