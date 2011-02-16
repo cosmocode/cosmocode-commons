@@ -103,13 +103,9 @@ public final class Enums {
      */
     public static <E extends Enum<E>> E valueOf(Class<E> type, int ordinal) {
         Preconditions.checkNotNull(type, "Type");
-        if (ordinal < 0) throw new IndexOutOfBoundsException("Ordinal must not be negative");
         final E[] enums = type.getEnumConstants();
-        if (ordinal < enums.length) {
-            return enums[ordinal];
-        } else {
-            throw new IndexOutOfBoundsException("Index: " + ordinal + ", Size: " + enums.length);
-        }
+	Preconditions.checkElementIndex(ordinal, enums.length, "ordinal");
+        return enums[ordinal];
     }
     
     /**
