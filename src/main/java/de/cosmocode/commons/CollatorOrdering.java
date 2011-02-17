@@ -57,7 +57,7 @@ final class CollatorOrdering extends Ordering<String> {
     
     @Override
     public int hashCode() {
-        return collator.hashCode();
+        return collator.hashCode() ^ 754623731;
     }
     
     @Override
