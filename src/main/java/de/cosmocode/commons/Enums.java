@@ -104,7 +104,7 @@ public final class Enums {
     public static <E extends Enum<E>> E valueOf(Class<E> type, int ordinal) {
         Preconditions.checkNotNull(type, "Type");
         final E[] enums = type.getEnumConstants();
-	Preconditions.checkElementIndex(ordinal, enums.length, "ordinal");
+        Preconditions.checkElementIndex(ordinal, enums.length, "ordinal");
         return enums[ordinal];
     }
     
@@ -127,7 +127,9 @@ public final class Enums {
         if (flag == 0) return enums;
         
         for (E e : type.getEnumConstants()) {
-            if (Enums.has(flag, e)) enums.add(e);
+            if (Enums.has(flag, e)) {
+                enums.add(e);
+            }
         }
         
         return enums;
