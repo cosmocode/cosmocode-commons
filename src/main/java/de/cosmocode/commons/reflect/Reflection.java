@@ -166,7 +166,7 @@ public final class Reflection {
      * 
      * <p>
      *   Note: The iterable provided by the returned function may return
-     *   the same type twice.
+     *   the same type multiple times.
      * </p>
      * 
      * @since 1.12
