@@ -18,6 +18,7 @@ package de.cosmocode.commons;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.annotation.Nullable;
 
@@ -37,6 +38,8 @@ import de.cosmocode.commons.validation.Rules;
  * @author Oliver Lorenz
  */
 public final class Dates {
+
+    private static final long MILLISECONDS_PER_DAY = 24L * 60 * 60 * 1000;
 
     /**
      * Prevent instantiation.
@@ -180,6 +183,33 @@ public final class Dates {
      */
     public static Rule<Date> betweenInclusive(Date start, Date end) {
         return between(start, end).or(MoreObjects.asymmetricEqualTo(start)).or(MoreObjects.asymmetricEqualTo(end));
+    }
+
+    /**
+     * Sets a {@link Date} to midnight (00:00:00) at
+     * the date currently selected.
+     * This is the {@link Date}s equivalent of
+     * {@link Calendars#toBeginningOfTheDay(Calendar)}.
+     *
+     * <p>
+     * Calling this method is faster than to instantiate a new calendar
+     * and use the Calendars.toBeginningOfTheDay method on that calendar.
+     * But it is slower than just calling Calendars.toBeginningOfTheDay on a calendar
+     * so this method is mostly a performance optimization for plain Date objects.
+     * </p>
+     *
+     * @since 1.21
+     * @param date the {@link Date} which will be set to midnight
+     */
+    public static void toBeginningOfTheDay(final Date date) {
+        final long oldTime = date.getTime();
+        final long timeZoneOffset = TimeZone.getDefault().getOffset(oldTime);
+
+        /* we make an integer division by the milliseconds per day, to strip the old time
+         * from the hours, minutes, seconds and milliseconds.
+         * Then we multiply it with that value again to get a valid timestamp again
+         */
+        date.setTime(((oldTime + timeZoneOffset) / MILLISECONDS_PER_DAY) * MILLISECONDS_PER_DAY - timeZoneOffset);
     }
 
     /**
