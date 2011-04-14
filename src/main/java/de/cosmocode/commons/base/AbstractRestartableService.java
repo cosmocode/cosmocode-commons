@@ -16,8 +16,6 @@
 
 package de.cosmocode.commons.base;
 
-import java.util.concurrent.Future;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +44,7 @@ public abstract class AbstractRestartableService extends ForwardingService imple
         
             @Override
             public ListenableFuture<State> apply(State input) {
-                return Futures.makeListenable(start());
+                return start();
             }
             
         };
@@ -119,9 +117,9 @@ public abstract class AbstractRestartableService extends ForwardingService imple
     protected abstract void doStart();
     
     @Override
-    public final Future<State> start() {
+    public final ListenableFuture<State> start() {
         replaceIfNecessary();
-        return super.start();
+        return Futures.makeListenable(super.start());
     }
     
     @Override
@@ -138,7 +136,7 @@ public abstract class AbstractRestartableService extends ForwardingService imple
     protected abstract void doStop();
     
     @Override
-    public final Future<State> restart() {
+    public final ListenableFuture<State> restart() {
         return Futures.chain(Futures.makeListenable(stop()), startAfterStop, MoreExecutors.sameThreadExecutor());
     }
 
