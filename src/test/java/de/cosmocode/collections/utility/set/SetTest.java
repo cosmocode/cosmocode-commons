@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections.utility.set;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import junit.framework.Test;
 
 import com.google.common.collect.testing.SampleElements;
 import com.google.common.collect.testing.SetTestSuiteBuilder;
@@ -28,9 +21,13 @@ import com.google.common.collect.testing.TestSetGenerator;
 import com.google.common.collect.testing.features.CollectionFeature;
 import com.google.common.collect.testing.features.CollectionSize;
 import com.google.common.collect.testing.features.SetFeature;
-
 import de.cosmocode.collections.utility.Utility;
 import de.cosmocode.collections.utility.UtilitySet;
+import junit.framework.Test;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Tests the general compliance of the {@link UtilitySet}

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
+
+import com.google.common.annotations.Beta;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import com.google.common.annotations.Beta;
 
 /**
  * {@link TimePeriod} that measures the start and end in days from year 0, January 1st.

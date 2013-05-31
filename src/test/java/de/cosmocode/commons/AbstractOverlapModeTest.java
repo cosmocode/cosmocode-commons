@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
+import de.cosmocode.commons.concurrent.TimeUnits;
+import de.cosmocode.junit.UnitProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.cosmocode.commons.concurrent.TimeUnits;
-import de.cosmocode.junit.UnitProvider;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Tests {@link de.cosmocode.commons.OverlapMode}.

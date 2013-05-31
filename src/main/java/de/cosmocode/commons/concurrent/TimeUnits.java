@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.concurrent;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Static utility class for {@link TimeUnit}s.

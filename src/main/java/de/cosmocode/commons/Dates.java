@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-
-import javax.annotation.Nullable;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-
 import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.Rule;
-import de.cosmocode.commons.validation.Rules;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Utility class providing handy methods
@@ -93,26 +88,6 @@ public final class Dates {
     }
 
     /**
-     * Special equalTo for Dates that takes the oddities of Timestamp into account.
-     * This means that if this method is passed a Timestamp or the resulting Rule is applied to a Timestamp
-     * then apply will return true if either one (input or given Date) returns true on equals.
-     * It does not affect otherwise normal behaviour.
-     *
-     * @deprecated use {@link MoreObjects#asymmetricEqualTo(Object)}
-     * @since 1.20
-     * @see Rules#equalTo(Object)
-     * @see java.sql.Timestamp
-     * @param other the other date to compare to
-     * @return a rule which returns true if both Dates denote the same time
-     */
-    @Deprecated
-    public static Rule<Date> equalTo(@Nullable Date other) {
-        return (other == null)
-            ? Rules.<Date>isNull()
-            : new DateEqualsRule(other);
-    }
-
-    /**
      * Creates a {@link Rule} which evaluates to true
      * when passed in a date which is before the specified date.
      * 
@@ -174,7 +149,6 @@ public final class Dates {
      * @see Date#before(Date)
      * @see Date#after(Date)
      * @see Dates#between(Date, Date)
-     * @see Dates#equalTo(Date)
      * @param start the minimum date (inclusive)
      * @param end the maximum date (inclusive)
      * @return a predicate which returns true for all date equal to or after the specified start 

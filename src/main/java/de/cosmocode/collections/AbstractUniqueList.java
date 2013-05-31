@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections;
-
-import java.util.Collection;
-import java.util.ListIterator;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ForwardingListIterator;
 import com.google.common.collect.Iterables;
+
+import java.util.Collection;
+import java.util.ListIterator;
 
 /**
  * Abstract skeleton implementation of the {@link UniqueList} interface.
@@ -73,7 +72,6 @@ public abstract class AbstractUniqueList<E> extends RealAbstractList<E> implemen
      *
      * @since 1.5
      * @author Willi Schoenborn
-     * @param <E> generic element type
      */
     private final class SimpleListIterator extends ForwardingListIterator<E> {
         

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.reflect;
-
-import java.util.Comparator;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Ordering;
+
+import javax.annotation.Nullable;
+import java.util.Comparator;
 
 /**
  * Implementation for {@link Reflection#orderByHierarchy(Comparator)}.
@@ -36,7 +36,10 @@ final class HierarchyOrdering extends Ordering<Class<?>> {
     }
     
     @Override
-    public int compare(Class<?> left, Class<?> right) {
+    public int compare(@Nullable Class<?> left, @Nullable Class<?> right) {
+        Preconditions.checkNotNull(left, "Left");
+        Preconditions.checkNotNull(right, "Right");
+
         if (left.equals(right)) {
             return 0;
         } else if (left.isAssignableFrom(right)) {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.reflect;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+
+import javax.annotation.Nullable;
 
 /**
  * Implementation of {@link Reflection#getAllInterfaces()}.
@@ -30,7 +31,7 @@ enum GetAllInterfaces implements Function<Class<?>, Iterable<Class<?>>> {
     INSTANCE;
     
     @Override
-    public Iterable<Class<?>> apply(Class<?> from) {
+    public Iterable<Class<?>> apply(@Nullable Class<?> from) {
         return Iterables.filter(Reflection.getAllSuperTypes(from), Reflection.isInterface());
     }
     

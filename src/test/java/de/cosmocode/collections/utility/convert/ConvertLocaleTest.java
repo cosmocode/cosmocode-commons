@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections.utility.convert;
 
-import java.util.Locale;
-
+import com.google.common.collect.ImmutableList;
+import de.cosmocode.collections.utility.Convert;
+import de.cosmocode.junit.Asserts;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
-
-import de.cosmocode.collections.utility.Convert;
-import de.cosmocode.junit.Asserts;
+import java.util.Locale;
 
 /**
  * Tests {@link Convert#intoLocale(Object)} and
@@ -56,7 +53,7 @@ public class ConvertLocaleTest {
         Locale.TRADITIONAL_CHINESE,
         Locale.UK,
         Locale.US
-    ).add(Locale.getAvailableLocales()).build();
+    ).build();
     
     /**
      * Tests {@link Convert#intoLocale(Object)} with null.

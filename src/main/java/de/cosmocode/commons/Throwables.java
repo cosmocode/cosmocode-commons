@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
-
-import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.gag.annotation.remark.Booyah;
 import com.google.gag.annotation.remark.Hack;
+
+import javax.annotation.Nullable;
 
 /**
  * Static utility class for {@link Throwable}s.

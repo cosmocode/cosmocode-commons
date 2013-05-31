@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.reflect;
 
 import de.cosmocode.commons.validation.AbstractRule;
 import de.cosmocode.commons.validation.Rule;
 
+import javax.annotation.Nullable;
+
 /**
- * Singleton enum predicate for {@link Classes#isArray()}.
+ * Singleton enum predicate for {@link Reflection#isArray()}.
  *
  * @since 1.8
  * @author Willi Schoenborn
@@ -34,8 +35,8 @@ final class IsArray extends AbstractRule<Class<?>> {
     }
     
     @Override
-    public boolean apply(Class<?> input) {
-        return input.isArray();
+    public boolean apply(@Nullable Class<?> input) {
+        return input != null && input.isArray();
     }
     
     @Override

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
 
-import java.text.Collator;
-import java.util.Collection;
-import java.util.Locale;
+import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Ordering;
+import de.cosmocode.commons.validation.Rule;
+import de.cosmocode.commons.validation.Rules;
+import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Ordering;
-
-import de.cosmocode.commons.validation.Rule;
-import de.cosmocode.commons.validation.Rules;
+import java.text.Collator;
+import java.util.Locale;
 
 /**
  * Utility class inspired by {@link StringUtils},
@@ -73,14 +66,6 @@ public final class Strings {
      * A negated version {@link #BLANK}.
      */
     public static final Rule<CharSequence> NOT_BLANK = BLANK.negate();
-    
-    /**
-     * The default delimiter use by {@link Strings#join(Collection, JoinWalker)}.
-     * 
-     * @deprecated no need to use it anymore
-     */
-    @Deprecated
-    public static final String DEFAULT_DELIMITER = " ";
     
     private static final Object[] EMPTY_ARRAY = {};
 
@@ -169,64 +154,20 @@ public final class Strings {
     }
     
     /**
-     * Joines instances of a collection
-     * into a single string instance,
-     * using a parametrizable JoinWalker
-     * which transforms instances of T into Strings.
-     * 
-     * Calling this method is equivalent to
-     * {@code Strings.join(collection, " ", walker}
-     * 
-     * @deprecated use {@link Joiner}, {@link Function} and {@link Iterables#transform(Iterable, Function)} instead
-     * 
-     * @param <T> the generic type
-     * @param collection the element provider
-     * @param walker the function object which transform instances of T into strings
-     * @throws NullPointerException if collection is null or collection is empty and walker is null
-     * @return the joined collection as a string
-     */
-    @Deprecated
-    public static <T> String join(Collection<? extends T> collection, JoinWalker<? super T> walker) {
-        return Strings.join(collection, DEFAULT_DELIMITER, walker);
-    }
-
-    /**
-     * Joines instances of a collection
-     * into a single string instance,
-     * using a parametrizable delimeter and
-     * a JoinWalker which transforms instances
-     * of T into Strings.
-     * 
-     * @deprecated use {@link Joiner}, {@link Function} and {@link Iterables#transform(Iterable, Function)} instead
-     * 
-     * @param <T> the generic type
-     * @param collection the element provider
-     * @param delimiter the string betweens joined elements of collection
-     * @param walker the function object which transform instances of T into strings
-     * @throws NullPointerException if collection is null or collection is empty and walker is null
-     * @return the joined collection as a string
-     */
-    @Deprecated
-    public static <T> String join(Collection<? extends T> collection, String delimiter, JoinWalker<? super T> walker) {
-        final Iterable<String> transformed = Iterables.transform(collection, JoinWalkers.asFunction(walker));
-        return Joiner.on(delimiter).useForNull("null").join(transformed);
-    }
-    
-    /**
      * Checks whether a given {@link String} is a valid
      * number, containing only digits.
      * This implementation is performing a blank-check
      * before using {@link StringUtils#isNumeric(String)}.
      * 
      * <pre>
-     * StringUtility.isNumeric(null)   = false
-     * StringUtility.isNumeric("")     = false
-     * StringUtility.isNumeric("  ")   = false
-     * StringUtility.isNumeric("123")  = true
-     * StringUtility.isNumeric("12 3") = false
-     * StringUtility.isNumeric("ab2c") = false
-     * StringUtility.isNumeric("12-3") = false
-     * StringUtility.isNumeric("12.3") = false
+     * Strings.isNumeric(null)   = false
+     * Strings.isNumeric("")     = false
+     * Strings.isNumeric("  ")   = false
+     * Strings.isNumeric("123")  = true
+     * Strings.isNumeric("12 3") = false
+     * Strings.isNumeric("ab2c") = false
+     * Strings.isNumeric("12-3") = false
+     * Strings.isNumeric("12.3") = false
      * </pre>
      * 
      * @param s the String to check, may be null

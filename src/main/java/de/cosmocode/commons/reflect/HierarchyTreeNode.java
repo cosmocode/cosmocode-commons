@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.reflect;
+
+import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import de.cosmocode.collections.tree.TreeNode;
 
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-
-import de.cosmocode.collections.tree.TreeNode;
 
 /**
  * {@link TreeNode} implementation which maps directly to {@link Class}es in the inheritance

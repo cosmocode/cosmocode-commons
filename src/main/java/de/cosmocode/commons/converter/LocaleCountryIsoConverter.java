@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.converter;
+
+import com.google.common.base.Preconditions;
+import de.cosmocode.commons.Codec;
+import de.cosmocode.commons.Patterns;
+import de.cosmocode.commons.TrimMode;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
-
-import de.cosmocode.commons.Codec;
-import de.cosmocode.commons.Patterns;
-import de.cosmocode.commons.TrimMode;
 
 /**
  * A {@link CountryIsoConverter} that is backed by {@link Locale}.

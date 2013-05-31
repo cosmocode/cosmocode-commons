@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
-
-import java.util.Date;
-
-import javax.annotation.Nullable;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Function;
-
 import de.cosmocode.commons.base.MoreObjects;
 import de.cosmocode.commons.validation.Rule;
+
+import javax.annotation.Nullable;
+import java.util.Date;
 
 /**
  * Helper class for {@link TimePeriod}s.

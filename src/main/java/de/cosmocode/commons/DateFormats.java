@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
 
 import java.text.DateFormat;
@@ -28,58 +27,12 @@ import java.util.Locale;
 public final class DateFormats {
 
     /**
-     * DateFormat for ISO 8061.
-     * 
-     * @deprecated use {@link DateFormats#iso8061()} instead
-     */
-    @Deprecated
-    public static final DateFormat ISO_8061 = DateFormats.concurrent(iso8061());
-
-    /**
-     * DateFormat for RFC 822.
-     * 
-     * @deprecated use {@link DateFormats#rfc822()()} instead
-     */
-    @Deprecated
-    public static final DateFormat RFC_822 = DateFormats.concurrent(rfc822());
-
-    /**
-     * DateFormat for RSS 2.0.
-     * 
-     * @deprecated use {@link DateFormats#rss20()} instead
-     */
-    @Deprecated
-    public static final DateFormat RSS_20 = DateFormats.concurrent(rss20());
-    
-    /**
      * Prevent instantiation.
      */
     private DateFormats() {
         
     }
     
-    /**
-     * Decorates a {@link DateFormat} to make it threadsafe.
-     * 
-     * <p>
-     *   <strong>Note:</strong> 
-     *   This implementation uses synchronization to achieve
-     *   thread safety. Consider implementing an immutable version.
-     * <p>
-     * 
-     * @deprecated use a separate {@link DateFormat} for each thread, this implementation uses synchronization
-     * @param format the {@link DateFormat} to decorate
-     * @return a threadsafe version of the {@link DateFormat}
-     */
-    @Deprecated
-    public static DateFormat concurrent(DateFormat format) {
-        if (format instanceof SynchronizedDateFormat) {
-            return SynchronizedDateFormat.class.cast(format);
-        } else {
-            return new SynchronizedDateFormat(format);
-        }
-    }
-
     /**
      * DateFormat for ISO 8061.
      *

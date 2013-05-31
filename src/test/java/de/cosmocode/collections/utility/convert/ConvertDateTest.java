@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections.utility.convert;
-
-import java.util.Calendar;
-import java.util.Date;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 import de.cosmocode.collections.utility.Convert;
 import de.cosmocode.commons.DateMode;
 import de.cosmocode.junit.Asserts;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Tests {@link Convert#intoDate(Object)} and

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
-
 import de.cosmocode.commons.validation.AbstractRule;
+
+import javax.annotation.Nullable;
 
 /**
  * Default implementation of {@link CharMatchers#matchAll(CharMatcher)}.
@@ -36,8 +36,8 @@ final class CharMatcherRule extends AbstractRule<CharSequence> {
     }
     
     @Override
-    public boolean apply(CharSequence sequence) {
-        return matcher.matchesAllOf(sequence);
+    public boolean apply(@Nullable CharSequence sequence) {
+        return sequence != null && matcher.matchesAllOf(sequence);
     }
     
     @Override

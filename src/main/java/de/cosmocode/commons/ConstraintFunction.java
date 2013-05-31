@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Constraint;
+
+import javax.annotation.Nullable;
 
 /**
  * Implementation of {@link Conditions#asFunction(Constraint)}.
@@ -36,7 +37,7 @@ final class ConstraintFunction<T> implements Function<T, T> {
     }
     
     @Override
-    public T apply(T from) {
+    public T apply(@Nullable T from) {
         return constraint.checkElement(from);
     }
    

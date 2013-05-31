@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections.tree;
+
+import com.google.common.collect.ImmutableList;
+import junit.framework.Assert;
+import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -28,12 +31,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.UUID;
-
-import junit.framework.Assert;
-
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * Tests {@code DuplicatesNode<String>}.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections.utility;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import de.cosmocode.commons.DateMode;
+import de.cosmocode.commons.Enums;
+import de.cosmocode.commons.Patterns;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,18 +32,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-
-import de.cosmocode.commons.DateMode;
-import de.cosmocode.commons.Enums;
-import de.cosmocode.commons.Patterns;
 
 /**
  * Utility class providing method to convert

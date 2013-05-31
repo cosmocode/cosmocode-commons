@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.reflect;
-
-import java.lang.reflect.Modifier;
 
 import de.cosmocode.commons.validation.AbstractRule;
 import de.cosmocode.commons.validation.Rule;
 
+import javax.annotation.Nullable;
+import java.lang.reflect.Modifier;
+
 /**
- * Singleton enum predicate for {@link Classes#isAbstract()}.
+ * Singleton enum predicate for {@link Reflection#isAbstract()}.
  *
  * @since 1.8
  * @author Willi Schoenborn
@@ -36,8 +36,8 @@ final class IsAbstract extends AbstractRule<Class<?>> {
     }
     
     @Override
-    public boolean apply(Class<?> input) {
-        return Modifier.isAbstract(input.getModifiers());
+    public boolean apply(@Nullable Class<?> input) {
+        return input != null && Modifier.isAbstract(input.getModifiers());
     }
     
     @Override

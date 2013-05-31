@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons;
-
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
 
 /**
  * Tests the {@link Strings} class.
@@ -29,15 +24,6 @@ import com.google.common.collect.Lists;
  * @author Willi Schoenborn
  */
 public class StringsTest {
-    
-    @SuppressWarnings("deprecation")
-    private static final JoinWalker<Object> DEFAULT_WALKER = new JoinWalker<Object>() {
-        
-        @Override
-        public String walk(Object t) {
-            return t == null ? null : t.toString();
-        }
-    };
     
     /**
      * Tests {@link Strings#isNumeric(String)} with null.
@@ -78,33 +64,6 @@ public class StringsTest {
     @Test
     public void isNumeric() {
         Assert.assertTrue(Strings.isNumeric("123"));
-    }
-
-    /**
-     * Tests {@link Strings#join(java.util.Collection, JoinWalker)} with
-     * an empty list.
-     */
-    @SuppressWarnings("deprecation")
-    @Test
-    public void joinEmpty() {
-        final List<Object> list = Lists.newArrayList();
-        final String joined = Strings.join(list, DEFAULT_WALKER);
-        Assert.assertEquals(joined, "");
-    }
-
-    /**
-     * Tests {@link Strings#join(java.util.Collection, JoinWalker)} with
-     * an non-empty list.
-     */
-    @SuppressWarnings("deprecation")
-    @Test
-    public void join() {
-        final List<Object> list = Lists.newArrayList();
-        list.add("hello");
-        list.add(null);
-        list.add(0.0);
-        final String joined = Strings.join(list, " ", DEFAULT_WALKER);
-        Assert.assertEquals(joined, "hello null 0.0");
     }
 
     /**

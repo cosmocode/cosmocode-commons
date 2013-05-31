@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.commons.io;
 
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * {@link InputStream} implementation which mimics the behaviour of an empty stream.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
+import com.google.common.io.Files;
+
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Properties;
-
-import com.google.common.base.Preconditions;
 
 /**
  * Extension of the {@link Properties} class which can load
@@ -67,7 +67,7 @@ public final class MultiProperties {
         final Properties properties = new Properties();
         
         for (File file : files) {
-            final Reader reader = new FileReader(file);
+            final Reader reader = Files.newReader(file, Charsets.UTF_8);
             try {
                 properties.load(reader);
             } finally {

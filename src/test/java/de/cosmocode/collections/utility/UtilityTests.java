@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 CosmoCode GmbH
+ * Copyright 2010 - 2013 CosmoCode GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.cosmocode.collections.utility;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 import de.cosmocode.collections.utility.collection.UtilityCollectionTests;
 import de.cosmocode.collections.utility.convert.ConvertTests;
 import de.cosmocode.collections.utility.list.UtilityListTests;
 import de.cosmocode.collections.utility.map.UtilityMapTests;
 import de.cosmocode.collections.utility.set.UtilitySetTests;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Tests all {@link Utility}* implementations.
